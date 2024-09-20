@@ -1,0 +1,165 @@
+.container_modal_profile {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border-radius: 10px;
+  width: 100%;
+}
+
+.modal_profile {
+width: 70vw;
+}
+
+
+.container_img,
+.container_info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #2a2a2a;
+  .title-card {
+    font-size: 1.9rem;
+    font-weight: 800;
+    margin-bottom: 40px;
+  }
+}
+
+.dropdown_profile {
+  width: 350px;
+}
+
+.select-profiles {
+  background-color: #f2f2f2;
+  border: 1px solid #ccc;
+  width: 300px;
+  padding: 5px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  border-radius: 5px;
+  margin-top: 30px;
+}
+
+.profile-value {
+  margin-top: 10px;
+  margin-left: 1px;
+  font-size: 16px;
+  color: #2a2a2a;
+  margin-bottom: 5px;
+  font-weight: 300;
+}
+
+.profile-value strong {
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--primary-color);
+}
+
+.btn-modal-profile {
+  border: 1px solid #ccc;
+  height: 45px;
+  padding: 5px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 5px;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.container_info p {
+  font-size: 14px;
+  font-weight: 400;
+  margin-bottom: 7px;
+  margin-top: 40px;
+}
+
+.container_info ul li {
+  margin-bottom: 5px;
+  font-size: 13px;
+}
+
+.container_img {
+ 
+}
+
+
+
+.copia-email {
+  border: 2px solid #ccc;
+  padding: 15px;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin-top: 10px;
+  margin-bottom: 15px;
+}
+
+
+.email-tercero input {
+  margin: 5px;
+  width: 95%;
+}
+
+.email-tercero p {
+  margin: 0;
+}
+
+.email-tercero label {
+  margin-left: 3px;
+}
+
+.checkbox-container {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.checkbox-container input {
+  transform: scale(1.5);
+}
+
+.checkbox-label {
+  display: inline;
+  margin-left: 5px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+
+@media(max-width: 800px) {
+  .modal_profile {
+    width: 100vw;
+    height: 100%;
+  }
+
+  .container_modal_profile {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .dropdown_profile {
+    width: 340px;
+  }
+  
+  .checkbox-label {
+    font-size: 12px;
+  }
+
+  .copia-email {
+    width: 350px;
+  }
+
+  .input-email {
+    width: 315px;
+    position: relative;
+    left: -5px;
+  }
+
+.container_info {
+  padding: 0 15px;
+  }
+}

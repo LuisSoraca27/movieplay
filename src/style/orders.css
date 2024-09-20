@@ -1,0 +1,135 @@
+.container-orders-father {
+  padding: 50px;
+  background-color: #f3f3f3d5;
+  min-height: 100vh;
+}
+.container-orders-father h2 {
+  font-size: 40px;
+  font-weight: 600;
+  margin-bottom: 50px;
+}
+
+.container-orders {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.info-orders {
+  width: 35%;
+  height: 200px;
+  border-radius: 7px;
+  background-image: radial-gradient(
+    circle at 20.12% -14.09%,
+    #3c78f2 0,
+    #3c78f2 50%,
+    #3c78f2 100%
+  );
+  -webkit-box-shadow: 7px 6px 14px -1px rgba(0, 0, 0, 0.19);
+  -moz-box-shadow: 7px 6px 14px -1px rgba(0, 0, 0, 0.19);
+  box-shadow: 7px 6px 14px -1px rgba(0, 0, 0, 0.19);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 20px;
+  color: #fff;
+}
+
+.info-orders h2 {
+  font-size: 25px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  text-shadow: rgba(0, 0, 0, 0.233) 0.1em 0.1em 0.2em;
+}
+
+.info-orders h3 {
+  font-size: 35px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  text-shadow: rgba(0, 0, 0, 0.233) 0.1em 0.1em 0.2em;
+}
+
+.view_ordersss {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  border-radius: 7px;
+  padding: 10px;
+  background-color: #fff;
+  margin-top: 40px;
+  -webkit-box-shadow: 7px 6px 14px -1px rgba(0, 0, 0, 0.19);
+  -moz-box-shadow: 7px 6px 14px -1px rgba(0, 0, 0, 0.19);
+  box-shadow: 7px 6px 14px -1px rgba(0, 0, 0, 0.19);
+}
+
+.info_orders {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 0 20px;
+  text-align: center;
+  justify-content: space-between;
+  background-color: white;
+}
+
+.info_orders span {
+  font-size: 21px;
+  font-weight: 600;
+  margin-right: 10px;
+}
+
+.orders {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background-color: #fff;
+  padding: 0 20px;
+  padding-bottom: 20px;
+  text-align: center;
+  border-top: #c8cace 1px solid;
+  padding-top: 10px;
+  font-weight: 500;
+  justify-content: space-between;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.788);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.orders:hover {
+  background-color: #c8cace2d;
+}
+
+.colum-1 {
+  width: 20%;
+}
+
+.colum-2 {
+  width: 20%;
+}
+
+.colum-3 {
+  width: 20%;
+}
+
+.colum-4 {
+  width: 20%;
+}
+
+.colum-5 {
+  width: 20%;
+}
+
+.search_orders {
+  width: 250px;
+  height: 45px;
+  border: #c8cace 1px solid;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 7px;
+  padding: 5px;
+}

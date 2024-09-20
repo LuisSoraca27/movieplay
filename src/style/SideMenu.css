@@ -1,0 +1,6 @@
+.side-menu {
+  height: 100vh;
+  z-index: 100;
+  position: sticky;
+  top: 0;
+}

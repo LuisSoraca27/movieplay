@@ -1,0 +1,246 @@
+.card-profile {
+  width: 230px;
+  height: 320px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.264);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+  margin: 30px 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+
+.container-eyelash {
+  position: absolute;
+  width: 100%;
+  height: 50px;
+  top: 10px;
+
+}
+
+.eyelash {
+  width: 40%;
+  height: 20px;
+  border-radius: 25px;
+  background-color: white;
+  margin: 0 auto;
+}
+
+.eyelash-circle {
+  width: 23px;
+  height: 20px;
+  border-radius: 27px;
+  background-color: white;
+  margin: 0 auto;
+  position: relative;
+  top: 10px;
+}
+
+
+.img-card {
+  width: 95%;
+}
+
+.card-profile strong {
+ color: white;
+ position: absolute;
+ bottom: 30px;
+}
+
+.available {
+  background-color: #25d366ff;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: 2px solid #fff;
+  z-index: 1;
+}
+
+.card-profile:hover {
+  transform: scale(1.05);
+}
+
+
+@media(max-width: 1000px) {
+  .card-profile {
+    width: 150px;
+    height: 250px;
+    margin: 10px 7px;
+  }
+
+  .container-eyelash {
+    top: 5px;
+  }
+
+  .eyelash {
+    width: 35%;
+    height: 15px;
+  }
+  
+  .eyelash-circle {
+    width: 18px;
+    height: 18px;
+  }
+
+  .card-profile strong {
+    font-size: 12px;
+   }
+  
+}
+
+.background-canva {
+  background: linear-gradient(to bottom, #00c4cc, #7d2ae7);
+}
+
+.background-calm {
+  background: linear-gradient(to bottom, #3bbdec, #5a58e5);
+}
+
+.background-combo_plus {
+  background: radial-gradient(circle, #2f136a, #051433);
+}
+
+.background-regalo {
+  background: radial-gradient(circle, #4696be,#1945f6);
+}
+
+.background-universal {
+  background: #080808;
+}
+
+.background-duolingo {
+  background: #78c802
+}
+
+.background-netflix {
+  background: #000000;
+}
+
+.background-amazon_prime {
+  background: #19222d;
+}
+
+.background-Dbasico {
+  background: linear-gradient(to bottom, #001d2b, #008891);
+}
+.background-Destandar {
+  background: linear-gradient(to bottom, #001d2b, #008891);
+}
+.background-Dpremium {
+  background: linear-gradient(to bottom, #001d2b, #008891);
+}
+.background-microsoft365 {
+  background: linear-gradient(to bottom, #d7a6e8,#e7caf6,#f3b5f1, #8d80c6);
+}
+
+.background-hbo_max {
+  background: radial-gradient( #0034fe, #000066);
+}
+
+.background-wasender {
+  background: radial-gradient( #2e6667, #153132);
+}
+
+.background-star_plus {
+  background: #242039;
+}
+
+.background-paramount_plus {
+  background: #0a6aff;
+}
+
+.background-vix {
+  background:#f25500;
+}
+
+.background-plex {
+  background: radial-gradient( #767676, #363636);
+}
+
+.background-crunchyroll {
+  background: linear-gradient(to bottom, #f16700, #f16700);
+}
+
+.background-napster {
+  background: linear-gradient(to bottom, #01202f, #037b9d);
+}
+
+.background-spotify {
+  background: #080808;
+}
+
+.background-youtube {
+  background:#ff0000;
+}
+
+.background-tidal {
+  background: #000000;
+}
+
+.background-iptv {
+  background: #553de4;
+}
+
+.background-rakuten {
+  background:#149eff;
+}
+
+.background-office {
+  background:#149eff;
+}
+
+.background-apple_music {
+  background: linear-gradient(to bottom, #fb233b, #fb233b);
+}
+
+.background-dezzer {
+  background: linear-gradient(to bottom, #000000, #000000);
+}
+
+.background-tvmia {
+  background: linear-gradient(to right, #00989f, #004c5c);
+}
+
+.background-mubi {
+  background: #081b8d;
+}
+
+.background-apple_tv {
+  background:#101112;
+}
+
+.background-brazzers {
+  background: black;
+}
+
+.background-canva {
+  background: linear-gradient(to bottom, #00c4cc, #7d2ae7);
+}
+
+.background-pornhub {
+  background:  #000000;
+}
+
+.background-xbox_pass {
+  background: linear-gradient(to bottom, #107c10, #107c10);
+}
+
+.background-acorntv {
+  background: #0b1733;
+}
+
+.background-profenet {
+  background: #8c0613;
+}
+
+.no-available {
+  filter: grayscale(100%);
+}

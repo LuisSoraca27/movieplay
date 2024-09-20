@@ -1,0 +1,49 @@
+* {
+  box-sizing: border-box;
+  font-family: var(--font-family);
+}
+
+button:hover {
+  cursor: pointer;
+  background-color: none;
+}
+
+body {
+  margin: 0;
+}
+
+.card-product {
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+}
+
+.card-product:hover {
+  transform: scale(1.05);
+}
+
+.label-form {
+  font-size: 17px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 5px;
+  text-align: left;
+}
+
+.input-form {
+  width: 100%;
+  height: 40px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 0 10px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.colum-global {
+  width: 25%;
+}
+

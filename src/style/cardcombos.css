@@ -1,0 +1,16 @@
+.card-combos {
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+}
+
+@media(max-width: 1000px) {
+  .card-combos {
+    width: 8rem;
+  }
+}
+
+.card-combos:hover {
+  transform: scale(1.05);
+}

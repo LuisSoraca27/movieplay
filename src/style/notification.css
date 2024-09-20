@@ -1,0 +1,118 @@
+.container-notification {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px;
+  background-color: #f5f5f5;
+}
+
+.notificationView {
+  width: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  flex-direction: column;
+  background-color: white;
+  border-radius: 10px;
+  padding: 15px;
+  
+  border: 2px solid #c8cace;
+  border-color: var(--primary-color);
+}
+
+.notificationView h2 {
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.notificationView p {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 10px 0;
+}
+
+.form {
+  width: 80%;
+  margin: auto;
+  margin-top: 2rem;
+}
+
+.form label {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.form textarea {
+  width: 100%;
+  border: 2px solid #c8cace;
+  border-radius: 5px;
+  resize: none;
+  background-color: rgba(228, 228, 228, 0.226);
+  padding: 5px;
+}
+
+.form button {
+  width: 100%;
+  margin-top: 15px;
+  height: 40px;
+  font-size: 20px;
+  -webkit-box-shadow: 7px 7px 54px -19px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 7px 7px 54px -19px rgba(0, 0, 0, 0.75);
+  box-shadow: 7px 7px 54px -19px rgba(0, 0, 0, 0.75);
+}
+
+.notifications {
+  width: 100%;
+  padding: 20px;
+  text-align: center;
+}
+
+.notifications h3 {
+  font-size: 25px;
+  font-weight: 600;
+}
+
+.alert {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.alert p {
+  font-size: 17px;
+  font-weight: 600;
+  width: 90%;
+  text-align: start;
+}
+
+
+.container-notification-popup {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  width: 450px;
+  height: 500px;
+  padding: 20px;
+  padding-top: 0;
+
+}
+
+.card-notification-popup {
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.container-imagenes {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 10px;
+  margin: 10px 0;
+  position: relative;
+}

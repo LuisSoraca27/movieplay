@@ -1,0 +1,173 @@
+.container-products {
+  padding: 50px;
+  background-color: #ebedf0;
+  min-height: 100vh;
+}
+
+.navbar-products {
+  background-color: #fff;
+  height: 70px;
+  margin-bottom: 50px;
+  border-radius: 7px;
+}
+
+.title-page {
+  font-size: 30px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.title-page span {
+  color: #2a2a2a;
+}
+
+.style-icon {
+  margin-right: 10px;
+  font-size: 35px;
+}
+
+.nav-products {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  -webkit-box-shadow: 7px 6px 14px -1px rgba(0, 0, 0, 0.19);
+  -moz-box-shadow: 7px 6px 14px -1px rgba(0, 0, 0, 0.19);
+  box-shadow: 7px 6px 14px -1px rgba(0, 0, 0, 0.19);
+}
+
+.nav-products li {
+  list-style: none;
+  margin-right: 20px;
+  font-size: 18px;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.nav-link-products {
+  color: #2a2a2a;
+  text-decoration: none;
+}
+
+.nav-item-products {
+  padding: 10px 15px;
+  border-radius: 7px;
+}
+
+.header-products {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 50px;
+  padding: 0 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.selected_product {
+  width: 270px;
+  height: 45px;
+  border: #c8cace 1px solid;
+  border-radius: 7px;
+  font-size: 16px;
+  font-weight: 600;
+  margin-right: 20px;
+}
+
+.option-product {
+  width: 270px;
+  height: 80px;
+  border: #c8cace 1px solid;
+  border-radius: 7px;
+  font-size: 18px;
+  font-weight: 600;
+  margin-right: 20px;
+}
+
+
+
+.view-products {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 7px;
+  padding: 10px;
+}
+
+.info-products {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background-color: #fff;
+  margin-bottom: 20px;
+  padding: 0 20px;
+  text-align: center;
+}
+
+.products {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background-color: #fff;
+  margin-bottom: 20px;
+  padding: 0 20px;
+  text-align: center;
+  border-top: #c8cace 1px solid;
+  padding-top: 10px;
+  font-weight: 400;
+}
+
+.products span {
+  font-size: 12px;
+}
+
+.info-products span {
+  font-size: 14px;
+  font-weight: 400;
+  color: #000;
+}
+
+
+/* Estilos del modal combos */
+
+.container-form-combos {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  border-radius: 7px;
+}
+
+.colum-form-1 {
+  height: 100%;
+  width: 50%;
+  padding: 0 20px;
+}
+
+.colum-form-2 {
+  height: 100%;
+  width: 50%;
+  padding: 0 20px;
+}
+
+.style-label {
+  font-size: 17px;
+  font-weight: 400;
+  margin-bottom: -10px;
+}
+
+.invalid {
+  color: red;
+}
+
+.color-select {
+  background-color: #6366f1;
+  color: #fff;
+  transition: 0.3s;
+}

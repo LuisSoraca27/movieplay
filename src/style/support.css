@@ -1,0 +1,165 @@
+.container-support {
+  background-color: #000e23;
+  padding: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  padding-bottom: 0;
+}
+.header-support {
+  width: 50%;
+  height: 330px;
+  text-align: center;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.header-support h1 {
+  font-size: 40px;
+  font-weight: 700;
+  margin: 20px 0;
+}
+
+.header-support p {
+  font-size: 24px;
+  font-weight: 500;
+  margin: 20px 0;
+}
+
+.soporte {
+  width: 50%;
+}
+
+.line-whatsapp {
+  width: 100%;
+  height: 300px;
+  color: white;
+  margin: 50px 0;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  flex-direction: column;
+}
+
+.line-whatsapp h2 {
+  font-size: 30px;
+  font-weight: 700;
+  margin: 20px 0;
+}
+
+.lines {
+  width: 100%;
+  height: 100%;
+  margin: 20px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+}
+
+.lines a {
+  text-decoration: none;
+  color: white;
+}
+
+.line {
+  margin: 0 -10px;
+}
+
+.lines img {
+  width: 17%;
+  margin-bottom: 10px;
+}
+
+.lines p {
+  font-size: 20px;
+  font-weight: 500;
+  margin: 5px 0;
+}
+
+.red-socials {
+  width: 100%;
+  height: 300px;
+  color: white;
+  margin: 50px 0;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.socials {
+  width: 100%;
+  height: 100%;
+  margin: 30px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+}
+
+.socials a {
+  text-decoration: none;
+  color: white;
+}
+.social img {
+  width: 20%;
+  margin: 0 10px;
+}
+
+.social p {
+  font-size: 22px;
+  font-weight: 500;
+  margin: 5px 0;
+}
+
+.footer-support {
+  color: white;
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 50px;
+}
+
+.footer-support img {
+  width: 23%;
+}
+
+.footer-support p {
+  font-size: 18px;
+  font-weight: 500;
+  margin: 0;
+}
+
+
+@media(max-width: 1000px) {
+  .container-support {
+    padding: 20px;
+  }
+  .header-support {
+    width: 100%;
+    height: 300px;
+  }
+  .header-support h1 {
+    font-size: 30px;
+  }
+  .header-support p {
+    font-size: 18px;
+  }
+  .header-support img {
+    width: 70%;
+  }
+  .line-whatsapp {
+    height: auto;
+  }
+  .lines {
+    flex-wrap: wrap;
+  }
+  .socials {
+    flex-wrap: wrap;
+  }
+}

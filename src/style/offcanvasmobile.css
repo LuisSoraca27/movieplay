@@ -1,0 +1,27 @@
+.opcion-mobile {
+  width: 100%;
+  text-align: center;
+  margin: 15px 0;
+  padding: 10px 0;
+  border-radius: 8px;
+}
+
+.opcion-mobile h3 {
+  color: white;
+  font-size: 20px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.opcion-mobile:hover {
+  color: #e5e5e5;
+  text-decoration: none;
+  color: #2a2a2a;
+  background-color: #e5e5e5;
+  transition: all 0.2s ease-in-out;
+}
+
+.opcion-mobile h3:hover {
+  color: #e5e5e5;
+  transition: all 0.2s ease-in-out;
+}

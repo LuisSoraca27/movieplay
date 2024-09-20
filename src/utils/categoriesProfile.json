@@ -1,0 +1,27 @@
+[
+  {
+    "name": "netflix",
+    "title": "Netflix 30 dias",
+    "description": "Perfil de netflix 30 dias de duración"
+  },
+  {
+    "name": "amazon_prime",
+    "title": "Amazon Prime 30 dias",
+    "description": "Perfil de amazon prime 30 dias de duración"
+  },
+  {
+    "name": "disnet_plus",
+    "title": "Disney Plus 30 dias",
+    "description": "Perfil de disney plus 30 dias de duración"
+  },
+  {
+    "name": "hbo_max",
+    "title": "HBO Max 30 dias",
+    "description": "Perfil de HBO Max 30 dias de duración"
+  },
+  {
+    "name": "star_plus",
+    "title": "Star Plus 30 dias",
+    "description": "Perfil de Star Plus 30 dias de duración"
+  }
+]

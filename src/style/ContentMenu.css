@@ -1,0 +1,103 @@
+.content-menu {
+  width: 230px;
+  height: 100%;
+  padding: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #000e23;
+  box-shadow: none;
+}
+
+.content-header {
+  width: 100%;
+  height: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.content-nav {
+  width: 100%;
+  height: 53%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f9fafb;
+  border: 1.5px solid rgba(0, 0, 0, 0.162);
+  border-radius: 16px;
+}
+
+.content-nav ul {
+  text-decoration: none;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  flex-direction: column;
+  padding: 5px;
+}
+
+.content-nav ul li {
+  text-decoration: none;
+  list-style: none;
+  margin-bottom: 5px;
+  font-size: 19px;
+  height: 47px;
+  width: 100%;
+  padding: 5px;
+  border-radius: 6px;
+  transition: .2s all;
+}
+
+.content-nav ul li i {
+  color: var(--primary-color);
+}
+.content-nav ul li:hover {
+  background-color: #6366f1;
+  color: white;
+  cursor: pointer;
+}
+
+.content-nav ul li:hover i {
+  color: white; /* Cambiar el color del ícono en hover */
+}
+
+
+.content-nav ul li span {
+  margin-left: 5px;
+  font-weight: 600;
+}
+
+.content-footer {
+  width: 100%;
+  height: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border: 1.5px solid rgba(0, 0, 0, 0.162);
+  border-radius: 16px;
+  padding: 8px;
+  text-align: center;
+  background-color: #f9fafb;
+  margin-top: 10px;
+}
+
+.menu_user {
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.menu_user p {
+  font-size: 15px;
+  font-weight: 300;
+  margin: 0;
+  margin-bottom: 5px;
+}
+.menu_user i {
+  margin-right: 6px;
+}
