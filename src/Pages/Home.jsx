@@ -2,12 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { Messages } from 'primereact/messages';
 import { useDispatch, useSelector } from 'react-redux';
 import { getNotificationThunk } from '../features/notifications/notificationSlice';
-import {Dialog} from 'primereact/dialog';
-import { Image } from 'primereact/image';
-import promo  from '../assets/promo.png';
 import '../style/home.css';
 import ViewNotificationImg from '../Components/Notifications/ViewNotificationImg';
-import CommunitiesPanel from '../Components/CommunitiesPanel';
         
 
 const Home = () => {
@@ -57,7 +53,6 @@ const Home = () => {
                     <Messages ref={msgs} />
                 </div>
             </div>
-            { isCommunityPanelOpen && <CommunitiesPanel onClose={() => setIsCommunityPanelOpen(false)}/> }
         </div>
         </>
     );

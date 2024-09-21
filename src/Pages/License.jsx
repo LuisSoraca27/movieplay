@@ -8,7 +8,6 @@ import IsLoading from '../Components/IsLoading';
 import ModalProduct from './ModalProduct'
 import { setBalanceThunk } from '../features/balance/balanceSlice'
 import ViewNotificationImg from '../Components/Notifications/ViewNotificationImg';
-import CommunitiesPanel from '../Components/CommunitiesPanel';
 
 
 const License = () => {
@@ -50,7 +49,6 @@ const License = () => {
                             />
                         )) : <h1 style={{ color: 'white', textShadow: ' 3px 3px 2px #000000' }}>No hay licencias disponibles </h1>
                     }
-                      { isCommunityPanelOpen && <CommunitiesPanel onClose={() => setIsCommunityPanelOpen(false)}/> }
                 </div>}
             {isModalOpen && (
                 <ModalProduct

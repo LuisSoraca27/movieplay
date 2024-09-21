@@ -108,6 +108,11 @@
   background: radial-gradient(circle, #2f136a, #051433);
 }
 
+.background-magistv {
+  background: #fe6539;
+}
+
+
 .background-regalo {
   background: radial-gradient(circle, #4696be,#1945f6);
 }

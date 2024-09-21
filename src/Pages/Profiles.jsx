@@ -12,28 +12,18 @@ import hbo from '../assets/img/hbo.png';
 import crunchyroll from '../assets/img/crunchyroll.webp';
 import paramount_plus from '../assets/img/paramount-plus.png';
 import plex from '../assets/img/plex.png';
-import star_plus from '../assets/img/star-plus.png';
 import vix from '../assets/img/vix.png';
 import iptv from '../assets/img/iptv.webp';
-import universal from '../assets/img/universal_plus.png';
-import pornhub from '../assets/img/pornhub.png';
-import apple_tv from '../assets/img/apple_tv.png';
-import combo_plus from '../assets/img/combo_plus.png';
-import mubi from '../assets/img/mubi.png';
 import rakuten from '../assets/img/rakuten.png';
-import regalo from '../assets/img/regalo.png';
 import profenet from '../assets/img/profenet.png';
-import tvmia from '../assets/img/tvmia.png';
 import Dbasico from '../assets/img/Dbasico.png';
 import Destandar from '../assets/img/Destandar.png';
 import Dpremium from '../assets/img/Dpremium.png';
-import microsoft365 from '../assets/img/microsoft365.png';
-import wasender from '../assets/img/wasender.png';
+import magistv from '../assets/img/magistv.png';
 import { setIsLoading } from '../features/isLoading/isLoadingSlice';
 import ModalProfile from './ModalProfile';
 import { setBalanceThunk } from '../features/balance/balanceSlice';
 import ViewNotificationImg from '../Components/Notifications/ViewNotificationImg';
-import CommunitiesPanel from '../Components/CommunitiesPanel';
 
 const categoryImageMap = {
   'netflix': [netflix, 'Netflix'],
@@ -45,21 +35,12 @@ const categoryImageMap = {
   'paramount_plus': [paramount_plus, 'Paramount+'],
   'vix': [vix, 'Vix+'],
   'plex': [plex, 'Next Movie'],
-  'star_plus': [star_plus, 'Star+'],
   'iptv': [iptv, 'IPTV'],
-  'apple_tv': [apple_tv, 'Apple TV'],
-  'pornhub': [pornhub, 'Pornhub'],
   'rakuten': [rakuten, 'Rakuten Viki'],
-  'mubi': [mubi, 'Mubi'],
-  'universal': [universal, 'Universal+'],
-  'combo_plus': [combo_plus, 'Combo+'],
   'Dbasico': [Dbasico, 'Disney+ Basico'],
   'Destandar': [Destandar, 'Disney+ Estándar'],
   'Dpremium': [Dpremium, 'Disney+ Premium'],
-  'tvmia': [tvmia, 'TVMia'],
-  'regalo': [regalo, 'Regalo'],
-  'microsoft365': [microsoft365, 'Microsoft 365'],
-  'wasender': [wasender, 'WASender'],
+ 'magistv': [magistv, 'MagistV'],
 };
 
 const Profiles = () => {
@@ -144,7 +125,6 @@ const Profiles = () => {
               }
             })}
           </div>
-           { isCommunityPanelOpen && <CommunitiesPanel onClose={() => setIsCommunityPanelOpen(false)}/> }
         </div>
       }
       {isModalOpen &&
