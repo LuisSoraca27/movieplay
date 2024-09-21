@@ -167,7 +167,7 @@
 }
 
 .background-plex {
-  background: radial-gradient( #767676, #363636);
+  background: linear-gradient(to bottom left, #27282b, #000000);
 }
 
 .background-crunchyroll {

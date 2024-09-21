@@ -8,7 +8,7 @@ import { getNotificationThunk, deleteNotificationThunk } from '../features/notif
 import CustomNotification from '../Components/CustomNotification';
 import PopupNotification from '../Components/Notifications/PopupNotification';
 
-const socket = io.connect('https://servidor-dk-soluciones-production.up.railway.app/');
+const socket = io.connect('https://servidor-movieplay-production.up.railway.app/');
 
 const Notification = () => {
     const dispatch = useDispatch();
