@@ -94,22 +94,22 @@ const CreateAccount = ({ show, onClose, reCharge }) => {
                   className={` ${errors.categoryId ? "p-invalid" : ""}`}
                   name="categoryId"
                   options={[
-                    { name: "Netflix", value: "2" },
-                    { name: "Max", value: "3" },
-                    { name: "Disney+ Premium", value: "4" },
-                    { name: "Disney+ Estándar", value: "15" },
-                    { name: "Disney+ Basico", value: "16" },
-                    { name: "Amazon Prime Video", value: "1" },
-                    { name: "Paramount+", value: "5" },
-                    { name: "Vix+", value: "6" },
-                    { name: "Plex", value: "7" },
-                    { name: "Crunchyroll", value: "8" },
-                    { name: "Black Code", value: "9" },
-                    { name: "Iptv", value: "10" },
-                    { name: "Rakuten Viki", value: "13" },
-                    { name: "Magis TV", value: "14" },
-                    { name: "Youtube Premium", value: "11" },
-                    { name: "Spotify", value: "12" },
+                    { label: "Netflix", value: "2" },
+                    { label: "Max", value: "3" },
+                    { label: "Disney+ Premium", value: "4" },
+                    { label: "Disney+ Estándar", value: "15" },
+                    { label: "Disney+ Basico", value: "16" },
+                    { label: "Amazon Prime Video", value: "1" },
+                    { label: "Paramount+", value: "5" },
+                    { label: "Vix+", value: "6" },
+                    { label: "Plex", value: "7" },
+                    { label: "Crunchyroll", value: "8" },
+                    { label: "Black Code", value: "9" },
+                    { label: "Iptv", value: "10" },
+                    { label: "Rakuten Viki", value: "13" },
+                    { label: "Magis TV", value: "14" },
+                    { label: "Youtube Premium", value: "11" },
+                    { label: "Spotify", value: "12" },
                   ]}
                   {...register("categoryId", { required: true })}
                   value={selectedOption}

@@ -53,9 +53,9 @@ const RegisterSeller = () => {
     }
   };
 
-  React.useEffect(() => {
-    notify();
-  }, []);
+  // React.useEffect(() => {
+  //   notify();
+  // }, []);
 
   useEffect(() => {
     handleError(toast.current);
