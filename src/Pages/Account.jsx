@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import IsLoading from "../Components/IsLoading";
 import { useDispatch, useSelector } from "react-redux";
 import CardProfile from "../Components/CardProfile";
-import hbo from "../assets/img/hbo.png";
+import max_premium from '../assets/img/max_premium.png';
+import max_estandar from '../assets/img/max_estandar.png';
 import crunchyroll from "../assets/img/crunchyroll.webp";
 import paramount_plus from "../assets/img/paramount-plus.png";
 import plex from "../assets/img/plex.png";
@@ -23,7 +24,9 @@ import ViewNotificationImg from "../Components/Notifications/ViewNotificationImg
 
 const Account = () => {
   const categoryImageMap = {
-    hbo_max: [hbo, " MAX"],
+    max_premium: [max_premium, "Max Premium"],
+    max_estandar: [max_estandar, "Max Estándar"],
+    paramount_basico: [paramount_plus, "Paramount+"],
     crunchyroll: [crunchyroll, "Crunchyroll"],
     profenet: [profenet, "El profenet"],
     paramount_plus: [paramount_plus, "Paramount+"],

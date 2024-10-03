@@ -146,7 +146,11 @@
   background: linear-gradient(to bottom, #d7a6e8,#e7caf6,#f3b5f1, #8d80c6);
 }
 
-.background-hbo_max {
+.background-max_estandar {
+  background: radial-gradient( #0034fe, #000066);
+}
+
+.background-max_premium {
   background: radial-gradient( #0034fe, #000066);
 }
 

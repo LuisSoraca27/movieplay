@@ -100,7 +100,8 @@ const CreateProfile = ({ show, onClose, reCharge }) => {
                   {...register("categoryId", { required: true })}
                   options={[
                     { name: "Netflix", value: "2" },
-                    { name: "Max", value: "3" },
+                    { name: "Max Premium", value: "3" },
+                    { name: "Max Estándar", value: "17" },
                     { name: "Disney+ Premium", value: "4" },
                     { name: "Disney+ Estándar", value: "15" },
                     { name: "Disney+ Basico", value: "16" },

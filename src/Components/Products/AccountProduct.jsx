@@ -15,7 +15,8 @@ const AccountProduct = () => {
 
     const optionsCategory = [
         { name: 'Netflix', value: 'netflix' },
-        { name: 'Max', value: 'hbo_max' },
+        { name: 'Max Premium', value: 'max_premium' },
+        { name: 'Max Estandar', value:'max_estandar' },
         { name: 'amazon Prime Video', value: 'amazon_prime' },
         { name: 'Paramount+', value: 'paramount_plus' },
         { name: 'Vix+', value: 'vix' },

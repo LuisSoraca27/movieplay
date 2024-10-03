@@ -95,7 +95,8 @@ const CreateAccount = ({ show, onClose, reCharge }) => {
                   name="categoryId"
                   options={[
                     { label: "Netflix", value: "2" },
-                    { label: "Max", value: "3" },
+                    { name: "Max Premium", value: "3" },
+                    { name: "Max Estándar", value: "17" },
                     { label: "Disney+ Premium", value: "4" },
                     { label: "Disney+ Estándar", value: "15" },
                     { label: "Disney+ Basico", value: "16" },

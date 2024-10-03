@@ -8,7 +8,8 @@ import '../style/cardprofile.css';
 import netflix from '../assets/img/netflix.png';
 import amazon_prime from '../assets/img/amazon_prime.png';
 import disney_plus from '../assets/img/disney_plus_p.webp';
-import hbo from '../assets/img/hbo.png';
+import max_premium from '../assets/img/max_premium.png';
+import max_estandar from '../assets/img/max_estandar.png';
 import crunchyroll from '../assets/img/crunchyroll.webp';
 import paramount_plus from '../assets/img/paramount-plus.png';
 import plex from '../assets/img/plex.png';
@@ -29,7 +30,8 @@ const categoryImageMap = {
   'netflix': [netflix, 'Netflix'],
   'amazon_prime': [amazon_prime, 'Amazon Prime Video'],
   'disney_plus': [disney_plus, 'Disney+'],
-  'hbo_max': [hbo, 'MAX'],
+  'max_premium': [max_premium, 'Max Premium'],
+  'max_estandar': [max_estandar, 'Max Estandar'],
   'crunchyroll': [crunchyroll, 'Crunchyroll'],
   'profenet': [profenet, 'El profenet'],
   'paramount_plus': [paramount_plus, 'Paramount+'],
