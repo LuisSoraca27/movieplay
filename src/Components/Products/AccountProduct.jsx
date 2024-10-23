@@ -28,7 +28,7 @@ const AccountProduct = () => {
         { name: 'Disney+ Basico', value: 'Dbasico' },
         { name: 'Disney+ Estándar', value: 'Destandar' },
         { name: 'Disney+ Premium', value: 'Dpremium' },
-        { name: 'Magis TV', value: 'magistv' },
+        { name: 'Flujo TV', value: 'magistv' },
         { name: 'Spotify', value: 'spotify' },
         { name: 'youtube premium', value: 'youtube' },
     ]

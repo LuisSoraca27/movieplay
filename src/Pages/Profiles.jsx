@@ -20,7 +20,7 @@ import profenet from '../assets/img/profenet.png';
 import Dbasico from '../assets/img/Dbasico.png';
 import Destandar from '../assets/img/Destandar.png';
 import Dpremium from '../assets/img/Dpremium.png';
-import magistv from '../assets/img/magistv.png';
+import flujotv from '../assets/img/flujotv.png';
 import { setIsLoading } from '../features/isLoading/isLoadingSlice';
 import ModalProfile from './ModalProfile';
 import { setBalanceThunk } from '../features/balance/balanceSlice';
@@ -42,7 +42,7 @@ const categoryImageMap = {
   'Dbasico': [Dbasico, 'Disney+ Basico'],
   'Destandar': [Destandar, 'Disney+ Estándar'],
   'Dpremium': [Dpremium, 'Disney+ Premium'],
- 'magistv': [magistv, 'MagistV'],
+  magistv: [flujotv, 'Flujo TV'],
 };
 
 const Profiles = () => {

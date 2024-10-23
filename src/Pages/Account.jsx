@@ -19,7 +19,7 @@ import iptv from "../assets/img/iptv.webp";
 import profenet from "../assets/img/profenet.png";
 import Dbasico from "../assets/img/Dbasico.png";
 import Destandar from "../assets/img/Destandar.png";
-import magistv from '../assets/img/magistv.png';
+import flujotv from '../assets/img/flujotv.png';
 import ViewNotificationImg from "../Components/Notifications/ViewNotificationImg";
 
 const Account = () => {
@@ -38,7 +38,7 @@ const Account = () => {
     youtube: [youtube, "Youtube"],
     Dbasico: [Dbasico, "Disney+ Basico"],
     Destandar: [Destandar, "Disney+ Estándar"],
-    magistv: [magistv, 'MagistV'],
+    magistv: [flujotv, 'Flujo TV'],
   };
 
   const user = JSON.parse(localStorage.getItem("user"));

@@ -108,7 +108,7 @@ const CreateAccount = ({ show, onClose, reCharge }) => {
                     { label: "Black Code", value: "9" },
                     { label: "Iptv", value: "10" },
                     { label: "Rakuten Viki", value: "13" },
-                    { label: "Magis TV", value: "14" },
+                    { label: "Flujo TV", value: "14" },
                     { label: "Youtube Premium", value: "11" },
                     { label: "Spotify", value: "12" },
                   ]}

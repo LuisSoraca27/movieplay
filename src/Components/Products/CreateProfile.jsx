@@ -113,7 +113,7 @@ const CreateProfile = ({ show, onClose, reCharge }) => {
                     { name: "Black Code", value: "9" },
                     { name: "Iptv", value: "10" },
                     { name: "Rakuten Viki", value: "13" },
-                    { name: "Magis TV", value: "14" },
+                    { name: "Flujo TV", value: "14" },
                   ]}
                   onChange={(e) => setSelectedOption(e.value)}
                   placeholder="Selecciona una plataforma"

@@ -9,7 +9,7 @@ const CardProfile = ({ background = 'netflix', img, title, total, onClick }) => 
                 <div className="eyelash-circle"></div>
                 <div className="eyelash"></div>
             </div>
-                <img src={img}  width='95%' alt={title} />
+                <img src={img}  width='85%' alt={title} />
                 <strong>{total} Disponibles</strong>
                 <span className="available"></span>
         </div>
