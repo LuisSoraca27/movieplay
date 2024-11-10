@@ -114,6 +114,8 @@ const CreateProfile = ({ show, onClose, reCharge }) => {
                     { name: "Iptv", value: "10" },
                     { name: "Rakuten Viki", value: "13" },
                     { name: "Flujo TV", value: "14" },
+                    { name: "Mubi", value: "19" },
+                    { name: "Universal+", value: "21" },
                   ]}
                   onChange={(e) => setSelectedOption(e.value)}
                   placeholder="Selecciona una plataforma"

@@ -154,6 +154,10 @@
   background: radial-gradient( #0034fe, #000066);
 }
 
+.background-mcafee {
+  background: radial-gradient( #BA171A, #BA171A);
+}
+
 .background-wasender {
   background: radial-gradient( #2e6667, #153132);
 }

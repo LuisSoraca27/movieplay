@@ -111,6 +111,13 @@ const CreateAccount = ({ show, onClose, reCharge }) => {
                     { label: "Flujo TV", value: "14" },
                     { label: "Youtube Premium", value: "11" },
                     { label: "Spotify", value: "12" },
+                    { label: "Tidal", value: "18" },
+                    { label: "Mubi", value: "19" },
+                    { name: "Canva", value: "20" },
+                    { label: "Universal+", value: "21" },
+                    { label: "Duolingo", value: "22" },
+                    { label: "Microsoft 365", value: "23" },
+                    { label: "McAfee", value: "24" },
                   ]}
                   {...register("categoryId", { required: true })}
                   value={selectedOption}

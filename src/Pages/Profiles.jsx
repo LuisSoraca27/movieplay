@@ -21,6 +21,8 @@ import Dbasico from '../assets/img/Dbasico.png';
 import Destandar from '../assets/img/Destandar.png';
 import Dpremium from '../assets/img/Dpremium.png';
 import flujotv from '../assets/img/flujotv.png';
+import universal_plus from '../assets/img/universal_plus.png';
+import mubi from '../assets/img/mubi.png';
 import { setIsLoading } from '../features/isLoading/isLoadingSlice';
 import ModalProfile from './ModalProfile';
 import { setBalanceThunk } from '../features/balance/balanceSlice';
@@ -43,6 +45,8 @@ const categoryImageMap = {
   'Destandar': [Destandar, 'Disney+ Estándar'],
   'Dpremium': [Dpremium, 'Disney+ Premium'],
   magistv: [flujotv, 'Flujo TV'],
+  'universal': [universal_plus, 'Universal+'],
+ 'mubi': [mubi, 'Mubi'],
 };
 
 const Profiles = () => {
@@ -101,9 +105,9 @@ const Profiles = () => {
                 case 'canva':
                 case 'calm':
                 case 'duolingo':
-                case 'star_plus':
-                case 'disney_plus':
                 case 'napster':
+                case 'microsoft365':
+                case 'mcafee':
                   return null;
 
                 default:

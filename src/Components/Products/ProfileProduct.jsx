@@ -25,6 +25,8 @@ const ProfileProduct = () => {
         { name: 'Disney+ Estándar', value: 'Destandar' },
         { name: 'Disney+ Premium', value: 'Dpremium' },
         { name: 'Flujo TV', value: 'magistv' },
+        { name: 'Mubi', value:'mubi' },
+        { name: 'universal+', value: 'universal' },
     ]
 
 

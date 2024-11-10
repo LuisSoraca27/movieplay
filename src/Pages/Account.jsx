@@ -20,6 +20,13 @@ import profenet from "../assets/img/profenet.png";
 import Dbasico from "../assets/img/Dbasico.png";
 import Destandar from "../assets/img/Destandar.png";
 import flujotv from '../assets/img/flujotv.png';
+import tidal from '../assets/img/tidal.png';
+import mubi from '../assets/img/mubi.png';
+import duolingo from '../assets/img/duolingo.png';
+import canva from '../assets/img/canva.png';
+import universal_plus from '../assets/img/universal_plus.png';
+import microsoft365 from '../assets/img/microsoft365.png';
+import mcafee from '../assets/img/mcafee.png';
 import ViewNotificationImg from "../Components/Notifications/ViewNotificationImg";
 
 const Account = () => {
@@ -39,6 +46,13 @@ const Account = () => {
     Dbasico: [Dbasico, "Disney+ Basico"],
     Destandar: [Destandar, "Disney+ Estándar"],
     magistv: [flujotv, 'Flujo TV'],
+    tidal: [tidal, 'Tidal'],
+    mubi: [mubi, 'Mubi'],
+    duolingo: [duolingo, 'Duolingo'],
+    canva: [canva, 'Canva'],
+    universal: [universal_plus, 'Universal+'],
+    microsoft365: [microsoft365, 'Microsoft 365'],
+    mcafee: [mcafee, 'McAfee'],
   };
 
   const user = JSON.parse(localStorage.getItem("user"));

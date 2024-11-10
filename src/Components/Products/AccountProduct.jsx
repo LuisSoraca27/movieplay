@@ -31,6 +31,13 @@ const AccountProduct = () => {
         { name: 'Flujo TV', value: 'magistv' },
         { name: 'Spotify', value: 'spotify' },
         { name: 'youtube premium', value: 'youtube' },
+        { name: 'Tidal', value: 'tidal' },
+        { name: 'Mubi', value:'mubi' },
+        { name: 'universal+', value: 'universal' },
+        { name: 'Canva', value: 'canva' },
+        { name: 'Duolingo', value: 'duolingo' },
+        { name: 'Microsoft 365', value: 'microsoft' },
+        { name: 'McAfee', value: 'mcafee' },
     ]
 
 
