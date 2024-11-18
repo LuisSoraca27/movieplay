@@ -38,6 +38,8 @@ const AccountProduct = () => {
         { name: 'Duolingo', value: 'duolingo' },
         { name: 'Microsoft 365', value: 'microsoft' },
         { name: 'McAfee', value: 'mcafee' },
+        { name: 'TvMia', value: 'tvmia'},
+        { name: 'DirectTv GO', value: 'directvgo' },
     ]
 
 

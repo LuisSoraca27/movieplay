@@ -116,6 +116,8 @@ const CreateProfile = ({ show, onClose, reCharge }) => {
                     { name: "Flujo TV", value: "14" },
                     { name: "Mubi", value: "19" },
                     { name: "Universal+", value: "21" },
+                    { label: "TvMia", value: "25" },
+                    { label: "DirectTv GO", value: "26" },
                   ]}
                   onChange={(e) => setSelectedOption(e.value)}
                   placeholder="Selecciona una plataforma"

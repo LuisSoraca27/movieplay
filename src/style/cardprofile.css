@@ -158,6 +158,22 @@
   background: radial-gradient( #BA171A, #BA171A);
 }
 
+.background-atresplayer {
+  background: radial-gradient( #1C1C1C, #1C1C1C);
+}
+
+.background-wacrm {
+  background: radial-gradient( #000000, #000000);
+}
+
+.background-crm {
+  background: radial-gradient( #000000, #000000);
+}
+
+.background-wadefender {
+  background: radial-gradient( #000000, #000000);
+}
+
 .background-wasender {
   background: radial-gradient( #2e6667, #153132);
 }
@@ -220,6 +236,10 @@
 
 .background-tvmia {
   background: linear-gradient(to right, #00989f, #004c5c);
+}
+
+.background-directvgo {
+  background: #081a2b;
 }
 
 .background-mubi {

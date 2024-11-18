@@ -95,8 +95,8 @@ const CreateAccount = ({ show, onClose, reCharge }) => {
                   name="categoryId"
                   options={[
                     { label: "Netflix", value: "2" },
-                    { name: "Max Premium", value: "3" },
-                    { name: "Max Estándar", value: "17" },
+                    { label: "Max Premium", value: "3" },
+                    { label: "Max Estándar", value: "17" },
                     { label: "Disney+ Premium", value: "4" },
                     { label: "Disney+ Estándar", value: "15" },
                     { label: "Disney+ Basico", value: "16" },
@@ -113,11 +113,13 @@ const CreateAccount = ({ show, onClose, reCharge }) => {
                     { label: "Spotify", value: "12" },
                     { label: "Tidal", value: "18" },
                     { label: "Mubi", value: "19" },
-                    { name: "Canva", value: "20" },
+                    { label: "Canva", value: "20" },
                     { label: "Universal+", value: "21" },
                     { label: "Duolingo", value: "22" },
                     { label: "Microsoft 365", value: "23" },
                     { label: "McAfee", value: "24" },
+                    { label: "TvMia", value: "25" },
+                    { label: "DirectTv GO", value: "26" },
                   ]}
                   {...register("categoryId", { required: true })}
                   value={selectedOption}
