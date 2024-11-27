@@ -25,6 +25,7 @@ import universal_plus from "../assets/img/universal_plus.png";
 import mubi from "../assets/img/mubi.png";
 import tvmia from "../assets/img/tvmia.png";
 import DGOcompleto from "../assets/img/DGOcompleto.png";
+import apple_tv from "../assets/img/apple_tv.png";
 import { setIsLoading } from "../features/isLoading/isLoadingSlice";
 import ModalProfile from "./ModalProfile";
 import { setBalanceThunk } from "../features/balance/balanceSlice";
@@ -51,6 +52,7 @@ const categoryImageMap = {
   mubi: [mubi, "Mubi"],
   tvmia: [tvmia, "TVMia"],
   directvgo: [DGOcompleto, "DirectTvGO"],
+  apple_tv: [apple_tv, "Apple TV"],
 };
 
 const Profiles = () => {

@@ -29,6 +29,7 @@ const ProfileProduct = () => {
         { name: 'universal+', value: 'universal' },
         { name: 'TvMia', value: 'tvmia'},
         { name: 'DirectTv GO', value: 'directvgo' },
+        { name: 'Apple TV', value: 'apple_tv' },
     ]
 
 

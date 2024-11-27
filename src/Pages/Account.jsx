@@ -29,6 +29,7 @@ import microsoft365 from '../assets/img/microsoft365.png';
 import mcafee from '../assets/img/mcafee.png';
 import tvmia from '../assets/img/tvmia.png';
 import DGOcompleto from '../assets/img/DGOcompleto.png';
+import apple_tv from "../assets/img/apple_tv.png";
 import ViewNotificationImg from "../Components/Notifications/ViewNotificationImg";
 
 const Account = () => {
@@ -56,7 +57,8 @@ const Account = () => {
     microsoft365: [microsoft365, 'Microsoft 365'],
     mcafee: [mcafee, 'McAfee'],
     tvmia: [tvmia, 'TVMia'],
-    directvgo:[DGOcompleto, 'DirectTvGO']
+    directvgo:[DGOcompleto, 'DirectTvGO'],
+    apple_tv: [apple_tv, "Apple TV"],
   };
 
   const user = JSON.parse(localStorage.getItem("user"));

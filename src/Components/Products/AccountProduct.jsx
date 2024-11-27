@@ -40,6 +40,7 @@ const AccountProduct = () => {
         { name: 'McAfee', value: 'mcafee' },
         { name: 'TvMia', value: 'tvmia'},
         { name: 'DirectTv GO', value: 'directvgo' },
+        { name: 'Apple TV', value: 'apple_tv' },
     ]
 
 

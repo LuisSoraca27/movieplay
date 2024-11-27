@@ -118,6 +118,7 @@ const CreateProfile = ({ show, onClose, reCharge }) => {
                     { name: "Universal+", value: "21" },
                     { label: "TvMia", value: "25" },
                     { label: "DirectTv GO", value: "26" },
+                    { label: "Apple Tv", value: "27" },
                   ]}
                   onChange={(e) => setSelectedOption(e.value)}
                   placeholder="Selecciona una plataforma"
