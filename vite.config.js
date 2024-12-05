@@ -10,9 +10,9 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
       manifest: {
-        name: 'Dk Soluciones App',
-        short_name: 'Dk Soluciones',
-        description: 'Panel Dk Soluciones',
+        name: 'Movieplay App',
+        short_name: 'Movieplay',
+        description: 'Panel Movieplay',
         theme_color: '#ffffff',
         icons: [
           {

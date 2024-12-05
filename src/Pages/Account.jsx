@@ -142,9 +142,6 @@ const Account = () => {
               switch (account?.categoryName) {
                 case "regalo":
                 case "disney_plus":
-                case "Dbasico":
-                case "Destandar":
-                case "Dpremium":
                 case "Dpromocion":
                 case "star_plus":
                 case "iptvbasico":
