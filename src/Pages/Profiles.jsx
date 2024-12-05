@@ -173,7 +173,7 @@ const Profiles = () => {
         </div>
       )}
       {isModalOpen && renderModal()}
-ñ    </>
+    </>
   );
 };
 
