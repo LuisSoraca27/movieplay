@@ -91,21 +91,21 @@ const Login = () => {
           <div className="redes">
             <p>Contactanos</p>
             <a
-              href="http://wa.me/573014651579"
+              href="http://wa.me/573225155761"
               target="_blank"
               rel="noreferrer"
             >
               {" "}
               <img src={whatsapp} alt="Whatsapp" />
             </a>
-            <a
+            {/* <a
               href="https://t.me/+_F-esyo-ZJ9jNjEx"
               target="_blank"
               rel="noreferrer"
             >
               <img src={telegram} alt="Telegram" />
-            </a>
-            <a
+            </a> */}
+            {/* <a
               href="https://www.facebook.com/dksolucionesoficial"
               target="_blank"
               rel="noreferrer"
@@ -118,7 +118,7 @@ const Login = () => {
               rel="noreferrer"
             >
               <img src={instagram} alt="Instagram" />
-            </a>
+            </a> */}
           </div>
         </div>
       </div>
