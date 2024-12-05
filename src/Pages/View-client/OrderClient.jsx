@@ -12,7 +12,7 @@ const OrderClient = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    if (user.role === 'admin') {
+    if (user?.role === 'admin') {
         navigate('/orders');
     }
 

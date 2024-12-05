@@ -4,25 +4,34 @@ import getConfig from '../../utils/config';
 import { setError, setSuccess } from '../error/errorSlice';
 
 const initialState = {
-    ordersDay: [],
-    ordersById: [],
+    ordersByDateForUser: [],
+    ordersByDateUser: [],
     ordersMonth: [],
-}
+    ordersByDate: [],
+    ordersById: [],
+  };
+  
 
 const OrdersSlice = createSlice({
     name: 'orders',
     initialState,
     reducers: {
         setOrdersDay(state, action) {
-            state.ordersDay = action.payload
+          state.ordersDay = action.payload;
         },
         setOrdersMonth(state, action) {
-            state.ordersMonth = action.payload
+          state.ordersMonth = action.payload;
+        },
+        setOrdersByDateUser(state, action) {
+          state.ordersByDate = action.payload;
+        },
+        setOrdersByDate(state, action) {
+          state.ordersByDate = action.payload;
         },
         setOrdersById(state, action) {
-            state.ordersById = action.payload
-        }
-    }
+          state.ordersById = action.payload;
+        },
+      },
 });
 
 export const getOrdersDay = () => async (dispatch) => {
@@ -52,6 +61,39 @@ export const getOrdersMonth = () => async (dispatch) => {
         console.log(error);
     }
 }
+
+export const searchOrdersByDate = (date) => async (dispatch) => {
+    try {
+      const { data } = await dksoluciones.get("order/searchbydate/", {
+        params: { date },
+        ...getConfig(),
+      });
+
+      dispatch(setOrdersByDate(data.data.orders));
+    } catch (error) {
+      console.log(error.response.data);
+    }
+  };
+  
+  export const getOrdersById = (id) => async (dispatch) => {
+    try {
+      const { data } = await dksoluciones.get(`order/searchbyid/${id}`, getConfig());
+      dispatch(setOrdersById([data.data]));
+      console.log(data);
+      
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
+  export const getOrdersByIdUser = (id, userId) => async (dispatch) => {
+    try {
+      const { data } = await dksoluciones.get(`order/searchbyiduser`, { params: { id, userId },...getConfig()  });
+      dispatch(setOrdersByDateUser(data.data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
 export const downloadSales = (date) => async (dispatch) => {
     try {
@@ -83,6 +125,6 @@ export const downloadSales = (date) => async (dispatch) => {
 }
 
 
-export const { setOrdersDay, setOrdersMonth, setOrdersById } = OrdersSlice.actions
+export const { setOrdersDay, setOrdersMonth, setOrdersById, setOrdersByDate, setOrdersByDateUser } = OrdersSlice.actions
 
 export default OrdersSlice.reducer

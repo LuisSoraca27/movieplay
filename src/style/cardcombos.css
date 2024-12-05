@@ -1,16 +1,15 @@
 .card-combos {
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  width: 300px;
   position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease-in-out;
 }
 
-@media(max-width: 1000px) {
-  .card-combos {
-    width: 8rem;
-  }
+.combo-image {
+  width: 100%;
+  height: 80%;
 }
 
-.card-combos:hover {
-  transform: scale(1.05);
+.combo-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }

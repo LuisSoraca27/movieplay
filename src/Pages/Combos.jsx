@@ -1,76 +1,121 @@
-import { useEffect, useState } from 'react'
-import { setComboThunk } from '../features/user/comboSlice'
-import { useDispatch, useSelector } from 'react-redux'
-import CardCombo from '../Components/CardCombo'
-import '../style/combos.css'
-import { setIsLoading } from '../features/isLoading/isLoadingSlice'
-import IsLoading from '../Components/IsLoading'
-import ModalProduct from './ModalProduct'
-import { setBalanceThunk } from '../features/balance/balanceSlice'
-import ViewNotificationImg from '../Components/Notifications/ViewNotificationImg'
-
-
+import { useEffect, useState } from "react";
+import {
+  setComboThunk,
+  fetchCombosByNameThunk,
+} from "../features/user/comboSlice";
+import { useDispatch, useSelector } from "react-redux";
+import CardCombo from "../Components/CardCombo";
+import "../style/combos.css";
+import { setIsLoading } from "../features/isLoading/isLoadingSlice";
+import IsLoading from "../Components/IsLoading";
+import ModalProduct from "./ModalProduct";
+import { setBalanceThunk } from "../features/balance/balanceSlice";
+import ViewNotificationImg from "../Components/Notifications/ViewNotificationImg";
+import { InputText } from "primereact/inputtext";
+import { Paginator } from "primereact/paginator";
+import { useNavigate } from "react-router-dom";
 
 const Combos = () => {
 
-    const user = JSON.parse(localStorage.getItem('user'));
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [modalData, setModalData] = useState(null);
-    const [reload, setReload] = useState(false);
+  const [reload, setReload] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
-    const handleCardClick = (data) => {
-        setModalData(data);
-        setIsModalOpen(true);
-    };
+  const [page, setPage] = useState(0);
+  const [rows, setRows] = useState(10); 
+
+  const dispatch = useDispatch();
+  const combos = useSelector((state) => state.combos);
+  const isLoadingState = useSelector((state) => state.isLoading);
+  const totalCombos = useSelector((state) => state.totalItems);
 
 
-    const dispatch = useDispatch()
-    const combos = useSelector(state => state.combos)
-    const isLoadingState = useSelector((state) => state.isLoading);
+  useEffect(() => {
+    if (searchTerm.trim()) {
+      dispatch(fetchCombosByNameThunk({ name: searchTerm, page: page + 1 }));
+    } else {
+      dispatch(setComboThunk(page + 1 ));
+    }
+  }, [searchTerm, reload, dispatch, page]);
 
-    useEffect(() => {
-        dispatch(setBalanceThunk(user.id));
-        dispatch(setIsLoading(true));
-        dispatch(setComboThunk())
-            .finally(() => {
-                dispatch(setIsLoading(false));
-            }
-            )
-    }, [reload])
+  
+  const onPageChange = (event) => {
+    setPage(event.page);
+    setRows(event.rows);
 
-    return (
-        <>
-            <ViewNotificationImg/>
-            {
-                isLoadingState ? <IsLoading /> :
-                <>
-                <div className="container-title">
-                <h1>Combos </h1>
-                <p>Encuentra aqui combos de tus plataformas de streaming favoritas</p>
+    if (searchTerm.trim()) {
+      dispatch(fetchCombosByNameThunk(searchTerm, event.page + 1)); 
+    } else {
+      dispatch(setComboThunk(event.page + 1));
+    }
+  };
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, [page]);
+
+  return (
+    <>
+      <ViewNotificationImg />
+      {isLoadingState ? (
+        <IsLoading />
+      ) : (
+        <div className="container-total-combo">
+          <div className="container-title"></div>
+          <div className="container-main">
+            <div className="search-container">
+              <h4>Filtrar Combos</h4>
+              <InputText
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Buscar combos..."
+                style={{ width: "100%" }}
+              />
+            </div>
+            <div className="combos-container">
+              {combos.length > 0 ? (
+                combos.map((combo) => (
+                  <CardCombo
+                    key={combo.id}
+                    combo={combo}
+                  />
+                ))
+              ) : (
+                <div
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    textAlign: "center",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <h1
+                    style={{
+                      color: "white",
+                      textShadow: "3px 3px 2px #000000",
+                    }}
+                  >
+                    No hay combos disponibles
+                  </h1>
                 </div>
-                    <div className='container-combos'>
-                        {
-                            combos.length > 0 ?
-                                combos.map((combo) => (
-                                    <CardCombo key={combo.id} combo={combo}
-                                        onClick={() => handleCardClick({ product: combo, open: isModalOpen, type: 'combo' })}
-                                    />
-                                ))
-                                : <h1 style={{ color: 'white', textShadow: ' 3px 3px 2px #000000' }}>No hay combos disponibles </h1>
-                        }
-                    </div>
-                </>
-            }
-            {isModalOpen && (
-                <ModalProduct
-                    data={modalData}
-                    onClose={() => setIsModalOpen(false)}
-                    reCharge={() => setReload(!reload)}
-                />
-            )}
-        </>
-    );
+              )}
+            </div>
+          </div>
+          <Paginator
+            first={page * rows}
+            rows={rows}
+            totalRecords={totalCombos}
+            onPageChange={onPageChange}
+          />
+        </div>
+      )}
+    </>
+  );
 };
 
 export default Combos;

@@ -12,6 +12,7 @@ import { Toast } from "primereact/toast";
 import useErrorHandler from "../Helpers/useErrorHandler";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const toast = useRef(null);
@@ -51,16 +52,16 @@ const Login = () => {
           <img src={logo} width={160} alt="logo" />
           <p style={{ fontWeight: 500 }}>
             ¿No tienes una cuenta?{" "}
-            <a
+            <Link
               style={{
                 color: "#2f73f1",
                 cursor: "pointer",
                 textDecoration: "none",
               }}
-              href="#/register-sellers"
+              to="/register-sellers"
             >
               Registrate
-            </a>
+            </Link>
           </p>
           <form onSubmit={handleSubmit}>
             <label>Correo electrónico</label>
@@ -90,12 +91,33 @@ const Login = () => {
           <div className="redes">
             <p>Contactanos</p>
             <a
-              href="http://wa.me/573045214937"
+              href="http://wa.me/573014651579"
               target="_blank"
               rel="noreferrer"
             >
               {" "}
               <img src={whatsapp} alt="Whatsapp" />
+            </a>
+            <a
+              href="https://t.me/+_F-esyo-ZJ9jNjEx"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <img src={telegram} alt="Telegram" />
+            </a>
+            <a
+              href="https://www.facebook.com/dksolucionesoficial"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <img src={facebook} alt="Facebook" />
+            </a>
+            <a
+              href="https://www.instagram.com/dksolucionesoficial"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <img src={instagram} alt="Instagram" />
             </a>
           </div>
         </div>

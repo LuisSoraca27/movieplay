@@ -14,11 +14,7 @@ const ModalProduct = ({ data, onClose, reCharge }) => {
   const [email, setEmail] = useState("");
   const [subject, setSubject] = useState("");
   const [purchase, setPurchase] = useState(false);
-  // ...
-  const [checked, setChecked] = useState(false); // Cambié "set" a "setChecked"
-  // ...
-
-  // En otra parte del código donde usas "set", deberías usar "setChecked" en su lugar
+  const [checked, setChecked] = useState(false); 
 
   const dispatch = useDispatch();
   const { error, success } = useSelector((state) => state.error);
@@ -101,6 +97,10 @@ const ModalProduct = ({ data, onClose, reCharge }) => {
           <h2 className="title-card">{product?.name}</h2>
           <div className="profile">
             <center>
+              <span>Descripción de producto:</span>
+              <p style={{ fontSize: "17px", margin: "5px" }}>
+                {product.description}
+              </p>
               <p className="profile-value">
                 Valor Producto seleccionado: <strong>${product.price}</strong>
               </p>

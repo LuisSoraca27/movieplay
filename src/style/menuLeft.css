@@ -1,0 +1,207 @@
+/* Estilos originales para escritorio */
+.container-menu {
+    height: 100vh;
+    width: 280px;
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-left {
+    position: sticky;
+    top: 0;
+    width: 240px; 
+    height: 100vh;
+}
+
+.p-menu {
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    background-color: #0f172a;
+    color: white;
+    font-size: 16px;
+    padding: 10px;
+    border: 1px solid #0f172a;
+    border-radius: 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    overflow-y: auto; /* Scroll para desbordamientos */
+}
+
+.p-submenu-header {
+    font-size: 17px;
+    color: #c2c7cd;
+    background-color: #0f172a;
+}
+
+.container-logo {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container-logo img {
+    width: 65%;
+    right: 20px;
+    position: relative;
+}
+
+.menu-footer {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding: 10px;   
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: -10px;
+}
+
+.menu-user {
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-name-user {
+    color: white;
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.menu-role-user {
+    font-size: 12px;
+    font-weight: 300;
+    text-transform: uppercase;
+    color: #c2c7cd;
+    letter-spacing: 1.5px;
+}
+
+.menu-link-menu {
+    text-decoration: none;
+    color: #c2c7cd;
+    font-size: 15.5px;
+}
+
+.p-menuitem-link-menu {
+    display: flex;
+    align-items: center;
+}
+
+.p-menuitem-icon-menu {
+    margin-right: 10px;
+    font-size: 20px;
+    color: #c2c7cd;
+}
+
+.p-menuitem-link-menu:hover .menu-link-menu, 
+.p-menuitem-link-menu:hover .p-menuitem-icon-menu {
+    color: white;
+}
+
+.menu-link-menu:hover {
+    text-decoration: none;
+    color: white;
+}
+
+.p-menuitem-link-menu:hover {
+    text-decoration: none;
+    background-color: #0f172a;
+}
+
+/* Estilos para pantallas móviles */
+@media (max-width: 768px) {
+    .content-menu-sidebar {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        color: white;
+        font-family: Arial, sans-serif;
+    }
+    
+    .content-header-sidebar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 15px 0;
+        border-bottom: 1px solid #1e293b;
+    }
+    
+    .content-header-sidebar img {
+        max-width: 100px; /* Asegúrate de que el logo se ajuste bien en móviles */
+    }
+    
+    .content-nav {
+        flex: 1;
+        overflow-y: auto; /* Permite scroll si hay demasiados elementos */
+        padding: 10px 15px;
+    }
+    
+    .content-nav ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .content-nav ul li {
+        display: flex;
+        align-items: center;
+        gap: 12px; /* Espacio entre icono y texto */
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    
+    .content-nav ul li:hover {
+        background-color: #1e293b;
+    }
+    
+    .p-menuitem-icon {
+        font-size: 22px;
+        color: #c2c7cd;
+    }
+    
+    .menu-link {
+        font-size: 14px;
+        color: #c2c7cd;
+    }
+    
+    .content-nav ul li:hover .p-menuitem-icon,
+    .content-nav ul li:hover .menu-link {
+        color: white;
+    }
+    
+    .menu-footer {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 10px 15px;
+        border-top: 1px solid #1e293b;
+        background-color: #0f172a;
+    }
+    
+    .menu-footer .menu-user {
+        display: flex;
+        flex-direction: column;
+        margin-top: 10px;
+    }
+    
+    .menu-footer .menu-name-user {
+        font-size: 16px;
+        font-weight: bold;
+        color: white;
+    }
+    
+    .menu-footer .menu-role-user {
+        font-size: 12px;
+        color: #c2c7cd;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+}

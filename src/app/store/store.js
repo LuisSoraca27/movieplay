@@ -10,6 +10,10 @@ import errorSlice from '../../features/error/errorSlice'
 import balanceSlice from '../../features/balance/balanceSlice'
 import OrdersSlice from '../../features/orders/OrdersSlice'
 import notificationSlice from '../../features/notifications/notificationSlice'
+import OutlaySlice from '../../features/outlay/OutlaySlice'
+import customerSlice from '../../features/customer/customerSlice'
+import totalItemsSlice  from '../../features/combo/totalItemsSlice'
+import ordersInternalSlice from '../../features/ordersInternal/ordersIternalSlice'
 
 export const store = configureStore({
     reducer: {
@@ -24,6 +28,10 @@ export const store = configureStore({
         balance: balanceSlice,
         orders: OrdersSlice,
         notification: notificationSlice,
+        outlay: OutlaySlice,
+        customers: customerSlice,
+        totalItems: totalItemsSlice,
+        ordersInternal: ordersInternalSlice
     },
     devTools: true
 })

@@ -13,7 +13,7 @@ const SidebarRight = ({ show, handleClose }) => {
     };
 
     return (
-        <Sidebar visible={show} onHide={handleClose} position="right">
+        <Sidebar visible={show} onHide={handleClose} position="right" style={{ backgroundColor: '#000e23ff' }}>
             <div className="p-sidebar-body">
                 <div className="opcion-mobile" onClick={() => navigateTo('/profiles')}>
                     <h3>Perfiles</h3>

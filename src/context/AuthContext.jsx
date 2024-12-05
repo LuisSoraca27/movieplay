@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useMemo, useState } from "react";
 import dksoluciones from "../api/config";
 import { useDispatch } from "react-redux";
-import { setError, setSuccess } from "../features/error/errorSlice";
+import { setError } from "../features/error/errorSlice";
 
 export const AuthContext = createContext();
 
@@ -10,7 +10,6 @@ export function AuthContextProvider({ children }) {
     const dispatch = useDispatch();
 
     const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem('auth') ?? false);
-
     const [userAuth, setUserAuth] = useState(JSON.parse(localStorage.getItem('user')) ?? {});
 
 

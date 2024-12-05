@@ -1,15 +1,13 @@
+
+
 * {
   box-sizing: border-box;
   font-family: var(--font-family);
 }
 
-button:hover {
-  cursor: pointer;
-  background-color: none;
-}
-
 body {
   margin: 0;
+  background-color: #FFFFFF;
 }
 
 .card-product {
@@ -46,4 +44,14 @@ body {
 .colum-global {
   width: 25%;
 }
+
+.card {
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--card-shadow);
+  border-radius: 12px;
+}
+
 

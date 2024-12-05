@@ -29,27 +29,26 @@
 }
 
 .content-nav ul {
-  text-decoration: none;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: start;
-  flex-direction: column;
-  padding: 5px;
+  list-style: none; /* Elimina los puntos */
+  padding: 0; /* Elimina el margen interior */
+  margin: 0; /* Elimina el margen exterior */
 }
 
 .content-nav ul li {
+  display: flex;
+  align-items: center; /* Alinea íconos y texto verticalmente */
+  gap: 10px; /* Agrega espacio entre ícono y texto */
   text-decoration: none;
-  list-style: none;
+  list-style: none; /* Quita los puntos en la lista */
   margin-bottom: 5px;
   font-size: 19px;
   height: 47px;
   width: 100%;
   padding: 5px;
   border-radius: 6px;
-  transition: .2s all;
+  transition: 0.2s all;
 }
+
 
 .content-nav ul li i {
   color: var(--primary-color);
@@ -100,4 +99,27 @@
 }
 .menu_user i {
   margin-right: 6px;
+}
+
+
+@media (max-width: 768px) {
+  .content-menu {
+    width: 100%; /* Asegúrate de que ocupe todo el ancho de la pantalla */
+    padding: 1rem;
+  }
+
+  .content-nav {
+    height: auto; /* Permite que la altura se ajuste al contenido */
+  }
+
+  .content-nav ul li {
+    font-size: 16px; /* Reduce ligeramente el tamaño del texto */
+    gap: 8px; /* Reduce el espacio entre ícono y texto */
+    height: auto; /* Ajusta la altura según el contenido */
+  }
+
+  .content-footer {
+    height: auto; /* Ajusta la altura según el contenido */
+    padding: 10px;
+  }
 }

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getNotificationThunk } from '../features/notifications/notificationSlice';
 import '../style/home.css';
 import ViewNotificationImg from '../Components/Notifications/ViewNotificationImg';
+
         
 
 const Home = () => {
@@ -53,6 +54,7 @@ const Home = () => {
                     <Messages ref={msgs} />
                 </div>
             </div>
+            {/* { isCommunityPanelOpen && <CommunitiesPanel onClose={() => setIsCommunityPanelOpen(false)}/> } */}
         </div>
         </>
     );

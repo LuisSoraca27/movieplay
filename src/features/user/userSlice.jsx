@@ -90,11 +90,6 @@ export const createUserThunk = (dataForm) => async (dispatch) => {
         dispatch(setSuccess(data.message))
     } catch (error) {
         console.log(error);
-        if (error.response.data.message === 'Session expired') {
-            localStorage.removeItem('token')
-            localStorage.removeItem('user')
-            window.location.reload()
-        }
         dispatch(setError(error.response.data.message))
     }
 };
@@ -105,10 +100,8 @@ export const createUserSellerThunk = (dataform) => async (dispatch) => {
         dispatch(setSuccess(data.message))
     } catch (error) {
         console.log(error);
-        if (error.response.data.message === 'Session expired') {
-            localStorage.removeItem('token')
-            localStorage.removeItem('user')
-            window.location.reload()
+        if (error.response.data.message === 'Validation error') {
+            dispatch(setError('El usuario ya existe'))
         }
         dispatch(setError(error.response.data.message))
     }

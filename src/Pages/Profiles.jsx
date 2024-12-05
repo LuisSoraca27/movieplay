@@ -14,7 +14,7 @@ import crunchyroll from "../assets/img/crunchyroll.webp";
 import paramount_plus from "../assets/img/paramount-plus.png";
 import plex from "../assets/img/plex.png";
 import vix from "../assets/img/vix.png";
-import iptv from "../assets/img/iptv.webp";
+import iptv from "../assets/img/iptvmes.png";
 import rakuten from "../assets/img/rakuten.png";
 import profenet from "../assets/img/profenet.png";
 import Dbasico from "../assets/img/Dbasico.png";
@@ -26,10 +26,12 @@ import mubi from "../assets/img/mubi.png";
 import tvmia from "../assets/img/tvmia.png";
 import DGOcompleto from "../assets/img/DGOcompleto.png";
 import apple_tv from "../assets/img/apple_tv.png";
+import microsoft365 from "../assets/img/microsoft365.png";
 import { setIsLoading } from "../features/isLoading/isLoadingSlice";
 import ModalProfile from "./ModalProfile";
 import { setBalanceThunk } from "../features/balance/balanceSlice";
 import ViewNotificationImg from "../Components/Notifications/ViewNotificationImg";
+import RegisterOrder from "../Components/Order/RegisterOrder";
 
 const categoryImageMap = {
   netflix: [netflix, "Netflix"],
@@ -41,7 +43,7 @@ const categoryImageMap = {
   profenet: [profenet, "El profenet"],
   paramount_plus: [paramount_plus, "Paramount+"],
   vix: [vix, "Vix+"],
-  plex: [plex, "Next Movie"],
+  plex: [plex, "Plex"],
   iptv: [iptv, "IPTV"],
   rakuten: [rakuten, "Rakuten Viki"],
   Dbasico: [Dbasico, "Disney+ Basico"],
@@ -53,6 +55,7 @@ const categoryImageMap = {
   tvmia: [tvmia, "TVMia"],
   directvgo: [DGOcompleto, "DirectTvGO"],
   apple_tv: [apple_tv, "Apple TV"],
+  microsoft365: [microsoft365, "Microsoft 365"],
 };
 
 const Profiles = () => {
@@ -66,6 +69,27 @@ const Profiles = () => {
   const dispatch = useDispatch();
   const profiles = useSelector((state) => state.profiles.length);
   const isLoadingState = useSelector((state) => state.isLoading);
+
+  const renderModal = () => {
+    if (user?.role === "admin") {
+      return (
+        <RegisterOrder
+          data={modalData}
+          onClose={() => setIsModalOpen(false)}
+          typeAccountProp={"profile"}
+        />
+      );
+    }
+
+    return (
+      <ModalProfile
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        recharge={() => setReload(!reload)}
+        data={modalData}
+      />
+    );
+  };
 
   useEffect(() => {
     dispatch(setBalanceThunk(user?.id));
@@ -107,7 +131,6 @@ const Profiles = () => {
               const title = categoryImageMap[profile?.categoryName]?.[1];
 
               switch (profile.categoryName) {
-                case "spotify":
                 case "tidal":
                 case "apple_music":
                 case "youtube":
@@ -115,8 +138,12 @@ const Profiles = () => {
                 case "canva":
                 case "calm":
                 case "duolingo":
+                case "star_plus":
+                case "disney_plus":
                 case "napster":
-                case "microsoft365":
+                case "iptvbasico":
+                case "regalo2":
+                case "spotify":
                 case "mcafee":
                   return null;
 
@@ -145,14 +172,8 @@ const Profiles = () => {
           </div>
         </div>
       )}
-      {isModalOpen && (
-        <ModalProfile
-          data={modalData}
-          onClose={() => setIsModalOpen(false)}
-          reCharge={() => setReload(!reload)}
-        />
-      )}
-    </>
+      {isModalOpen && renderModal()}
+ñ    </>
   );
 };
 

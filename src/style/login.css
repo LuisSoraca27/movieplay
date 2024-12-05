@@ -75,6 +75,22 @@ form label {
   font-weight: 600;
 }
 
+.inputs-numbers {
+  display: flex;
+  gap: 5px;
+}
+
+.input-prefix {
+  flex-basis: 20%;
+  flex-grow: 0;
+}                                      
+
+.inputs-numbers:nth-child(2) {
+    flex-basis: 90%;
+    flex-grow: 0;
+  }
+
+
 
 @media screen and (max-width: 768px) {
 

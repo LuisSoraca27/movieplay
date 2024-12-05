@@ -30,11 +30,6 @@ export const setProfileThunk = () => async (dispatch) => {
         dispatch(setLengthProfile(data))
     } catch (error) {
         console.log(error)
-        if (error.response.data.message === 'Session expired') {
-            localStorage.removeItem('token')
-            localStorage.removeItem('user')
-            window.location.reload()
-        }
     }
 }
 
@@ -106,6 +101,7 @@ export const purchaseProfileThunk = (id, email, subject) => async (dispatch) => 
      const res =  await dksoluciones.post(`order/profile/${id}`, { email, subject }, getConfig())
         console.log(res.data)
         dispatch(setSuccess(true))
+        dispatch(setProfileThunk())
     } catch (error) {
         console.log(error)
         if (error.response?.data.message === 'Session expired') {
