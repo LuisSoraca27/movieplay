@@ -49,7 +49,7 @@ const Account = () => {
     profenet: [profenet, "El profenet"],
     paramount_plus: [paramount_plus, "Paramount+"],
     vix: [vix, "Vix+"],
-    plex: [plex, "Next Movie"],
+    plex: [plex, "Plex"],
     iptv: [iptv, "IPTV"],
     rakuten: [rakuten, "Rakuten Viki"],
     Dbasico: [Dbasico, "Disney+ Basico"],
