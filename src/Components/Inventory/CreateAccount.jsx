@@ -103,6 +103,7 @@ const CreateAccount = ({ show, onClose, reCharge }) => {
                     { label: "TvMia", value: "25" },
                     { label: "DirectTv GO", value: "26" },
                     { label: "Apple Tv", value: "27" },
+                    { label: "Netflix Extra", value: "28" },
                   ]}
                   {...register("categoryId", { required: true })}
                   value={selectedOption}

@@ -27,6 +27,7 @@ import tvmia from "../assets/img/tvmia.png";
 import DGOcompleto from "../assets/img/DGOcompleto.png";
 import apple_tv from "../assets/img/apple_tv.png";
 import microsoft365 from "../assets/img/microsoft365.png";
+import netflix_extra from "../assets/img/netflix_extra.png";
 import { setIsLoading } from "../features/isLoading/isLoadingSlice";
 import ModalProfile from "./ModalProfile";
 import { setBalanceThunk } from "../features/balance/balanceSlice";
@@ -56,6 +57,7 @@ const categoryImageMap = {
   directvgo: [DGOcompleto, "DirectTvGO"],
   apple_tv: [apple_tv, "Apple TV"],
   microsoft365: [microsoft365, "Microsoft 365"],
+  netflix_extra: [netflix_extra, "Netflix Internacional"],
 };
 
 const Profiles = () => {

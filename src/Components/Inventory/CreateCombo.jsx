@@ -33,6 +33,7 @@ const CreateCombo = ({ show, onClose, reCharge }) => {
     { name: "TvMia", code: "25" },
     { name: "DirectTv GO", code: "26" },
     { name: "Apple Tv", code: "27" },
+    { name: "Netflix Extra", code: "28" },
   ];
 
   const opcionesPlataformasAccount = [
@@ -63,6 +64,7 @@ const CreateCombo = ({ show, onClose, reCharge }) => {
     { name: "TvMia", code: "25" },
     { name: "DirectTv GO", code: "26" },
     { name: "Apple Tv", code: "27" },
+    { name: "Netflix Extra", code: "28" },
   ];
 
   const initialValues = {

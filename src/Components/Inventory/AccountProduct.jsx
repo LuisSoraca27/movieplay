@@ -43,6 +43,7 @@ const AccountProduct = () => {
     { name: 'TvMia', value: 'tvmia'},
     { name: 'DirectTv GO', value: 'directvgo' },
     { name: 'Apple TV', value: 'apple_tv' },
+    { name: 'Netflix Extra', value: 'netflix_extra' },
   ];
 
   const dispatch = useDispatch();
