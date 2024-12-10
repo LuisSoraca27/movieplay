@@ -38,7 +38,7 @@ const AccountProduct = () => {
     { name: 'universal+', value: 'universal' },
     { name: 'Canva', value: 'canva' },
     { name: 'Duolingo', value: 'duolingo' },
-    { name: 'Microsoft 365', value: 'microsoft' },
+    { name: 'Microsoft 365', value: 'microsoft365' },
     { name: 'McAfee', value: 'mcafee' },
     { name: 'TvMia', value: 'tvmia'},
     { name: 'DirectTv GO', value: 'directvgo' },
