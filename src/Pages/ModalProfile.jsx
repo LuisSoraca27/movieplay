@@ -23,7 +23,7 @@ const ModalProfile = ({ data, onClose, reCharge }) => {
   const [profileSelected, setProfileSelected] = useState(null);
   const [purchase, setPurchase] = useState(false);
   // Estado para controllar el checkbox
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(true);
 
   const getOptions = () =>
     profiles.map((profile) => ({ label: profile.name, value: profile.id }));

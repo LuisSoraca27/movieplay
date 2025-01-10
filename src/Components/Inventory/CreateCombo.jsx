@@ -89,8 +89,12 @@ const CreateCombo = ({ show, onClose, reCharge }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setProcesing(true);
+    console.log(formData);
+    
     const idsCategoryProfile = formData.idsCategoryProfile.map((id) => id.code);
     const idsCategoryAccount = formData.idsCategoryAccount.map((id) => id.code);
+
+    console.log(idsCategoryProfile, idsCategoryAccount);
 
     const form = new FormData();
     form.append("name", formData.name);
