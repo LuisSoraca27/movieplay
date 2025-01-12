@@ -21,7 +21,7 @@ const ModalAccount = ({ data, onClose, reCharge }) => {
     const [accountSelected, setAccountSelected] = useState(null);
     const [purchase, setPurchase] = useState(false);
     // Estado para controllar el checkbox
-    const [checked, setChecked] = useState(false);
+    const [checked, setChecked] = useState(true);
 
     const handleSelect = (e) => {
         const accountId = e.target.value;
