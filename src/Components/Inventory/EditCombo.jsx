@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useEffect, useState, useRef } from "react";
 import { Button } from "primereact/button";
 import { updateComboThunk } from "../../features/user/comboSlice";
@@ -13,30 +14,59 @@ import { MultiSelect } from "primereact/multiselect";
 import { selectCategoriesCPs } from "../../utils/functions/selectNameCategoryOptions";
 
 const EditCombo = ({ show, onClose, reCharge, combo }) => {
-  
   const opcionesPlataformas = [
-    { name: "Amazon Prime Video", code: "1" },
     { name: "Netflix", code: "2" },
-    { name: "Max", code: "3" },
-    { name: "Disney Premium", code: "4" },
-    { name: "Paramount+", code: "6" },
-    { name: "Vix+", code: "7" },
-    { name: "Plex", code: "8" },
-    { name: "Crunchyroll", code: "9" },
-    { name: "Profenet", code: "10" },
-    { name: "iptv", code: "11" },
-    { name: "Universal+", code: "18" },
-    { name: "Apple TV", code: "19" },
-    { name: "Pornhub", code: "20" },
-    { name: "Brazzers", code: "21" },
-    { name: "Rakuten Viki", code: "22" },
-    { name: "Mubi", code: "24" },
-    { name: "Wasender", code: "25" },
-    { name: "Mubi", code: "26" },
-    { name: "TvMia", code: "28" },
-    { name: "Dbasico", code: "29" },
-    { name: "Destandar", code: "30" },
-    { name: "Microsoft365", code: "31" },
+    { name: "Max Premium", code: "3" },
+    { name: "Max Estándar", code: "17" },
+    { name: "Disney+ Premium", code: "4" },
+    { name: "Disney+ Estándar", code: "15" },
+    { name: "Disney+ Basico", code: "16" },
+    { name: "Amazon Prime Video", code: "1" },
+    { name: "Paramount+", code: "5" },
+    { name: "Vix+", code: "6" },
+    { name: "Plex", code: "7" },
+    { name: "Crunchyroll", code: "8" },
+    { name: "Black Code", code: "9" },
+    { name: "Iptv", code: "10" },
+    { name: "Rakuten Viki", code: "13" },
+    { name: "Flujo TV", code: "14" },
+    { name: "Mubi", code: "19" },
+    { name: "Universal+", code: "21" },
+    { name: "TvMia", code: "25" },
+    { name: "DirectTv GO", code: "26" },
+    { name: "Apple Tv", code: "27" },
+    { name: "Netflix Extra", code: "28" },
+  ];
+
+  const opcionesPlataformasAccount = [
+    { name: "Netflix", code: "2" },
+    { name: "Max Premium", code: "3" },
+    { name: "Max Estándar", code: "17" },
+    { name: "Disney+ Premium", code: "4" },
+    { name: "Disney+ Estándar", code: "15" },
+    { name: "Disney+ Basico", code: "16" },
+    { name: "Amazon Prime Video", code: "1" },
+    { name: "Paramount+", code: "5" },
+    { name: "Vix+", code: "6" },
+    { name: "Plex", code: "7" },
+    { name: "Crunchyroll", code: "8" },
+    { name: "Black Code", code: "9" },
+    { name: "Iptv", code: "10" },
+    { name: "Rakuten Viki", code: "13" },
+    { name: "Flujo TV", code: "14" },
+    { name: "Youtube Premium", code: "11" },
+    { name: "Spotify", code: "12" },
+    { name: "Tidal", code: "18" },
+    { name: "Mubi", code: "19" },
+    { name: "Canva", code: "20" },
+    { name: "Universal+", code: "21" },
+    { name: "Duolingo", code: "22" },
+    { name: "Microsoft 365", code: "23" },
+    { name: "McAfee", code: "24" },
+    { name: "TvMia", code: "25" },
+    { name: "DirectTv GO", code: "26" },
+    { name: "Apple Tv", code: "27" },
+    { name: "Netflix Extra", code: "28" },
   ];
 
   const [procesing, setProcesing] = useState(false);
@@ -47,32 +77,41 @@ const EditCombo = ({ show, onClose, reCharge, combo }) => {
 
   const handleErrors = useErrorHandler(error, success);
 
+  const { categoriesProfile, categoriesAccount } = selectCategoriesCPs(
+    combo.categoriesCPs
+  );
+
   // Cargar los datos del combo en el formulario
   const [formData, setFormData] = useState({
     name: combo?.name || "",
     description: combo?.description || "",
     price: combo?.price || "",
+    offerPrice: combo?.offerPrice || "0",
     comboImg: combo?.comboImg || "",
-    idsCategory: combo?.categoriesCPs
-      ? selectCategoriesCPs(combo.categoriesCPs) // Convertir al formato esperado
-      : []
+    idsCategoryProfile: categoriesProfile,
+    idsCategoryAccount: categoriesAccount,
   });
 
   const [previewImage, setPreviewImage] = useState(formData.comboImg); // Estado para la vista previa de la imagen
 
   useEffect(() => {
+    const { categoriesAccount, categoriesProfile } = selectCategoriesCPs(
+      combo.categoriesCPs
+    );
+
     if (combo) {
       setFormData({
         name: combo.name,
         description: combo.description,
         price: combo.price,
+        offerPrice: combo.offerPrice || "0",
         comboImg: combo.imgCombos?.[0]?.urlImagen || "", // Asignar la URL de la imagen
-        idsCategory: selectCategoriesCPs(combo.categoriesCPs || []) // Convertir al formato esperado
+        idsCategoryProfile: categoriesProfile || [],
+        idsCategoryAccount: categoriesAccount || [],
       });
       setPreviewImage(combo.imgCombos?.[0]?.urlImagen || ""); // Asignar la imagen para la vista previa
     }
   }, [combo]);
-  
 
   const handleImageSelect = (e) => {
     const file = e.files[0];
@@ -89,17 +128,27 @@ const EditCombo = ({ show, onClose, reCharge, combo }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setProcesing(true);
-    // Eliminar duplicados en idsCategory
-    const idsCategory = [...new Set(formData.idsCategory.map((id) => id.code))];
 
     const form = new FormData();
     form.append("name", formData.name);
     form.append("description", formData.description);
     form.append("price", formData.price);
+    form.append("offerPrice", formData.offerPrice);
     if (formData.comboImg instanceof File) {
       form.append("comboImg", formData.comboImg);
     }
-    form.append("idsCategory", JSON.stringify(idsCategory));
+    form.append(
+      "idsCategoryProfile",
+      JSON.stringify(
+        formData.idsCategoryProfile.map((category) => category.code)
+      )
+    );
+    form.append(
+      "idsCategoryAccount",
+      JSON.stringify(
+        formData.idsCategoryAccount.map((category) => category.code)
+      )
+    );
 
     dispatch(updateComboThunk(combo.id, form)).finally(() => {
       reCharge();
@@ -179,17 +228,54 @@ const EditCombo = ({ show, onClose, reCharge, combo }) => {
           />
         </div>
         <div style={{ width: "100%", marginBottom: "12px" }}>
+          <label
+            htmlFor="Descripcion"
+            style={{ fontWeight: "bold", display: "block" }}
+          >
+            Precio Inflado
+          </label>
+          <InputNumber
+            inputId="currency-cop"
+            value={formData.offerPrice}
+            onValueChange={(e) =>
+              setFormData({ ...formData, offerPrice: e.target.value })
+            }
+            mode="currency"
+            currency="COP"
+            locale="es-CO"
+            minFractionDigits={0}
+            style={{ width: "100%" }}
+          />
+        </div>
+        <div style={{ width: "100%", marginBottom: "12px" }}>
           <label htmlFor="plataformas" style={{ fontWeight: "bold" }}>
-            Plataformas
+            Perfiles del combo
           </label>
           <MultiSelect
-            value={formData.idsCategory}
+            value={formData.idsCategoryProfile}
             onChange={(e) => {
               // Evitar duplicados en tiempo real
               const uniqueValues = [...new Set(e.value)];
-              setFormData({ ...formData, idsCategory: uniqueValues });
+              setFormData({ ...formData, idsCategoryProfile: uniqueValues });
             }}
             options={opcionesPlataformas}
+            optionLabel="name"
+            placeholder="Seleccionar plataformas"
+            style={{ width: "100%" }}
+          />
+        </div>
+        <div style={{ width: "100%", marginBottom: "12px" }}>
+          <label htmlFor="plataformas" style={{ fontWeight: "bold" }}>
+            Cuentas del combo
+          </label>
+          <MultiSelect
+            value={formData.idsCategoryAccount}
+            onChange={(e) => {
+              // Evitar duplicados en tiempo real
+              const uniqueValues = [...new Set(e.value)];
+              setFormData({ ...formData, idsCategoryAccount: uniqueValues });
+            }}
+            options={opcionesPlataformasAccount}
             optionLabel="name"
             placeholder="Seleccionar plataformas"
             style={{ width: "100%" }}

@@ -31,7 +31,9 @@ function NavBarWrapper() {
 
   if (
     location.pathname === "/login" ||
-    location.pathname === "/register-sellers"
+    location.pathname === "/register-sellers" ||
+    location.pathname === "/forgot-password" ||
+    location.pathname === "/reset-password"
   ) {
     return null;
   }
@@ -45,6 +47,8 @@ function SideMenuWrapper() {
   if (
     location.pathname === "/login" ||
     location.pathname === "/register-sellers" ||
+    location.pathname === "/forgot-password" ||
+    location.pathname === "/reset-password" ||
     isMobile
   ) {
     return null;

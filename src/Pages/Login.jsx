@@ -11,6 +11,7 @@ import { useAuthContext } from "../context/AuthContext";
 import { Toast } from "primereact/toast";
 import useErrorHandler from "../Helpers/useErrorHandler";
 import { InputText } from "primereact/inputtext";
+import { Password } from "primereact/password";
 import { Button } from "primereact/button";
 import { Link } from "react-router-dom";
 
@@ -71,14 +72,18 @@ const Login = () => {
               placeholder="Ingresa tu correo"
               onChange={handleEmailChange}
               required
+              style={{ display: "block" }}
             />
             <label>Contraseña</label>
-            <InputText
+            <Password
               type="password"
               placeholder="Ingresa tu contraseña"
               value={password}
               onChange={handlePasswordChange}
               required
+              feedback={false}
+              toggleMask
+              style={{ display: "block" }}
             />
             <Button
               type="submit"
@@ -88,6 +93,19 @@ const Login = () => {
               disabled={loading}
             />
           </form>
+          <p style={{ fontWeight: 500, margin: "10px 0 0 0", fontSize: "15px" }}>
+            ¿Olvidaste tu contraseña?{" "}
+            <Link
+              style={{
+                color: "#2f73f1",
+                cursor: "pointer",
+                textDecoration: "none",
+              }}
+              to="/forgot-password"
+            >
+              Restablecer
+            </Link>
+          </p>
           <div className="redes">
             <p>Contactanos</p>
             <a

@@ -14,6 +14,7 @@ import OutlaySlice from '../../features/outlay/OutlaySlice'
 import customerSlice from '../../features/customer/customerSlice'
 import totalItemsSlice  from '../../features/combo/totalItemsSlice'
 import ordersInternalSlice from '../../features/ordersInternal/ordersIternalSlice'
+import dashboardSlice from '../../features/dashboard/dashboardSlice'
 
 export const store = configureStore({
     reducer: {
@@ -31,7 +32,8 @@ export const store = configureStore({
         outlay: OutlaySlice,
         customers: customerSlice,
         totalItems: totalItemsSlice,
-        ordersInternal: ordersInternalSlice
+        ordersInternal: ordersInternalSlice,
+        dashboard: dashboardSlice,
     },
     devTools: true
 })

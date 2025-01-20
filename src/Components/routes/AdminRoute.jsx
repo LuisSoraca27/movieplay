@@ -11,7 +11,7 @@ export default function AdminRoute() {
     }
 
     if (role !== "admin") {
-        return <Navigate to="/" />;
+        return <Navigate to="/inicio" />;
     }
 
     return <Outlet />;

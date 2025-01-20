@@ -21,6 +21,9 @@ import OrderClient from "../Pages/View-client/OrderClient";
 import MyProfile from "../Pages/View-client/MyProfile";
 import ComboDetail from "./Inventory/combos/ComboDetail";
 import OrderInternal from "../Pages/OrderInternal";
+import Dashboard from "../Pages/Dashboard";
+import ForgotPassword from "../Pages/ForgotPassword";
+import ResetPassword from "../Pages/ResetPassword";
 
 const RoutesComponents = () => {
   return (
@@ -34,8 +37,15 @@ const RoutesComponents = () => {
           <Route index element={<RegisterSeller />} />
         </Route>
 
+        <Route path="/forgot-password" element={<PublicRoute />}>
+          <Route index element={<ForgotPassword />} />
+        </Route>
+        <Route path="/reset-password" element={<PublicRoute />}>
+          <Route index element={<ResetPassword />} />
+        </Route>
+
         <Route path="/" element={<AdminRoute />}>
-          <Route path="/inicio" element={<Home />} />
+          <Route index element={<Dashboard />} />
           <Route path="/usuarios" element={<User />} />
           <Route path="/clientes" element={<Customer />} />
           <Route path="/inventario" element={<Inventory />} />
@@ -43,17 +53,16 @@ const RoutesComponents = () => {
           <Route path="/pedidos-internos" element={<OrderInternal />} />
           <Route path="/gastos" element={<Outlay />} />
           <Route path="/notificaciones" element={<Notification />} />
-
         </Route>
 
         <Route path="/" element={<SellerRoute />}>
-          <Route index element={<Home />} />
+          <Route path="inicio" element={<Home />} />
           <Route path="/mi-perfil" element={<MyProfile />} />
           <Route path="/profiles" element={<Profiles />} />
           <Route path="/accounts" element={<Account />} />
           <Route path="/soporte" element={<Support />} />
           <Route path="/combos" element={<Combos />} />
-          <Route path="/combos/:id" element={<ComboDetail/>} />
+          <Route path="/combos/:id" element={<ComboDetail />} />
           <Route path="/courses" element={<Course />} />
           <Route path="/licenses" element={<License />} />
           <Route path="/pedidos-usuarios" element={<OrderClient />} />
