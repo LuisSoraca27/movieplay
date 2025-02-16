@@ -104,6 +104,8 @@ const CreateAccount = ({ show, onClose, reCharge }) => {
                     { label: "DirectTv GO", value: "26" },
                     { label: "Apple Tv", value: "27" },
                     { label: "Netflix Extra", value: "28" },
+                    { label: "Playstation Plus", value: "29" },
+                    { label: "Xbox Game Pass", value: "30" },
                   ]}
                   {...register("categoryId", { required: true })}
                   value={selectedOption}

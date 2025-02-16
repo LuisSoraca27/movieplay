@@ -147,6 +147,8 @@ const Profiles = () => {
                 case "regalo2":
                 case "spotify":
                 case "mcafee":
+                case "playstation":
+                case "xbox_pass":
                   return null;
 
                 default:

@@ -44,6 +44,8 @@ const AccountProduct = () => {
     { name: 'DirectTv GO', value: 'directvgo' },
     { name: 'Apple TV', value: 'apple_tv' },
     { name: 'Netflix Extra', value: 'netflix_extra' },
+    { name: 'Playstation Plus', value: 'playstation' },
+    { name: 'Xbox Game Pass', value: 'xbox_pass' },
   ];
 
   const dispatch = useDispatch();

@@ -276,6 +276,10 @@
   background: linear-gradient(to bottom, #107c10, #107c10);
 }
 
+.background-playstation {
+  background: linear-gradient(to bottom, #0069C5, #033388);
+}
+
 .background-acorntv {
   background: #0b1733;
 }

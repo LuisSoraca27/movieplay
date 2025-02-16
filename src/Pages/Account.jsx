@@ -35,6 +35,8 @@ import mcafee from "../assets/img/mcafee.png";
 import tidal from "../assets/img/tidal.png";
 import youtube from "../assets/img/youtube.png";
 import netflix_extra from "../assets/img/netflix_extra.png";
+import playstation from "../assets/img/playstation.png";
+import xbox_pass from "../assets/img/xbox.png";
 import ViewNotificationImg from "../Components/Notifications/ViewNotificationImg";
 import RegisterOrder from "../Components/Order/RegisterOrder";
 
@@ -70,6 +72,8 @@ const Account = () => {
     youtube: [youtube, "YouTube Premium"],
     tidal: [tidal, "Tidal"],
     netflix_extra: [netflix_extra, "Netflix Internacional"],
+    playstation: [playstation, "Playstation Plus"],
+    xbox_pass: [xbox_pass, "Xbox Game Pass"],
   };
 
   const user = JSON.parse(localStorage.getItem("user"));
