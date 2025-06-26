@@ -16,7 +16,7 @@ export const optionsCategory = [
   { name: "Flujo TV", code: "14" },
   { name: "Mubi", code: "19" },
   { name: "Universal+", code: "21" },
-  { name: "TvMia", code: "25" },
+  { name: "ClaroVideo", code: "25" },
   { name: "DirectTv GO", code: "26" },
   { name: "Apple Tv", code: "27" },
   { name: "Netflix Extra", code: "28" },

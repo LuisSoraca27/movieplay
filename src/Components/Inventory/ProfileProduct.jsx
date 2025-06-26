@@ -27,7 +27,7 @@ const ProfileProduct = () => {
         { name: 'Flujo TV', value: 'magistv' },
         { name: 'Mubi', value:'mubi' },
         { name: 'universal+', value: 'universal' },
-        { name: 'TvMia', value: 'tvmia'},
+        { name: 'ClaroVideo', value: 'clarovideo'},
         { name: 'DirectTv GO', value: 'directvgo' },
         { name: 'Apple TV', value: 'apple_tv' },
         { name: 'Netflix Extra', value: 'netflix_extra' },
