@@ -288,6 +288,10 @@
   background: #8c0613;
 }
 
+.background-wplay {
+  background: #0D222E;
+}
+
 .no-available {
   filter: grayscale(100%);
 }

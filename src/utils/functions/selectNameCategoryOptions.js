@@ -1,4 +1,4 @@
-export const optionsCategory = [
+export const                                                                optionsCategory = [
   { name: "Netflix", code: "2" },
   { name: "Max Premium", code: "3" },
   { name: "Max Estándar", code: "17" },
@@ -20,6 +20,7 @@ export const optionsCategory = [
   { name: "DirectTv GO", code: "26" },
   { name: "Apple Tv", code: "27" },
   { name: "Netflix Extra", code: "28" },
+  { name: "Wplay", code: "31"}
 ];
 
 export const selectCategoriesCPs = (categories = []) => {

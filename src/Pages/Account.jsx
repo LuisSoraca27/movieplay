@@ -154,6 +154,7 @@ const Account = () => {
                 case "iptv":
                 case "regalo2":
                 case "clarovideo":
+                case "wplay":
                   return null;
                 default:
                   return (

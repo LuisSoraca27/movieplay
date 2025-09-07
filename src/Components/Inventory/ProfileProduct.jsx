@@ -32,6 +32,7 @@ const ProfileProduct = () => {
         { name: 'Apple TV', value: 'apple_tv' },
         { name: 'Netflix Extra', value: 'netflix_extra' },
         { name: 'Microsoft 365', value: 'microsoft365' },
+        { name: 'Wplay', value: 'wplay' },
     ]
 
 
