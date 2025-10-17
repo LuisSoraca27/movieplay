@@ -106,6 +106,7 @@ const CreateAccount = ({ show, onClose, reCharge }) => {
                     { label: "Netflix Extra", value: "28" },
                     { label: "Playstation Plus", value: "29" },
                     { label: "Xbox Game Pass", value: "30" },
+                    { label: "ChatGPT", value: "32" },
                   ]}
                   {...register("categoryId", { required: true })}
                   value={selectedOption}

@@ -292,6 +292,10 @@
   background: #0D222E;
 }
 
+.background-chatgpt {
+  background: #16AC86
+}
+
 .no-available {
   filter: grayscale(100%);
 }

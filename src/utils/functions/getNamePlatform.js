@@ -65,6 +65,8 @@ export default function getNamePlatform(name) {
             return 'Mubi';
         case 'microsoft365':
             return 'Microsoft 365';
+        case 'chatgpt':
+            return 'ChatGPT';
         default:
             return 'Unknown';
     }

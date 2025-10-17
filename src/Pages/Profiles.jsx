@@ -29,6 +29,7 @@ import microsoft365 from "../assets/img/microsoft365.png";
 import netflix_extra from "../assets/img/netflix_extra.png";
 import clarovideo from "../assets/img/clarovideo.png";
 import wplay from "../assets/img/wplay.png";
+import chatgpt from "../assets/img/chatgpt.png";
 import { setIsLoading } from "../features/isLoading/isLoadingSlice";
 import ModalProfile from "./ModalProfile";
 import { setBalanceThunk } from "../features/balance/balanceSlice";
@@ -60,6 +61,7 @@ const categoryImageMap = {
   netflix_extra: [netflix_extra, "Netflix Internacional"],
   clarovideo: [clarovideo, "Claro Video"],
   wplay: [wplay, "Wplay"],
+  chatgpt: [chatgpt, "ChatGPT"],
 };
 
 const Profiles = () => {

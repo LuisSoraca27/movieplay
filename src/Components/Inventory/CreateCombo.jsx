@@ -35,6 +35,7 @@ const CreateCombo = ({ show, onClose, reCharge }) => {
     { name: "Apple Tv", code: "27" },
     { name: "Netflix Extra", code: "28" },
     { name: "Wplay", code: "31" },
+    { name: "ChatGPT", code: "32" },
   ];
 
   const opcionesPlataformasAccount = [
@@ -66,6 +67,7 @@ const CreateCombo = ({ show, onClose, reCharge }) => {
     { name: "DirectTv GO", code: "26" },
     { name: "Apple Tv", code: "27" },
     { name: "Netflix Extra", code: "28" },
+    { name: "ChatGPT", code: "32" },
   ];
 
   const initialValues = {
