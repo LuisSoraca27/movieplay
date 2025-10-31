@@ -34,6 +34,7 @@ const ProfileProduct = () => {
         { name: 'Microsoft 365', value: 'microsoft365' },
         { name: 'Wplay', value: 'wplay' },
         { name: 'ChatGPT', value: 'chatgpt' },
+        { name: 'CapCut', value: 'capcut' },
     ]
 
 

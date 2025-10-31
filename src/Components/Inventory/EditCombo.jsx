@@ -37,6 +37,7 @@ const EditCombo = ({ show, onClose, reCharge, combo }) => {
     { name: "Apple Tv", code: "27" },
     { name: "Netflix Extra", code: "28" },
     { name: "ChatGPT", code: "32" },
+    { name: "CapCut", code: "33" },
   ];
 
   const opcionesPlataformasAccount = [
@@ -69,6 +70,7 @@ const EditCombo = ({ show, onClose, reCharge, combo }) => {
     { name: "Apple Tv", code: "27" },
     { name: "Netflix Extra", code: "28" },
     { name: "ChatGPT", code: "32" },
+    { name: "CapCut", code: "33" },
   ];
 
   const [procesing, setProcesing] = useState(false);

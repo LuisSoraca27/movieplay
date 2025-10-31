@@ -36,6 +36,7 @@ const CreateCombo = ({ show, onClose, reCharge }) => {
     { name: "Netflix Extra", code: "28" },
     { name: "Wplay", code: "31" },
     { name: "ChatGPT", code: "32" },
+    { name: "CapCut", code: "33" },
   ];
 
   const opcionesPlataformasAccount = [
@@ -68,6 +69,7 @@ const CreateCombo = ({ show, onClose, reCharge }) => {
     { name: "Apple Tv", code: "27" },
     { name: "Netflix Extra", code: "28" },
     { name: "ChatGPT", code: "32" },
+    { name: "CapCut", code: "33" },
   ];
 
   const initialValues = {

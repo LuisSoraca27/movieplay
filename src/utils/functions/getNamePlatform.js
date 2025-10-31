@@ -67,6 +67,8 @@ export default function getNamePlatform(name) {
             return 'Microsoft 365';
         case 'chatgpt':
             return 'ChatGPT';
+        case 'capcut':
+            return 'CapCut';
         default:
             return 'Unknown';
     }

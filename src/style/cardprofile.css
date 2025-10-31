@@ -296,6 +296,10 @@
   background: #16AC86
 }
 
+.background-capcut {
+  background: linear-gradient(135deg, #000000 0%, #000000 50%, #8B1F5B 70%, #C9447B 85%, #E76BA3 100%);
+}
+
 .no-available {
   filter: grayscale(100%);
 }

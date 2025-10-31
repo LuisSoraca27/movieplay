@@ -30,6 +30,7 @@ import netflix_extra from "../assets/img/netflix_extra.png";
 import clarovideo from "../assets/img/clarovideo.png";
 import wplay from "../assets/img/wplay.png";
 import chatgpt from "../assets/img/chatgpt.png";
+import capcut from "../assets/img/capcut.png";
 import { setIsLoading } from "../features/isLoading/isLoadingSlice";
 import ModalProfile from "./ModalProfile";
 import { setBalanceThunk } from "../features/balance/balanceSlice";
@@ -62,6 +63,7 @@ const categoryImageMap = {
   clarovideo: [clarovideo, "Claro Video"],
   wplay: [wplay, "Wplay"],
   chatgpt: [chatgpt, "ChatGPT"],
+  capcut: [capcut, "CapCut"],
 };
 
 const Profiles = () => {

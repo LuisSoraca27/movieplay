@@ -46,6 +46,7 @@ const AccountProduct = () => {
     { name: 'Netflix Extra', value: 'netflix_extra' },
     { name: 'Playstation Plus', value: 'playstation' },
     { name: 'Xbox Game Pass', value: 'xbox_pass' },
+    { name: 'CapCut', value: 'capcut' },
   ];
 
   const dispatch = useDispatch();
