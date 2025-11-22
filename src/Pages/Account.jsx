@@ -39,6 +39,7 @@ import playstation from "../assets/img/playstation.png";
 import xbox_pass from "../assets/img/xbox.png";
 import capcut from "../assets/img/capcut.png";
 import chatgpt from "../assets/img/chatgpt.png";
+import amazonmusic from "../assets/img/amazonmusic.png";
 import ViewNotificationImg from "../Components/Notifications/ViewNotificationImg";
 import RegisterOrder from "../Components/Order/RegisterOrder";
 
@@ -78,6 +79,7 @@ const Account = () => {
     xbox_pass: [xbox_pass, "Xbox Game Pass"],
     capcut: [capcut, "CapCut"],
     chatgpt: [chatgpt, "ChatGPT"],
+    amazonmusic: [amazonmusic, "Amazon Music"],
   };
 
   const user = JSON.parse(localStorage.getItem("user"));

@@ -37,6 +37,7 @@ const CreateCombo = ({ show, onClose, reCharge }) => {
     { name: "Wplay", code: "31" },
     { name: "ChatGPT", code: "32" },
     { name: "CapCut", code: "33" },
+    { name: "Amazon Music", code: "34" },
   ];
 
   const opcionesPlataformasAccount = [
@@ -70,6 +71,7 @@ const CreateCombo = ({ show, onClose, reCharge }) => {
     { name: "Netflix Extra", code: "28" },
     { name: "ChatGPT", code: "32" },
     { name: "CapCut", code: "33" },
+    { name: "Amazon Music", code: "34" },
   ];
 
   const initialValues = {
@@ -95,7 +97,7 @@ const CreateCombo = ({ show, onClose, reCharge }) => {
     e.preventDefault();
     setProcesing(true);
     console.log(formData);
-    
+
     const idsCategoryProfile = formData.idsCategoryProfile.map((id) => id.code);
     const idsCategoryAccount = formData.idsCategoryAccount.map((id) => id.code);
 

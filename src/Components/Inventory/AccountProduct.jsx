@@ -18,7 +18,7 @@ const AccountProduct = () => {
   const optionsCategory = [
     { name: 'Netflix', value: 'netflix' },
     { name: 'Max Premium', value: 'max_premium' },
-    { name: 'Max Estandar', value:'max_estandar' },
+    { name: 'Max Estandar', value: 'max_estandar' },
     { name: 'amazon Prime Video', value: 'amazon_prime' },
     { name: 'Paramount+', value: 'paramount_plus' },
     { name: 'Vix+', value: 'vix' },
@@ -34,19 +34,20 @@ const AccountProduct = () => {
     { name: 'Spotify', value: 'spotify' },
     { name: 'youtube premium', value: 'youtube' },
     { name: 'Tidal', value: 'tidal' },
-    { name: 'Mubi', value:'mubi' },
+    { name: 'Mubi', value: 'mubi' },
     { name: 'universal+', value: 'universal' },
     { name: 'Canva', value: 'canva' },
     { name: 'Duolingo', value: 'duolingo' },
     { name: 'Microsoft 365', value: 'microsoft365' },
     { name: 'McAfee', value: 'mcafee' },
-    { name: 'TvMia', value: 'tvmia'},
+    { name: 'TvMia', value: 'tvmia' },
     { name: 'DirectTv GO', value: 'directvgo' },
     { name: 'Apple TV', value: 'apple_tv' },
     { name: 'Netflix Extra', value: 'netflix_extra' },
     { name: 'Playstation Plus', value: 'playstation' },
     { name: 'Xbox Game Pass', value: 'xbox_pass' },
     { name: 'CapCut', value: 'capcut' },
+    { name: 'Amazon Music', value: 'amazonmusic' },
   ];
 
   const dispatch = useDispatch();

@@ -47,11 +47,11 @@
 }
 
 .card-profile strong {
- color: white;
- position: absolute;
- bottom: 25px;
- font-size: 15px;
- font-weight: 400;
+  color: white;
+  position: absolute;
+  bottom: 25px;
+  font-size: 15px;
+  font-weight: 400;
 }
 
 .available {
@@ -86,7 +86,7 @@
     width: 35%;
     height: 15px;
   }
-  
+
   .eyelash-circle {
     width: 18px;
     height: 18px;
@@ -94,8 +94,8 @@
 
   .card-profile strong {
     font-size: 12px;
-   }
-  
+  }
+
 }
 
 .background-canva {
@@ -116,7 +116,7 @@
 
 
 .background-regalo {
-  background: radial-gradient(circle, #4696be,#1945f6);
+  background: radial-gradient(circle, #4696be, #1945f6);
 }
 
 .background-universal {
@@ -146,14 +146,17 @@
 .background-Dbasico {
   background: linear-gradient(to bottom, #001d2b, #008891);
 }
+
 .background-Destandar {
   background: linear-gradient(to bottom, #001d2b, #008891);
 }
+
 .background-Dpremium {
   background: linear-gradient(to bottom, #001d2b, #008891);
 }
+
 .background-microsoft365 {
-  background: linear-gradient(to bottom, #d7a6e8,#e7caf6,#f3b5f1, #8d80c6);
+  background: linear-gradient(to bottom, #d7a6e8, #e7caf6, #f3b5f1, #8d80c6);
 }
 
 .background-max_estandar {
@@ -165,27 +168,27 @@
 }
 
 .background-mcafee {
-  background: radial-gradient( #BA171A, #BA171A);
+  background: radial-gradient(#BA171A, #BA171A);
 }
 
 .background-atresplayer {
-  background: radial-gradient( #1C1C1C, #1C1C1C);
+  background: radial-gradient(#1C1C1C, #1C1C1C);
 }
 
 .background-wacrm {
-  background: radial-gradient( #000000, #000000);
+  background: radial-gradient(#000000, #000000);
 }
 
 .background-crm {
-  background: radial-gradient( #000000, #000000);
+  background: radial-gradient(#000000, #000000);
 }
 
 .background-wadefender {
-  background: radial-gradient( #000000, #000000);
+  background: radial-gradient(#000000, #000000);
 }
 
 .background-wasender {
-  background: radial-gradient( #2e6667, #153132);
+  background: radial-gradient(#2e6667, #153132);
 }
 
 .background-star_plus {
@@ -197,7 +200,7 @@
 }
 
 .background-vix {
-  background:#f25500;
+  background: #f25500;
 }
 
 .background-plex {
@@ -217,7 +220,7 @@
 }
 
 .background-youtube {
-  background:#ff0000;
+  background: #ff0000;
 }
 
 .background-tidal {
@@ -229,11 +232,11 @@
 }
 
 .background-rakuten {
-  background:#149eff;
+  background: #149eff;
 }
 
 .background-office {
-  background:#149eff;
+  background: #149eff;
 }
 
 .background-apple_music {
@@ -257,7 +260,7 @@
 }
 
 .background-apple_tv {
-  background:#101112;
+  background: #101112;
 }
 
 .background-brazzers {
@@ -269,7 +272,7 @@
 }
 
 .background-pornhub {
-  background:  #000000;
+  background: #000000;
 }
 
 .background-xbox_pass {
@@ -298,6 +301,10 @@
 
 .background-capcut {
   background: linear-gradient(135deg, #000000 0%, #000000 50%, #8B1F5B 70%, #C9447B 85%, #E76BA3 100%);
+}
+
+.background-amazonmusic {
+  background: linear-gradient(135deg, #4DD0E1 0%, #26C6DA 100%);
 }
 
 .no-available {

@@ -107,6 +107,8 @@ const CreateAccount = ({ show, onClose, reCharge }) => {
                     { label: "Playstation Plus", value: "29" },
                     { label: "Xbox Game Pass", value: "30" },
                     { label: "ChatGPT", value: "32" },
+                    { label: "CapCut", value: "33" },
+                    { label: "Amazon Music", value: "34" },
                   ]}
                   {...register("categoryId", { required: true })}
                   value={selectedOption}

@@ -1,4 +1,4 @@
-import  { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import ViewProduct from '../ViewProduct';
 import { setProfilesThunk, deleteProfileThunk } from '../../features/user/profileSlice';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,7 +12,7 @@ const ProfileProduct = () => {
     const optionsCategory = [
         { name: 'Netflix', value: 'netflix' },
         { name: 'Max Premium', value: 'max_premium' },
-        { name: 'Max Estandar', value:'max_estandar' },
+        { name: 'Max Estandar', value: 'max_estandar' },
         { name: 'amazon Prime Video', value: 'amazon_prime' },
         { name: 'Paramount+', value: 'paramount_plus' },
         { name: 'Vix+', value: 'vix' },
@@ -25,9 +25,9 @@ const ProfileProduct = () => {
         { name: 'Disney+ Estándar', value: 'Destandar' },
         { name: 'Disney+ Premium', value: 'Dpremium' },
         { name: 'Flujo TV', value: 'magistv' },
-        { name: 'Mubi', value:'mubi' },
+        { name: 'Mubi', value: 'mubi' },
         { name: 'universal+', value: 'universal' },
-        { name: 'ClaroVideo', value: 'clarovideo'},
+        { name: 'ClaroVideo', value: 'clarovideo' },
         { name: 'DirectTv GO', value: 'directvgo' },
         { name: 'Apple TV', value: 'apple_tv' },
         { name: 'Netflix Extra', value: 'netflix_extra' },
@@ -35,6 +35,7 @@ const ProfileProduct = () => {
         { name: 'Wplay', value: 'wplay' },
         { name: 'ChatGPT', value: 'chatgpt' },
         { name: 'CapCut', value: 'capcut' },
+        { name: 'Amazon Music', value: 'amazonmusic' },
     ]
 
 
@@ -56,7 +57,7 @@ const ProfileProduct = () => {
         setOpenEdit(true)
     }
 
-    const handleCategory = (e) => {                                                                                                                                 
+    const handleCategory = (e) => {
         setCategoryPerfiles(e.target.value)
     }
 
@@ -95,12 +96,12 @@ const ProfileProduct = () => {
 
     return (
         <>
-        <UploadExcel
-            show={openExcel}
-            onClose={() => setOpenExcel(false)}
-            reCharge={() => setReload(!reload)}
-            url='profile/uploadexcelprofile'
-        />
+            <UploadExcel
+                show={openExcel}
+                onClose={() => setOpenExcel(false)}
+                reCharge={() => setReload(!reload)}
+                url='profile/uploadexcelprofile'
+            />
             <EditProfile
                 show={openEdit}
                 onClose={() => setOpenEdit(false)}
