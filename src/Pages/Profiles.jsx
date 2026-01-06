@@ -115,11 +115,19 @@ const Profiles = () => {
   };
 
   const filterProfiles = () => {
-    const profiles0 = profiles.filter((profile) => profile.total === "0");
-    const profilesComplete = profiles.filter(
-      (profile) => profile.total !== "0"
+    // Con stock (excluyendo netflix_extra)
+    const profilesWithStock = profiles.filter(
+      (profile) => profile.total !== "0" && profile.categoryName !== "netflix_extra"
     );
-    return [...profilesComplete, ...profiles0];
+    // Netflix Internacional (para ponerlo al final del stock)
+    const netflixInternacional = profiles.filter(
+      (profile) => profile.categoryName === "netflix_extra"
+    );
+    // Sin stock (siempre al final)
+    const profilesNoStock = profiles.filter(
+      (profile) => profile.total === "0" && profile.categoryName !== "netflix_extra"
+    );
+    return [...profilesWithStock, ...netflixInternacional, ...profilesNoStock];
   };
 
   return (

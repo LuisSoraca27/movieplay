@@ -90,11 +90,19 @@ const Account = () => {
   const [isCommunityPanelOpen, setIsCommunityPanelOpen] = useState(true);
 
   const filterAccounts = () => {
-    const accounts0 = accounts.filter((account) => account.total === "0");
-    const accountsComplete = accounts.filter(
-      (account) => account.total !== "0"
+    // Con stock (excluyendo netflix_extra)
+    const accountsWithStock = accounts.filter(
+      (account) => account.total !== "0" && account.categoryName !== "netflix_extra"
     );
-    return [...accountsComplete, ...accounts0];
+    // Netflix Internacional (para ponerlo al final del stock)
+    const netflixInternacional = accounts.filter(
+      (account) => account.categoryName === "netflix_extra"
+    );
+    // Sin stock (siempre al final)
+    const accountsNoStock = accounts.filter(
+      (account) => account.total === "0" && account.categoryName !== "netflix_extra"
+    );
+    return [...accountsWithStock, ...netflixInternacional, ...accountsNoStock];
   };
 
   const handleCardClick = (data) => {
