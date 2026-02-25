@@ -7,7 +7,7 @@ const Footer = () => {
 
   const logoUrl = publicSettings?.logo || logo;
   const storeName = publicSettings?.storeName || 'Streaming Solution';
-  const footerMessage = publicSettings?.footerMessage || 'Ofreciendo el mejor servicio de streaming';
+  const footerMessage = publicSettings?.storeDescription || publicSettings?.footerMessage || '';
 
   return (
     <footer className="py-20 mt-12 border-t border-white/5 bg-transparent flex flex-col items-center justify-center gap-12">
