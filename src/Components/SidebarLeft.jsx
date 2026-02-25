@@ -4,8 +4,8 @@ import { useAuthContext } from "../context/AuthContext";
 import { useSelector } from "react-redux";
 import logo from "../assets/logo.png";
 import {
-  Home, Users, History, Package, ShoppingCart,
-  BarChart3, Info, User as UserIcon, Power, ChevronRight, CreditCard
+  LayoutDashboard, Bell, Home, Users, History, Package, ShoppingCart,
+  BarChart3, Info, User as UserIcon, Power, ChevronRight, CreditCard, Layers, Settings, Store
 } from "lucide-react";
 
 // eslint-disable-next-line react/prop-types
@@ -18,14 +18,17 @@ const SidebarLeft = ({ visible, onHide }) => {
   const storeLogo = publicSettings?.logo || logo;
 
   const itemsAdmin = [
-    { label: "Inicio", icon: Home, link: "/" },
+    { label: "Dashboard", icon: LayoutDashboard, link: "/" },
+    { label: "Notificaciones", icon: Bell, link: "/notificaciones" },
     { label: "Usuarios", icon: Users, link: "/usuarios" },
     { label: "Clientes", icon: Users, link: "/clientes" },
     { label: "Historial de recargas", icon: History, link: "/historial-recargas" },
-    // { label: "Inventario", icon: Package, link: "/inventario" },
+    { label: "Inventario Stock", icon: Package, link: "/inventario-stock" },
+    { label: "Constructor Cards", icon: Layers, link: "/constructor-cards" },
     { label: "Ventas internas", icon: ShoppingCart, link: "/pedidos-internos" },
     { label: "Ventas externas", icon: ShoppingCart, link: "/pedidos" },
     { label: "Ventas diarias", icon: BarChart3, link: "/ventas-diarias" },
+    { label: "Config. Tienda", icon: Settings, link: "/configuracion-tienda" },
     { label: "Mi Plan", icon: CreditCard, link: "/mi-plan" },
     { label: "Soporte", icon: Info, link: "/soporte" },
   ];
@@ -38,6 +41,7 @@ const SidebarLeft = ({ visible, onHide }) => {
   const itemsSeller = [
     { label: "Inicio", icon: Home, link: "/" },
     { label: "Mi cuenta", icon: UserIcon, link: "/mi-perfil" },
+    { label: "Mi Kiosco", icon: Store, link: "/mi-kiosco" },
     { label: "Mis pedidos", icon: ShoppingCart, link: "/pedidos-usuarios" },
     { label: "Soporte", icon: Info, link: "/soporte" },
   ];
