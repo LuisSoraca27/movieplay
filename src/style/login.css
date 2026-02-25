@@ -6,14 +6,13 @@
   width: 100vw;
   margin: 0;
   background-color: rgba(0, 0, 0, 0.658);
-  background-image: url("../assets/fondo.jpg");
+  background-image: var(--url-fondo, url("../assets/fondo.jpg"));
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
   background-attachment: fixed;
   box-sizing: border-box;
 }
-
 
 .login-container {
   width: 390px;
@@ -51,10 +50,9 @@
   font-weight: 500;
 }
 
-
 form {
   display: flex;
-  flex-direction: column;;
+  flex-direction: column;
   margin-top: 20px;
   text-align: start;
   width: 100%;
@@ -77,28 +75,6 @@ form label {
   font-weight: 500;
 }
 
-.redes {
-  margin-top: 10px;
-}
-
-.redes img {
-  width: 40px;
-  margin: 0 10px;
-  cursor: pointer;
-  position: relative;
-  transition: all 0.2s ease-in-out;
-}
-
-.redes img:hover {
-  transform: scale(1.1);
-  transition: all 0.2s ease-in-out;
-}
-
-.redes p {
-  font-size: 20px;
-  font-weight: 600;
-}
-
 .inputs-numbers {
   display: flex;
   gap: 5px;
@@ -110,14 +86,11 @@ form label {
 }                                      
 
 .inputs-numbers:nth-child(2) {
-    flex-basis: 90%;
-    flex-grow: 0;
-  }
-
-
+  flex-basis: 90%;
+  flex-grow: 0;
+}
 
 @media screen and (max-width: 768px) {
-
   .login-container {
     width: 90%;
     height: 90%;

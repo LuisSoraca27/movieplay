@@ -1,0 +1,98 @@
+.recharge-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 2rem;
+  }
+  
+  .recharge-card {
+    flex: 1;
+    min-width: 300px;
+  }
+  
+  .card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .card-description {
+    font-size: 0.9rem;
+    color: #666;
+  }
+  
+  .input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .input-container label {
+    font-weight: bold;
+  }
+  
+  .payment-methods {
+    font-size: 0.8rem;
+    color: #666;
+  }
+
+  .bonus-details {
+    background-color: #f5f5f5;
+    padding: 1rem;
+    border-radius: 4px;
+  }
+  
+  .bonus-details h4 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+  }
+  
+  .bonus-details ul {
+    margin: 0;
+    padding-left: 1.5rem;
+  }
+  
+  .bonus-details li {
+    font-size: 0.8rem;
+  }
+
+  .bonus-details p {
+    font-size: 0.8rem;
+    font-weight: 300;
+    margin: 0;
+    margin-top: 8px;
+
+  }
+  
+  .p-button {
+    align-self: stretch;
+  }
+  
+  /* Estilos específicos para Wompi */
+  .wompi-card .p-card-title {
+    color: #147457;
+  }
+  
+  .wompi-card .p-button {
+    background-color: #147457;
+    border-color: #147457;
+  }
+  
+  /* Estilos específicos para PayPal */
+  .paypal-card .p-card-title {
+    color: #003087;
+  }
+  
+  .paypal-card .p-button {
+    background-color: #003087;
+    border-color: #003087;
+  }
+  
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .recharge-container {
+      flex-direction: column;
+    }
+  }
+  
+  

@@ -21,16 +21,9 @@ export const setBalanceThunk = (id) => async (dispatch) => {
     dispatch(setNewBalance(data.balance));
   } catch (error) {
     console.log(error);
-    if (error.response.data.message === 'Session expired') {
-      localStorage.removeItem('token')
-      localStorage.removeItem('user')
-      window.location.reload()
-    }
   }
 }
 
 export const { setNewBalance } = balanceSlice.actions
 
 export default balanceSlice.reducer
-
-

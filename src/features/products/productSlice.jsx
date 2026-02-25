@@ -26,7 +26,7 @@ export const createProductThunk = (product) => async (dispatch) => {
       dispatch(setSuccess("Producto creado exitosamente"));
       dispatch(getProducts());
   } catch (error) {
-    dispatch(setError(error.response.data.message));
+    dispatch(setError(error.response?.data?.message));
     console.error(error);
   }
 };
@@ -55,7 +55,7 @@ export const getProducts = () => async (dispatch) => {
       dispatch(setSuccess("Producto actualizado exitosamente"));
       dispatch(getProducts());
     } catch (error) {
-      dispatch(setError(error.response.data.message));
+      dispatch(setError(error.response?.data?.message));
       console.error(error);
     }
   };
@@ -66,7 +66,7 @@ export const getProducts = () => async (dispatch) => {
       dispatch(setSuccess("Producto eliminado exitosamente"));
       dispatch(getProducts());
     } catch (error) {
-      dispatch(setError(error.response.data.message));
+      dispatch(setError(error.response?.data?.message));
       console.error(error);
     }
   };

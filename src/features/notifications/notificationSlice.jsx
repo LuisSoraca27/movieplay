@@ -27,6 +27,17 @@ const notificationSlice = createSlice({
 
 });
 
+export const createNotificationThunk = (notification) => async (dispatch) => {
+    try {
+        await dksoluciones.post('notification/', notification, getConfig())
+        dispatch(getNotificationThunk())
+        dispatch(setSuccess(true))
+    } catch (error) {
+        console.log(error)
+        dispatch(setError(error.response?.data?.message))
+    }
+}
+
 
 export const getNotificationThunk = () => async (dispatch) => {
     try {
@@ -35,11 +46,6 @@ export const getNotificationThunk = () => async (dispatch) => {
         dispatch(setNotification(data))
     } catch (error) {
         console.log(error)
-        if (error.response.data.message === 'Session expired') {
-            localStorage.removeItem('token')
-            localStorage.removeItem('user')
-            window.location.reload()
-        }
     }
 }
 
@@ -49,11 +55,6 @@ export const deleteNotificationThunk = (id) => async (dispatch) => {
         dispatch(getNotificationThunk())
     } catch (error) {
         console.log(error)
-        if (error.response.data.message === 'Session expired') {
-            localStorage.removeItem('token')
-            localStorage.removeItem('user')
-            window.location.reload()
-        }
     }
 }
 
@@ -64,27 +65,19 @@ export const getNotificationImgThunk = () => async (dispatch) => {
         dispatch(setNotificationImg(data))
     } catch (error) {
         console.log(error)
-        if (error.response.data.message === 'Session expired') {
-            localStorage.removeItem('token')
-            localStorage.removeItem('user')
-        }
-        dispatch(setError(error.response.data.message))
+        dispatch(setError(error.response?.data?.message))
     }
 }
 
 export const uploadImgPopup = (form) => async (dispatch) => {
     try {
-     const res =  await dksoluciones.post('notification/uploadimg', form, getConfig())
+        const res = await dksoluciones.post('notification/uploadimg', form, getConfig())
         dispatch(setSuccess(true))
         dispatch(getNotificationImgThunk())
         console.log(res.data);
     } catch (error) {
         console.log(error)
-        dispatch(setError(error.response.data.message))
-        if (error.response.data.message === 'Session expired') {
-            localStorage.removeItem('token')
-            localStorage.removeItem('user')
-        }
+        dispatch(setError(error.response?.data?.message))
     }
 }
 
@@ -95,11 +88,7 @@ export const UpdateImgPopup = (img, id) => async (dispatch) => {
         dispatch(getNotificationImgThunk())
     } catch (error) {
         console.log(error)
-        if (error.response.data.message === 'Session expired') {
-            localStorage.removeItem('token')
-            localStorage.removeItem('user')
-        }
-        dispatch(setError(error.response.data.message))
+        dispatch(setError(error.response?.data?.message))
     }
 }
 
@@ -110,14 +99,27 @@ export const deleteImgPopup = (id) => async (dispatch) => {
         dispatch(setSuccess(true))
     } catch (error) {
         console.log(error)
-        if (error.response.data.message === 'Session expired') {
-            localStorage.removeItem('token')
-            localStorage.removeItem('user')
-        }
-        dispatch(setError(error.response.data.message))
+        dispatch(setError(error.response?.data?.message))
     }
 }
 
+export const markAsReadThunk = (id) => async (dispatch) => {
+    try {
+        await dksoluciones.patch(`notification/${id}/read`, {}, getConfig())
+        dispatch(getNotificationThunk())
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const markAllAsReadThunk = () => async (dispatch) => {
+    try {
+        await dksoluciones.patch('notification/read-all', {}, getConfig())
+        dispatch(getNotificationThunk())
+    } catch (error) {
+        console.log(error)
+    }
+}
 
 
 export const { setNotification, setNotificationImg, setViewNotification } = notificationSlice.actions

@@ -9,8 +9,9 @@ const initialState = {
     userSession: null,
     usersAdmin: [],
     usersSeller: [],
-    historyRecharge: []
-}
+    historyRecharge: [],
+    isLoadingUsers: false,
+};
 
 
 export const userSlice = createSlice({
@@ -28,17 +29,20 @@ export const userSlice = createSlice({
         },
         setHistoryRecharge: (state, action) => {
             state.historyRecharge = action.payload;
-        }
+        },
+        setUsersLoading: (state, action) => {
+            state.isLoadingUsers = action.payload;
+        },
     },
 });
 
 export const getHistoryRecharge = (id) => async (dispatch) => {
-   try {
-    const { data } = await dksoluciones.get(`user/getrechargeuser/${id}`, getConfig());
-    dispatch(setHistoryRecharge(data.data));
-   } catch (error) {
-    console.log(error);
-   } 
+    try {
+        const { data } = await dksoluciones.get(`user/getrechargeuser/${id}`, getConfig());
+        dispatch(setHistoryRecharge(data.data));
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 
@@ -73,51 +77,47 @@ export const setUsersSellerThunk = () => async (dispatch) => {
         dispatch(setUsersSeller(users));
     } catch (error) {
         console.log(error);
-        if (error.response.data.message === 'Session expired') {
-            localStorage.removeItem('token')
-            localStorage.removeItem('user')
-            window.location.reload()
-        }
-        dispatch(setError(error.response.data.message))
+        dispatch(setError(error.response?.data?.message))
     }
 };
 
 export const createUserThunk = (dataForm) => async (dispatch) => {
     try {
-     const {data} = await dksoluciones.post('user/createuser', dataForm, getConfig());
+        const { data } = await dksoluciones.post('user/createuser', dataForm, getConfig());
         dispatch(setUsersAdminThunk());
         dispatch(setUsersSellerThunk());
-        dispatch(setSuccess(data.message))
+        return { success: true, message: data.message };
     } catch (error) {
         console.log(error);
-        dispatch(setError(error.response.data.message))
+        const message = error.response?.data?.message || 'Error al crear usuario';
+        return { success: false, message };
     }
 };
 
 export const createUserSellerThunk = (dataform) => async (dispatch) => {
     try {
-      const {data} = await dksoluciones.post('user/createuserseller', dataform, getConfig())
+        const { data } = await dksoluciones.post('user/createuserseller', dataform, getConfig())
         dispatch(setSuccess(data.message))
+        return { success: true, message: data.message };
     } catch (error) {
         console.log(error);
-        if (error.response.data.message === 'Validation error') {
-            dispatch(setError('El usuario ya existe'))
-        }
-        dispatch(setError(error.response.data.message))
+        const message = error.response?.data?.message === 'Validation error'
+            ? 'El usuario ya existe'
+            : (error.response?.data?.message || 'Error al crear usuario');
+        dispatch(setError(message))
+        return { success: false, message };
     }
 };
 
 export const rechargeUserThunk = (data, id) => async (dispatch) => {
     try {
-        await dksoluciones.patch(`user/agreebalance/${id}`, data, getConfig());
+        const res = await dksoluciones.patch(`user/agreebalance/${id}`, data, getConfig());
         dispatch(setUsersSellerThunk());
+        return res.data;
     } catch (error) {
         console.log(error);
-        if (error.response.data.message === 'Session expired') {
-            localStorage.removeItem('token')
-            localStorage.removeItem('user')
-            window.location.reload()
-        }
+        dispatch(setError(error.response?.data?.message))
+        throw error;
     }
 };
 
@@ -129,11 +129,8 @@ export const editUserThunk = (data, id) => async (dispatch) => {
         user?.role === 'admin' && dispatch(setUsersSellerThunk());
         dispatch(setSuccess(res.data.message))
     } catch (error) {
-        dispatch(setError(true))
+        dispatch(setError(error.response?.data?.message))
         console.log(error)
-        if (error.response.data.message === 'Session expired') {
-            localStorage.removeItem('token')
-        }
     }
 };
 
@@ -144,17 +141,12 @@ export const deleteUserThunk = (id) => async (dispatch) => {
         dispatch(setUsersAdminThunk());
     } catch (error) {
         console.log(error);
-        if (error.response.data.message === 'Session expired') {
-            localStorage.removeItem('token')
-            localStorage.removeItem('user')
-            window.location.reload()
-        }
     }
 };
 
 
 
 
-export const { setUsersAdmin, setUsersSeller, setUserSession, setHistoryRecharge } = userSlice.actions;
+export const { setUsersAdmin, setUsersSeller, setUserSession, setHistoryRecharge, setUsersLoading } = userSlice.actions;
 
 export default userSlice.reducer;

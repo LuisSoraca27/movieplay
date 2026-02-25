@@ -54,6 +54,14 @@
     border-radius: 16px;
     font-size: 0.9rem;
   }
+
+  .combo-price-offer {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-top: 10px;
+    color: #f32d2d;
+    text-decoration: line-through;
+  }
   
   .combo-price {
     font-size: 1.7rem;

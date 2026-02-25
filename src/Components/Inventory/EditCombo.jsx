@@ -1,315 +1,387 @@
-/* eslint-disable react/prop-types */
 import { useEffect, useState, useRef } from "react";
-import { Button } from "primereact/button";
+import { useForm, Controller } from "react-hook-form";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Textarea, Select, SelectItem } from "@heroui/react";
 import { updateComboThunk } from "../../features/user/comboSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { Dialog } from "primereact/dialog";
-import { InputText } from "primereact/inputtext";
-import { InputTextarea } from "primereact/inputtextarea";
-import { Toast } from "primereact/toast";
-import useErrorHandler from "../../Helpers/useErrorHandler";
-import { InputNumber } from "primereact/inputnumber";
-import { FileUpload } from "primereact/fileupload";
-import { MultiSelect } from "primereact/multiselect";
+import { addToast } from "@heroui/toast";
+import { Check, Upload, X } from "lucide-react";
 import { selectCategoriesCPs } from "../../utils/functions/selectNameCategoryOptions";
 
 const EditCombo = ({ show, onClose, reCharge, combo }) => {
   const opcionesPlataformas = [
-    { name: "Netflix", code: "2" },
-    { name: "Max Premium", code: "3" },
-    { name: "Max Estándar", code: "17" },
-    { name: "Disney+ Premium", code: "4" },
-    { name: "Disney+ Estándar", code: "15" },
-    { name: "Disney+ Basico", code: "16" },
-    { name: "Amazon Prime Video", code: "1" },
-    { name: "Paramount+", code: "5" },
-    { name: "Vix+", code: "6" },
-    { name: "Plex", code: "7" },
-    { name: "Crunchyroll", code: "8" },
-    { name: "Black Code", code: "9" },
-    { name: "Iptv", code: "10" },
-    { name: "Rakuten Viki", code: "13" },
-    { name: "Flujo TV", code: "14" },
-    { name: "Mubi", code: "19" },
-    { name: "Universal+", code: "21" },
-    { name: "TvMia", code: "25" },
-    { name: "DirectTv GO", code: "26" },
-    { name: "Apple Tv", code: "27" },
-    { name: "Netflix Extra", code: "28" },
-    { name: "ChatGPT", code: "32" },
-    { name: "CapCut", code: "33" },
-    { name: "Amazon Music", code: "34" },
+    { name: "Netflix Original", code: "2" },
+    { name: "Max", code: "3" },
+    { name: "Disney Premium+", code: "4" },
+    { name: "Disney+ Estandar", code: "30" },
+    { name: "Disney+ Basico", code: "29" },
+    { name: "Disney+ Promoción", code: "42" },
+    { name: "Iptv Basico", code: "39" },
+    { name: "Iptv Mes", code: "40" },
+    { name: "Prime Video", code: "1" },
+    { name: "Paramount+", code: "6" },
+    { name: "Vix+", code: "7" },
+    { name: "Next Movie", code: "8" },
+    { name: "Universal+", code: "18" },
+    { name: "Crunchyroll", code: "9" },
+    { name: "El ProfeNet", code: "10" },
+    { name: "Iptv Promoción", code: "11" },
+    { name: "Apple TV", code: "19" },
+    { name: "Pornhub", code: "20" },
+    { name: "Spotify", code: "14" },
+    { name: "Rakuten Viki", code: "22" },
+    { name: "Mubi", code: "24" },
+    { name: "WASender", code: "25" },
+    { name: "Regalo", code: "26" },
+    { name: "TvMia", code: "28" },
+    { name: "Microsoft 365", code: "31" },
+    { name: "Netflix Extra", code: "32" },
+    { name: "Macfee", code: "33" },
+    { name: "AtresPlayer", code: "34" },
+    { name: "WaCrm", code: "35" },
+    { name: "Crm", code: "36" },
+    { name: "WaDefender", code: "37" },
+    { name: "XXX", code: "38" },
+    { name: "Regalo 2", code: "41" },
+    { name: "Netlix SemiOriginal", code: "43" },
+    { name: "Directv GO", code: "directvgo" },
   ];
 
   const opcionesPlataformasAccount = [
     { name: "Netflix", code: "2" },
-    { name: "Max Premium", code: "3" },
-    { name: "Max Estándar", code: "17" },
-    { name: "Disney+ Premium", code: "4" },
-    { name: "Disney+ Estándar", code: "15" },
-    { name: "Disney+ Basico", code: "16" },
+    { name: "Max", code: "3" },
     { name: "Amazon Prime Video", code: "1" },
-    { name: "Paramount+", code: "5" },
-    { name: "Vix+", code: "6" },
-    { name: "Plex", code: "7" },
-    { name: "Crunchyroll", code: "8" },
-    { name: "Black Code", code: "9" },
-    { name: "Iptv", code: "10" },
-    { name: "Rakuten Viki", code: "13" },
-    { name: "Flujo TV", code: "14" },
-    { name: "Youtube Premium", code: "11" },
-    { name: "Spotify", code: "12" },
-    { name: "Tidal", code: "18" },
-    { name: "Mubi", code: "19" },
-    { name: "Canva", code: "20" },
-    { name: "Universal+", code: "21" },
-    { name: "Duolingo", code: "22" },
-    { name: "Microsoft 365", code: "23" },
-    { name: "McAfee", code: "24" },
-    { name: "TvMia", code: "25" },
-    { name: "DirectTv GO", code: "26" },
-    { name: "Apple Tv", code: "27" },
-    { name: "Netflix Extra", code: "28" },
-    { name: "ChatGPT", code: "32" },
-    { name: "CapCut", code: "33" },
-    { name: "Amazon Music", code: "34" },
+    { name: "Paramount+", code: "6" },
+    { name: "Vix+", code: "7" },
+    { name: "Plex", code: "8" },
+    { name: "Crunchyroll", code: "9" },
+    { name: "El ProfeNet", code: "10" },
+    { name: "Iptv", code: "11" },
+    { name: "Youtube Premium", code: "12" },
+    { name: "Tidal", code: "13" },
+    { name: "Spotify", code: "14" },
+    { name: "Deezer", code: "15" },
+    { name: "Apple Music", code: "16" },
+    { name: "Canva", code: "17" },
+    { name: "Universal+", code: "18" },
+    { name: "Apple TV", code: "19" },
+    { name: "Pornhub", code: "20" },
+    { name: "Duolingo", code: "21" },
+    { name: "Rakuten Viki", code: "22" },
+    { name: "Calm", code: "23" },
+    { name: "Mubi", code: "24" },
+    { name: "Napster", code: "27" },
+    { name: "WASender", code: "25" },
+    { name: "TvMia", code: "28" },
+    { name: "Microsoft 365", code: "31" },
+    { name: "Macfee", code: "33" },
+    { name: "AtresPlayer", code: "34" },
+    { name: "WaCrm", code: "35" },
+    { name: "Crm", code: "36" },
+    { name: "WaDefender", code: "37" },
+    { name: "XXX", code: "38" },
+    { name: "Netlix SemiOriginal", code: "43" },
+    { name: "Directv GO", code: "directvgo" },
   ];
 
-  const [procesing, setProcesing] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { success, error } = useSelector((state) => state.error);
-
   const dispatch = useDispatch();
-  const toast = useRef(null);
+  const fileInputRef = useRef(null);
+  const [fileName, setFileName] = useState("");
+  const [previewImage, setPreviewImage] = useState("");
 
-  const handleErrors = useErrorHandler(error, success);
-
-  const { categoriesProfile, categoriesAccount } = selectCategoriesCPs(
-    combo.categoriesCPs
-  );
-
-  // Cargar los datos del combo en el formulario
-  const [formData, setFormData] = useState({
-    name: combo?.name || "",
-    description: combo?.description || "",
-    price: combo?.price || "",
-    offerPrice: combo?.offerPrice || "0",
-    comboImg: combo?.comboImg || "",
-    idsCategoryProfile: categoriesProfile,
-    idsCategoryAccount: categoriesAccount,
+  const {
+    register,
+    handleSubmit,
+    control,
+    setValue,
+    reset,
+    formState: { errors }
+  } = useForm({
+    defaultValues: {
+      name: "",
+      description: "",
+      price: "",
+      offerPrice: "0",
+      idsCategoryProfile: [],
+      idsCategoryAccount: [],
+    }
   });
 
-  const [previewImage, setPreviewImage] = useState(formData.comboImg); // Estado para la vista previa de la imagen
+  useEffect(() => {
+    if (combo) {
+      const { categoriesAccount, categoriesProfile } = selectCategoriesCPs(combo.categoriesCPs);
+
+      // Extract codes from the category objects
+      const profileCodes = categoriesProfile ? categoriesProfile.map(cat => cat.code) : [];
+      const accountCodes = categoriesAccount ? categoriesAccount.map(cat => cat.code) : [];
+
+      reset({
+        name: combo.name || "",
+        description: combo.description || "",
+        price: combo.price ? String(combo.price) : "",
+        offerPrice: combo.offerPrice ? String(combo.offerPrice) : "0",
+        idsCategoryProfile: profileCodes,
+        idsCategoryAccount: accountCodes,
+      });
+
+      if (combo.imgCombos && combo.imgCombos.length > 0) {
+        setPreviewImage(combo.imgCombos[0].urlImagen);
+        setFileName("Imagen actual");
+      } else {
+        setPreviewImage("");
+        setFileName("");
+      }
+    }
+  }, [combo, reset]);
 
   useEffect(() => {
-    const { categoriesAccount, categoriesProfile } = selectCategoriesCPs(
-      combo.categoriesCPs
-    );
+    if (error) addToast({ title: 'Error', description: error, color: 'danger' });
+    if (success) addToast({ title: 'Éxito', description: success, color: 'success' });
+  }, [error, success]);
 
-    if (combo) {
-      setFormData({
-        name: combo.name,
-        description: combo.description,
-        price: combo.price,
-        offerPrice: combo.offerPrice || "0",
-        comboImg: combo.imgCombos?.[0]?.urlImagen || "", // Asignar la URL de la imagen
-        idsCategoryProfile: categoriesProfile || [],
-        idsCategoryAccount: categoriesAccount || [],
-      });
-      setPreviewImage(combo.imgCombos?.[0]?.urlImagen || ""); // Asignar la imagen para la vista previa
-    }
-  }, [combo]);
-
-  const handleImageSelect = (e) => {
-    const file = e.files[0];
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
     if (file) {
+      if (file.size > 1000000) {
+        addToast({ title: 'Error', description: "El archivo es demasiado grande (Máx 1MB)", color: 'danger' });
+        return;
+      }
+      setFileName(file.name);
+      setValue("comboImg", file);
+
       const reader = new FileReader();
       reader.onloadend = () => {
-        setPreviewImage(reader.result); // Mostrar la imagen seleccionada como vista previa
+        setPreviewImage(reader.result);
       };
-      reader.readAsDataURL(file); // Leer el archivo seleccionado
-      setFormData({ ...formData, comboImg: file }); // Guardar el archivo en formData
+      reader.readAsDataURL(file);
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setProcesing(true);
+  const onSubmit = (data) => {
+    setLoading(true);
+    const formData = new FormData();
+    formData.append("name", data.name);
+    formData.append("description", data.description);
+    formData.append("price", data.price);
+    formData.append("offerPrice", data.offerPrice);
 
-    const form = new FormData();
-    form.append("name", formData.name);
-    form.append("description", formData.description);
-    form.append("price", formData.price);
-    form.append("offerPrice", formData.offerPrice);
-    if (formData.comboImg instanceof File) {
-      form.append("comboImg", formData.comboImg);
+    if (data.comboImg instanceof File) {
+      formData.append("comboImg", data.comboImg);
     }
-    form.append(
-      "idsCategoryProfile",
-      JSON.stringify(
-        formData.idsCategoryProfile.map((category) => category.code)
-      )
-    );
-    form.append(
-      "idsCategoryAccount",
-      JSON.stringify(
-        formData.idsCategoryAccount.map((category) => category.code)
-      )
-    );
 
-    dispatch(updateComboThunk(combo.id, form)).finally(() => {
+    const profileCodes = Array.isArray(data.idsCategoryProfile) ? data.idsCategoryProfile : Array.from(data.idsCategoryProfile || []);
+    const accountCodes = Array.isArray(data.idsCategoryAccount) ? data.idsCategoryAccount : Array.from(data.idsCategoryAccount || []);
+
+    formData.append("idsCategoryProfile", JSON.stringify(profileCodes));
+    formData.append("idsCategoryAccount", JSON.stringify(accountCodes));
+
+    dispatch(updateComboThunk(combo.id, formData)).finally(() => {
       reCharge();
       onClose();
-      setProcesing(false);
+      setLoading(false);
     });
   };
 
-  useEffect(() => {
-    handleErrors(toast.current);
-  }, [error, success]);
+  const inputClasses = {
+    label: "text-slate-500 font-bold uppercase tracking-wider text-[10px]",
+    inputWrapper: "border-slate-200 group-hover:border-slate-300 focus-within:!border-slate-900 bg-white",
+    input: "text-slate-800 font-semibold",
+  };
 
   return (
-    <>
-      <Dialog
-        visible={show}
-        onHide={onClose}
-        style={{ width: "390px" }}
-        header="Editar Combo"
-        footer={
-          <div>
-            <Button
-              label="Confirmar"
-              icon="pi pi-check"
-              onClick={handleSubmit}
-              loading={procesing}
-              disabled={procesing}
-              autoFocus
-              severity="success"
+    <Modal open={show} onClose={onClose} size="lg" scrollBehavior="inside"
+      isOpen={show}
+      classNames={{
+        base: "rounded-[2rem] border border-slate-100 shadow-2xl safe-area-y",
+        header: "border-b border-slate-100 py-4",
+        footer: "border-t border-slate-100 py-4",
+        closeButton: "hover:bg-slate-100 active:bg-slate-200 rounded-full transition-colors right-4 top-4"
+      }}
+    >
+      <ModalContent className="bg-white">
+        <ModalHeader className="flex flex-col gap-1">
+          <h2 className="text-xl font-bold text-slate-800">Editar Combo</h2>
+          <span className="text-sm font-medium text-slate-500">Actualiza la información del combo seleccionado</span>
+        </ModalHeader>
+        <ModalBody className="py-6">
+          <form id="edit-combo-form" onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <Input
+              label="NOMBRE"
+              placeholder="Nombre del combo"
+              variant="bordered"
+              labelPlacement="outside"
+              isInvalid={!!errors.name}
+              errorMessage={errors.name?.message}
+              classNames={inputClasses}
+              {...register("name", { required: "El nombre es requerido" })}
             />
-          </div>
-        }
-      >
-        <div style={{ width: "100%", marginBottom: "12px" }}>
-          <label htmlFor="Nombre" style={{ fontWeight: "bold" }}>
-            Nombre
-          </label>
-          <InputText
-            id="name"
-            value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            style={{ width: "100%" }}
-          />
-        </div>
-        <div style={{ width: "100%", marginBottom: "12px" }}>
-          <label htmlFor="Descripcion" style={{ fontWeight: "bold" }}>
-            Descripción
-          </label>
-          <InputTextarea
-            id="description"
-            value={formData.description}
-            onChange={(e) =>
-              setFormData({ ...formData, description: e.target.value })
-            }
-            cols={5}
-            style={{ width: "100%" }}
-          />
-        </div>
-        <div style={{ width: "100%", marginBottom: "12px" }}>
-          <label
-            htmlFor="Descripcion"
-            style={{ fontWeight: "bold", display: "block" }}
-          >
-            Precio
-          </label>
-          <InputNumber
-            inputId="currency-cop"
-            value={formData.price}
-            onValueChange={(e) =>
-              setFormData({ ...formData, price: e.target.value })
-            }
-            mode="currency"
-            currency="COP"
-            locale="es-CO"
-            minFractionDigits={0}
-            style={{ width: "100%" }}
-          />
-        </div>
-        <div style={{ width: "100%", marginBottom: "12px" }}>
-          <label
-            htmlFor="Descripcion"
-            style={{ fontWeight: "bold", display: "block" }}
-          >
-            Precio Inflado
-          </label>
-          <InputNumber
-            inputId="currency-cop"
-            value={formData.offerPrice}
-            onValueChange={(e) =>
-              setFormData({ ...formData, offerPrice: e.target.value })
-            }
-            mode="currency"
-            currency="COP"
-            locale="es-CO"
-            minFractionDigits={0}
-            style={{ width: "100%" }}
-          />
-        </div>
-        <div style={{ width: "100%", marginBottom: "12px" }}>
-          <label htmlFor="plataformas" style={{ fontWeight: "bold" }}>
-            Perfiles del combo
-          </label>
-          <MultiSelect
-            value={formData.idsCategoryProfile}
-            onChange={(e) => {
-              // Evitar duplicados en tiempo real
-              const uniqueValues = [...new Set(e.value)];
-              setFormData({ ...formData, idsCategoryProfile: uniqueValues });
-            }}
-            options={opcionesPlataformas}
-            optionLabel="name"
-            placeholder="Seleccionar plataformas"
-            style={{ width: "100%" }}
-          />
-        </div>
-        <div style={{ width: "100%", marginBottom: "12px" }}>
-          <label htmlFor="plataformas" style={{ fontWeight: "bold" }}>
-            Cuentas del combo
-          </label>
-          <MultiSelect
-            value={formData.idsCategoryAccount}
-            onChange={(e) => {
-              // Evitar duplicados en tiempo real
-              const uniqueValues = [...new Set(e.value)];
-              setFormData({ ...formData, idsCategoryAccount: uniqueValues });
-            }}
-            options={opcionesPlataformasAccount}
-            optionLabel="name"
-            placeholder="Seleccionar plataformas"
-            style={{ width: "100%" }}
-          />
-        </div>
-        <div style={{ width: "100%", marginBottom: "12px" }}>
-          <label htmlFor="plataformas" style={{ fontWeight: "bold" }}>
-            Imagen del Combo
-          </label>
-          {previewImage && (
-            <img
-              src={previewImage}
-              alt="Combo"
-              style={{ width: "100%", marginBottom: "12px" }}
+
+            <Textarea
+              label="DESCRIPCIÓN"
+              placeholder="Descripción del combo"
+              variant="bordered"
+              labelPlacement="outside"
+              minRows={2}
+              isInvalid={!!errors.description}
+              errorMessage={errors.description?.message}
+              classNames={inputClasses}
+              {...register("description", { required: "La descripción es requerida" })}
             />
-          )}
-          <FileUpload
-            id="comboImg"
-            mode="basic"
-            onSelect={handleImageSelect} // Manejar la selección de la nueva imagen
-            accept="image/*"
-            style={{ width: "100%" }}
-            chooseLabel="Seleccionar imagen"
-          />
-        </div>
-      </Dialog>
-      <Toast ref={toast} />
-    </>
+
+            <div className="flex gap-4">
+              <Input
+                type="number"
+                label="PRECIO"
+                placeholder="0.00"
+                variant="bordered"
+                labelPlacement="outside"
+                startContent={<div className="pointer-events-none flex items-center"><span className="text-slate-400 text-small font-bold">$</span></div>}
+                isInvalid={!!errors.price}
+                errorMessage={errors.price?.message}
+                classNames={{
+                  ...inputClasses,
+                  input: "text-slate-800 font-bold"
+                }}
+                {...register("price", { required: "El precio es requerido" })}
+                className="flex-1"
+              />
+              <Input
+                type="number"
+                label="PRECIO INFLADO"
+                placeholder="0.00"
+                variant="bordered"
+                labelPlacement="outside"
+                startContent={<div className="pointer-events-none flex items-center"><span className="text-slate-400 text-small font-bold">$</span></div>}
+                isInvalid={!!errors.offerPrice}
+                errorMessage={errors.offerPrice?.message}
+                classNames={{
+                  ...inputClasses,
+                  input: "text-slate-800 font-bold"
+                }}
+                {...register("offerPrice")}
+                className="flex-1"
+              />
+            </div>
+
+            <Controller
+              name="idsCategoryProfile"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  {...field}
+                  label="PERFILES DEL COMBO"
+                  placeholder="Seleccionar plataformas"
+                  selectionMode="multiple"
+                  variant="bordered"
+                  labelPlacement="outside"
+                  selectedKeys={new Set(field.value)}
+                  onSelectionChange={field.onChange}
+                  classNames={{
+                    ...inputClasses,
+                    trigger: "border-slate-200 group-hover:border-slate-300 focus-within:!border-slate-900 bg-white"
+                  }}
+                >
+                  {opcionesPlataformas.map((platform) => (
+                    <SelectItem key={platform.code} value={platform.code}>
+                      {platform.name}
+                    </SelectItem>
+                  ))}
+                </Select>
+              )}
+            />
+
+            <Controller
+              name="idsCategoryAccount"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  {...field}
+                  label="CUENTAS DEL COMBO"
+                  placeholder="Seleccionar plataformas"
+                  selectionMode="multiple"
+                  variant="bordered"
+                  labelPlacement="outside"
+                  selectedKeys={new Set(field.value)}
+                  onSelectionChange={field.onChange}
+                  classNames={{
+                    ...inputClasses,
+                    trigger: "border-slate-200 group-hover:border-slate-300 focus-within:!border-slate-900 bg-white"
+                  }}
+                >
+                  {opcionesPlataformasAccount.map((platform) => (
+                    <SelectItem key={platform.code} value={platform.code}>
+                      {platform.name}
+                    </SelectItem>
+                  ))}
+                </Select>
+              )}
+            />
+
+            <div className="flex flex-col gap-2">
+              <label className="text-slate-500 font-bold uppercase tracking-wider text-[10px]">IMAGEN DEL COMBO</label>
+
+              {previewImage && (
+                <div className="mb-2 w-full flex justify-center bg-slate-50 rounded-lg p-2 border border-slate-100">
+                  <img
+                    src={previewImage}
+                    alt="Vista previa"
+                    className="max-h-[200px] object-contain rounded-md"
+                  />
+                </div>
+              )}
+
+              <div className="flex items-center gap-2">
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleFileChange}
+                  className="hidden"
+                  accept="image/*"
+                />
+                <Button
+                  variant="bordered"
+                  className="border-slate-200 font-semibold text-slate-700 uppercase tracking-widest text-xs"
+                  startContent={<Upload size={18} />}
+                  onPress={() => fileInputRef.current.click()}
+                >
+                  Seleccionar imagen
+                </Button>
+                {fileName && <span className="text-sm text-slate-500 truncate max-w-[150px] font-medium">{fileName}</span>}
+                {fileName && (
+                  <Button isIconOnly size="sm" variant="light" color="danger" onPress={() => {
+                    setFileName("");
+                    setPreviewImage(combo.imgCombos?.[0]?.urlImagen || "");
+                    setValue("comboImg", null);
+                    if (fileInputRef.current) fileInputRef.current.value = "";
+                  }}>
+                    <X size={16} />
+                  </Button>
+                )}
+              </div>
+            </div>
+          </form>
+        </ModalBody>
+        <ModalFooter>
+          <Button
+            variant="bordered"
+            onPress={onClose}
+            className="border-slate-200 font-semibold text-slate-700 uppercase tracking-widest text-xs"
+          >
+            Cancelar
+          </Button>
+          <Button
+            className="bg-slate-900 text-white font-bold uppercase tracking-widest text-xs shadow-lg hover:bg-slate-800"
+            type="submit"
+            form="edit-combo-form"
+            isLoading={loading}
+            startContent={!loading && <Check size={18} />}
+          >
+            Actualizar
+          </Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
   );
 };
 

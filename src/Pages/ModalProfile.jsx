@@ -1,17 +1,27 @@
 import { useEffect, useState } from "react";
-import { Dialog } from "primereact/dialog";
-import { Button } from "primereact/button";
-import { Dropdown } from "primereact/dropdown";
-import { InputText } from "primereact/inputtext";
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Button,
+  Select,
+  SelectItem,
+  Input,
+  Checkbox,
+} from "@heroui/react";
+import { ShoppingBag } from "lucide-react";
 import "../style/modalProfile.css";
 import { useSelector, useDispatch } from "react-redux";
 import {
   setProfilesThunk,
   purchaseProfileThunk,
 } from "../features/user/profileSlice";
-import Swal from "sweetalert2";
 import { removeError, removeSuccess } from "../features/error/errorSlice";
-import CardProfile from "../Components/CardProfile";
+import { addToast } from "@heroui/toast";
+import CardProfilePreview from "../Components/CardProfilePreview";
+import { AddToCartButton } from "../Components/Cart";
 
 const ModalProfile = ({ data, onClose, reCharge }) => {
   const dispatch = useDispatch();
@@ -22,11 +32,7 @@ const ModalProfile = ({ data, onClose, reCharge }) => {
   const [subject, setSubject] = useState("");
   const [profileSelected, setProfileSelected] = useState(null);
   const [purchase, setPurchase] = useState(false);
-  // Estado para controllar el checkbox
-  const [checked, setChecked] = useState(true);
-
-  const getOptions = () =>
-    profiles.map((profile) => ({ label: profile.name, value: profile.id }));
+  const [checked, setChecked] = useState(false);
 
   const handleSelect = (e) => {
     const profileId = e.target.value;
@@ -35,26 +41,21 @@ const ModalProfile = ({ data, onClose, reCharge }) => {
   };
 
   const handleErrors = () => {
-    if (error === "El usuario no tiene suficiente saldo") {
-      Swal.fire({
-        icon: "error",
-        title: "Lo sentimos",
-        text: "No tienes suficiente saldo para adquirir esta cuenta",
-      });
+    const isSaldoInsuficiente = error && typeof error === 'string' && error.toLowerCase().includes('saldo') && error.toLowerCase().includes('insuficiente');
+    if (isSaldoInsuficiente) {
+      addToast({ title: "Saldo insuficiente", description: error, color: "danger" });
+      dispatch(removeError());
+    } else if (error === "El usuario no tiene suficiente saldo") {
+      addToast({ title: "Saldo insuficiente", description: "No tienes suficiente saldo para adquirir este perfil", color: "danger" });
       dispatch(removeError());
     } else if (!!error) {
-      Swal.fire({
-        icon: "error",
-        title: "Lo sentimos",
-        text: "Ha ocurrido un error, por favor intenta de nuevo",
-      });
+      addToast({ title: "Lo sentimos", description: error || "Ha ocurrido un error, por favor intenta de nuevo", color: "danger" });
       dispatch(removeError());
     } else if (success) {
-      Swal.fire({
-        icon: "success",
+      addToast({
         title: "¡Éxito!",
-        text: "La cuenta se ha adquirido con éxito, Los datos de la cuenta se han enviado a su correo electrónico",
-        confirmButtonText: "Aceptar",
+        description: "La cuenta se ha adquirido con éxito. Los datos se han enviado a su correo electrónico",
+        color: "success",
       });
       dispatch(removeSuccess());
     }
@@ -64,11 +65,7 @@ const ModalProfile = ({ data, onClose, reCharge }) => {
     setPurchase(true);
     if (!profileSelected) {
       onClose();
-      Swal.fire({
-        icon: "error",
-        title: "Lo sentimos",
-        text: "Por favor selecciona un perfil",
-      });
+      addToast({ title: "Lo sentimos", description: "Por favor selecciona un perfil", color: "warning" });
     } else {
       dispatch(
         purchaseProfileThunk(profileSelected.id, email, subject)
@@ -81,7 +78,6 @@ const ModalProfile = ({ data, onClose, reCharge }) => {
   };
 
   console.log(profiles);
-  
 
   useEffect(() => {
     handleErrors();
@@ -89,111 +85,191 @@ const ModalProfile = ({ data, onClose, reCharge }) => {
   }, [error, success]);
 
   return (
-    <div>
-      <Dialog
-        header={`Adquirir ${data?.title}`}
-        visible={data.total > 0 ? data.open : false}
-        onHide={onClose}
-        className="modal_profile"
-        footer={
-          <div>
-            <Button
-              label="Comprar"
-              icon="pi pi-shopping-cart"
-              onClick={handleBuy}
-              severity="success"
-              disabled={purchase}
-              loading={purchase}
-              rounded
-            />
-          </div>
-        }
-      >
-        <div className="container_modal_profile">
-          <div className="container_img">
-            <CardProfile
-              total={data?.total}
-              img={data?.img}
-              title={data?.title}
-              background={data?.categoryName}
-            />
-          </div>
-          <div className="container_info">
-            <h2 className="title-card">{data?.title}</h2>
-            <p style={{ fontSize: "17px", fontWeight: "500" }}>
-              Por favor, seleccione el perfil a comprar
-            </p>
-            <div className="profile">
-              <Dropdown
-                value={profileSelected ? profileSelected.id : ""}
-                onChange={(e) => handleSelect(e)}
-                options={getOptions()}
-                placeholder="Seleccionar Perfil"
-                className="dropdown_profile"
-                optionLabel="label"
-              />
+    <Modal
+      isOpen={data.total > 0 ? data.open : false}
+      onClose={onClose}
+      size="3xl"
+      backdrop="blur"
+      scrollBehavior="inside"
+      classNames={{
+        base: "modal-mobile-full bg-white dark:bg-zinc-900 border border-slate-200 dark:border-slate-800 shadow-2xl rounded-[2.5rem]",
+        header: "border-b border-slate-100 dark:border-slate-800 px-5 py-4 md:p-8 md:pb-4",
+        body: "px-5 py-4 md:p-8",
+        footer: "border-t border-slate-100 dark:border-slate-800 px-5 py-4 md:p-8 md:pt-4",
+        closeButton: "top-4 right-4 md:top-6 md:right-6 hover:bg-slate-100 dark:hover:bg-slate-800 active:scale-95 transition-transform",
+      }}
+      motionProps={{
+        variants: {
+          enter: {
+            y: 0, opacity: 1, scale: 1,
+            transition: { duration: 0.3, ease: "easeOut" },
+          },
+          exit: {
+            y: -20, opacity: 0, scale: 0.95,
+            transition: { duration: 0.2, ease: "easeIn" },
+          },
+        },
+      }}
+    >
+      <ModalContent>
+        {(onClose) => (
+          <>
+            <ModalHeader className="flex flex-col gap-1">
+              <h2 className="text-xl md:text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                Adquirir Perfil
+              </h2>
+            </ModalHeader>
+            <ModalBody>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
+                {/* Left Column: Profile Card Preview — compact on mobile */}
+                <div className="flex flex-col items-center justify-center md:min-h-[250px] bg-transparent md:bg-slate-50/50 md:dark:bg-slate-800/20 rounded-2xl p-0 md:p-6 border-0 md:border border-slate-100 dark:border-slate-800">
+                  <div className="transition-transform duration-500 hover:scale-105 scale-[0.65] md:scale-100 -my-4 md:my-0">
+                    <CardProfilePreview
+                      logoUrl={data?.logoUrl}
+                      displayName={data?.displayName || data?.categoryName}
+                      total={data?.total}
+                      backgroundType={data?.backgroundType || 'solid'}
+                      backgroundColor={data?.backgroundColor || '#000000'}
+                      gradientColors={data?.gradientColors || ['#000000', '#333333']}
+                      gradientDirection={data?.gradientDirection || 'to bottom'}
+                      logoSize={data?.logoSize || 'medium'}
+                      showAvailability={true}
+                    />
+                  </div>
+                </div>
+
+                {/* Right Column: Selection & Checkout */}
+                <div className="flex flex-col gap-4 md:gap-6">
+                  <div>
+                    <h3 className="text-xl font-bold text-slate-900 dark:text-white leading-tight mb-1">
+                      {data?.displayName || data?.categoryName}
+                    </h3>
+                    <p className="text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">
+                      Selecciona la variante de perfil que deseas adquirir
+                    </p>
+                  </div>
+
+                  <div className="space-y-4">
+                    <Select
+                      label="OPCIONES DE PERFIL"
+                      labelPlacement="outside"
+                      placeholder="Selecciona un perfil"
+                      variant="flat"
+                      selectedKeys={profileSelected ? [profileSelected.id] : []}
+                      onChange={handleSelect}
+                      startContent={<ShoppingBag size={18} className="text-slate-400" />}
+                      classNames={{
+                        label: "text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest text-[10px]",
+                        trigger: "h-14 bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors",
+                        value: "text-slate-900 dark:text-white font-bold text-sm",
+                      }}
+                    >
+                      {profiles.map((profile) => (
+                        <SelectItem key={profile.id} value={profile.id}>
+                          {profile.name}
+                        </SelectItem>
+                      ))}
+                    </Select>
+
+                    {profileSelected && (
+                      <div className="p-4 bg-blue-50/50 dark:bg-blue-900/10 rounded-2xl border border-blue-100 dark:border-blue-800/30 flex justify-between items-center animate-appearance-in">
+                        <span className="text-xs font-bold text-blue-400 uppercase tracking-widest">Precio</span>
+                        <span className="text-xl font-black text-blue-600 dark:text-blue-400">
+                          ${profileSelected.price.toLocaleString()}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="bg-slate-50 dark:bg-slate-800/30 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 space-y-3">
+                    <Checkbox
+                      isSelected={checked}
+                      onValueChange={setChecked}
+                      size="sm"
+                      color="primary"
+                    >
+                      <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Enviar por correo</span>
+                    </Checkbox>
+
+                    {checked && (
+                      <div className="flex flex-col gap-3 pt-1 animate-appearance-in">
+                        <Input
+                          type="text"
+                          label="ASUNTO"
+                          labelPlacement="outside"
+                          placeholder="Opcional"
+                          variant="flat"
+                          size="sm"
+                          value={subject}
+                          onValueChange={setSubject}
+                          classNames={{
+                            label: "text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest text-[10px]",
+                            input: "text-slate-900 dark:text-white font-bold text-sm",
+                            inputWrapper: "bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition-colors"
+                          }}
+                        />
+                        <Input
+                          type="email"
+                          label="CORREO ELECTRÓNICO"
+                          labelPlacement="outside"
+                          placeholder="tu@correo.com"
+                          variant="flat"
+                          size="sm"
+                          value={email}
+                          onValueChange={setEmail}
+                          classNames={{
+                            label: "text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest text-[10px]",
+                            input: "text-slate-900 dark:text-white font-bold text-sm",
+                            inputWrapper: "bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition-colors"
+                          }}
+                        />
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="hidden md:flex p-3 bg-slate-50/50 dark:bg-slate-800/20 rounded-xl gap-3 border border-slate-100 dark:border-slate-800 mt-auto">
+                    <div className="text-[10px] text-slate-400 dark:text-slate-500 leading-relaxed">
+                      • Los datos de la cuenta se enviarán inmediatamente tras la compra.<br />
+                      • No se admiten devoluciones ni reembolsos por este servicio.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ModalBody>
+            <ModalFooter className="flex-col md:flex-row gap-2 md:gap-3">
               {profileSelected && (
-                <div className="profile-value">
-                  Valor Perfil seleccionado:{" "}
-                  <strong>{profileSelected.price}</strong>
+                <div className="flex flex-col md:flex-row gap-2 w-full md:w-auto order-1 md:order-2">
+                  <AddToCartButton
+                    productType="profile"
+                    productId={profileSelected.id}
+                    productName={profileSelected.name}
+                    disabled={!profileSelected}
+                    onSuccess={onClose}
+                  />
+                  <Button
+                    onPress={handleBuy}
+                    isDisabled={purchase || !profileSelected}
+                    isLoading={purchase}
+                    startContent={!purchase && <ShoppingBag size={18} />}
+                    className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold uppercase tracking-widest text-[11px] h-12 rounded-2xl shadow-lg shadow-slate-900/20 hover:scale-105 active:scale-95 transition-all px-8 w-full md:w-auto"
+                  >
+                    COMPRAR
+                  </Button>
                 </div>
               )}
-            </div>
-            <form
-              className="email-tercero"
-              style={{ width: "370px", textAlign: "start" }}
-            >
-              {!checked && (
-                <div className="checkbox-container">
-                  <input
-                    type="checkbox"
-                    id="checkbox"
-                    name="checkbox"
-                    checked={checked}
-                    onChange={() => setChecked(!checked)}
-                  />
-                  <label className="checkbox-label" htmlFor="checkbox">
-                    Deseo enviar una copia de los datos de la compra
-                  </label>
-                </div>
-              )}
-              {checked && (
-                <div className="copia-email hidden animation-duration-500 box">
-                  <label htmlFor="username">Asunto</label>
-                  <InputText
-                    type="text"
-                    placeholder="Asunto (opcional)"
-                    className="input-email"
-                    value={subject}
-                    onChange={(e) => setSubject(e.target.value)}
-                  />
-                  <br />
-                  <br />
-                  <label htmlFor="username">Correo electrónico</label>
-                  <InputText
-                    type="email"
-                    placeholder="Correo electrónico"
-                    className="input-email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </div>
-              )}
-            </form>
-            <p>
-              Al realizar el pedido, aceptas nuestros <b>Términos de Uso</b>.
-            </p>
-            <ul>
-              <li>Guía de condiciones de uso restricciones y Garantía.</li>
-              <li>
-                No se aceptan devoluciones ni se hacen reembolsos de este
-                producto.
-              </li>
-            </ul>
-          </div>
-        </div>
-      </Dialog>
-    </div>
+              <Button
+                variant="light"
+                onPress={onClose}
+                className="font-bold uppercase tracking-widest text-[11px] text-slate-500 dark:text-slate-400 h-12 rounded-2xl px-6 w-full md:w-auto order-2 md:order-1"
+                startContent={<i className="pi pi-times" />}
+              >
+                Cerrar
+              </Button>
+            </ModalFooter>
+          </>
+        )}
+      </ModalContent>
+    </Modal>
   );
 };
 

@@ -1,0 +1,9 @@
+fullName,email,phone,lastPurchaseDate
+Juan Pérez,juan@example.com,3001234567,2024-01-01
+
+#
+# Plantilla de ejemplo para carga masiva de clientes.
+# - Deja la primera fila como encabezado.
+# - Cada fila siguiente es un cliente.
+# - Formato de fecha recomendado: AAAA-MM-DD.
+

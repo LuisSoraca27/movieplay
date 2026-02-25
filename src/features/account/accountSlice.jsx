@@ -3,6 +3,56 @@ import dksoluciones from '../../api/config';
 import getConfig from '../../utils/config';
 import { setError, setSuccess } from '../error/errorSlice'
 
+// ============================================
+// CONFIGURACIÓN DE CACHÉ
+// ============================================
+const CACHE_KEY = 'accounts_cache';
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutos en ms
+
+/**
+ * Obtiene datos del caché si están vigentes
+ */
+const getCachedAccounts = () => {
+    try {
+        const cached = sessionStorage.getItem(CACHE_KEY);
+        if (!cached) return null;
+        
+        const { data, timestamp } = JSON.parse(cached);
+        const now = Date.now();
+        
+        // Si el caché expiró, eliminarlo
+        if ((now - timestamp) >= CACHE_TTL) {
+            sessionStorage.removeItem(CACHE_KEY);
+            return null;
+        }
+        
+        return data;
+    } catch {
+        return null;
+    }
+};
+
+/**
+ * Guarda datos en el caché
+ */
+const setCachedAccounts = (data) => {
+    try {
+        sessionStorage.setItem(CACHE_KEY, JSON.stringify({
+            data,
+            timestamp: Date.now()
+        }));
+    } catch (e) {
+        console.warn('Error guardando caché:', e);
+    }
+};
+
+/**
+ * Invalida el caché (llamar después de compras/cambios)
+ */
+export const invalidateAccountsCache = () => {
+    sessionStorage.removeItem(CACHE_KEY);
+};
+
 const initialState = {
     length: [],
     accounts: []
@@ -22,18 +72,24 @@ const accountSlice = createSlice({
 });
 
 
-export const setAccountThunk = () => async (dispatch) => {
+export const setAccountThunk = (forceRefresh = false) => async (dispatch) => {
     try {
+        if (!forceRefresh) {
+            const cached = getCachedAccounts();
+            if (cached) {
+                dispatch(setLengthAccount(cached));
+                return;
+            }
+        }
+        
         const res = await dksoluciones.get('account/length', getConfig())
         const data = res.data
+        
+        setCachedAccounts(data);
+        
         dispatch(setLengthAccount(data))
     } catch (error) {
         console.log(error)
-        if (error.response.data.message === 'Session expired') {
-            localStorage.removeItem('token')
-            localStorage.removeItem('user')
-            window.location.reload()
-        }
     }
 }
 
@@ -46,11 +102,6 @@ export const setAccountsThunk = (categoryName) => async (dispatch) => {
         dispatch(setAccounts(data))
     } catch (error) {
         console.log(error)
-        if (error.response?.data.message === 'Session expired') {
-            localStorage.removeItem('token')
-            localStorage.removeItem('user')
-            window.location.reload()
-        }
     }
 }
 
@@ -60,12 +111,7 @@ export const createAccountThunk = (data) => async (dispatch) => {
         dispatch(setSuccess(true))
     } catch (error) {
         console.log(error)
-        if (error.response?.data.message === 'Session expired') {
-            localStorage.removeItem('token')
-            localStorage.removeItem('user')
-            window.location.reload()
-        }
-        dispatch(setError(error.response?.data.message))
+        dispatch(setError(error.response?.data?.message))
     }
 }
 
@@ -75,12 +121,7 @@ export const editAccountThunk = (id, data) => async (dispatch) => {
         dispatch(setSuccess(true))
     } catch (error) {
         console.log(error)
-        if (error.response?.data.message === 'Session expired') {
-            localStorage.removeItem('token')
-            localStorage.removeItem('user')
-            window.location.reload()
-        }
-        dispatch(setError(error.response?.data.message))
+        dispatch(setError(error.response?.data?.message))
     }
 }
 
@@ -91,11 +132,6 @@ export const deleteAccountThunk = (id) => async (dispatch) => {
         await dksoluciones.delete(`account/${id}`, getConfig())
     } catch (error) {
         console.log(error)
-        if (error.response?.data.message === 'Session expired') {
-            localStorage.removeItem('token')
-            localStorage.removeItem('user')
-            window.location.reload()
-        }
     }
 }
 
@@ -106,14 +142,11 @@ export const purchaseAccountThunk = (id, email, subject) => async (dispatch) => 
 
         await dksoluciones.post(`order/account/${id}`, { email, subject }, getConfig())
         dispatch(setSuccess(true))
+        invalidateAccountsCache();
+        dispatch(setAccountThunk(true))
     } catch (error) {
         console.log(error)
-        if (error.response?.data.message === 'Session expired') {
-            localStorage.removeItem('token')
-            localStorage.removeItem('user')
-            window.location.reload()
-        }
-        dispatch(setError(error.response?.data.message))
+        dispatch(setError(error.response?.data?.message))
     }
 }
 

@@ -1,62 +1,35 @@
 import React from 'react';
-import '../style/support.css'
-import soporte from '../assets/soporte-tecnico.png'
-import whatsapp from '../assets/whatsapp.png'
-import facebook from '../assets/facebook.png'
-import instagram from '../assets/instagram.png'
-import logo from '../assets/logo.png'
+import HeroSection from '../Components/Support/HeroSection';
+import WhatsappSection from '../Components/Support/WhatsappSection';
+import SocialSection from '../Components/Support/SocialSection';
+import BusinessHoursSection from '../Components/Support/BusinessHoursSection';
+import PaymentMethodsSection from '../Components/Support/PaymentMethodsSection';
+import Footer from '../Components/Support/Footer';
 
 const Support = () => {
     return (
-        <div className='container-support'>
-            <div className="header-support">
-                <h1>Soporte Tecnico</h1>
-                <p>Gracias por elegir Movieplay. En caso de duda, sugerencia o algún problema en el sitio web , por favor comuníquese a la administración a través de los siguientes medios.</p>
+        <div className="relative flex flex-col gap-8 md:gap-12 animate-fade-in -m-4 md:-m-6 p-6 md:p-8 lg:p-12 min-h-screen bg-[#1C1D1F] text-white overflow-hidden">
+            {/* Original Animated Mesh Background */}
+            <div className="absolute inset-0 opacity-30 pointer-events-none">
+                <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[120px] animate-pulse-slow" />
+                <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-indigo-500/10 rounded-full blur-[150px] animate-pulse-slow" style={{ animationDelay: '2s' }} />
             </div>
-            <div className="header-support">
-                <img className='soporte' src={soporte} alt="" />
-            </div>
-            <div className='line-whatsapp'>
-                <h2> Lineas de Whatsapp</h2>
-                <div className="lines">
-                    <a href="https://api.whatsapp.com/send/?phone=573225155761&text&type=phone_number&app_absent=0" target='_blank'>
-                        <div className="line">
-                            <img src={whatsapp} alt="" />
-                            <h3>Soporte</h3>
-                            <p>322 5155 761</p>
-                        </div>
-                    </a>
-                    <a href="https://api.whatsapp.com/send/?phone=573045214937&text&type=phone_number&app_absent=0" target='_blank'>
-                        <div className="line">
-                            <img src={whatsapp} alt="" />
-                            <h3>Ventas </h3>
-                            <p>304 5214 937</p>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            {/* <div className="red-socials">
-                <h2>siguenos en nuestras redes sociales</h2>
-                <div className='socials'>
-                    <a href="https://www.facebook.com/profile.php?id=100094106530924" target='_blank'>
-                        <div className="social">
-                            <img src={facebook} alt="" />
-                            <p>DK Soluciones Baq</p>
-                        </div>
-                    </a>
-                    <a href="">
-                        <div className="social">
-                            <img src={instagram} alt="" />
-                            <p>@dk_soluciones_baq</p>
-                        </div>
-                    </a>
-                </div>
-            </div> */}
-            <div className="footer-support">
 
-                <img src={logo} alt="" />
-                <p>© 2024 Movieplay. Todos los derechos reservados.</p>
-                <p>Dk Soluciones V1.5</p>
+            {/* Content Container */}
+            <div className="relative z-10 flex flex-col gap-8 md:gap-16 max-w-7xl mx-auto w-full">
+                <HeroSection />
+
+                <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 md:gap-10">
+                    <WhatsappSection />
+                    <SocialSection />
+                </div>
+
+                <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 md:gap-10">
+                    <BusinessHoursSection />
+                    <PaymentMethodsSection />
+                </div>
+
+                <Footer />
             </div>
         </div>
     );

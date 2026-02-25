@@ -15,7 +15,7 @@ const initialState = {
 };
 
 const ordersInternalSlice = createSlice({
-  name: "orders",
+  name: "ordersInternal",
   initialState,
   reducers: {
     setOrdersByDateForUser(state, action) {
@@ -44,27 +44,30 @@ const ordersInternalSlice = createSlice({
 
 export const createOrderInternal = (data) => async (dispatch) => {
   try {
-    const res = await dksoluciones.post("orderInternal/", data, getConfig());
-
+    await dksoluciones.post("orderInternal/", data, getConfig());
     dispatch(setSuccess("Pedido creado exitosamente"));
+    return { success: true };
   } catch (error) {
     console.log(error);
-    dispatch(setError(error.response.data.message));
+    dispatch(setError(error.response?.data?.message || "Error al crear el pedido"));
+    return { error: true };
   }
 };
 
 export const createOrderInternalProfile = (data) => async (dispatch) => {
   try {
-    const res = await dksoluciones.post(
+    await dksoluciones.post(
       "orderInternal/profile",
       data,
       getConfig()
     );
     dispatch(setOrderStatusSuccess("Pedido creado exitosamente"));
-    dispatch(setProfileThunk());
+    await dispatch(setProfileThunk());
+    return { success: true };
   } catch (error) {
     console.log(error);
-    dispatch(setOrderStatusError(error.response.data.message));
+    dispatch(setOrderStatusError(error.response?.data?.message || "Error al crear el pedido"));
+    return { error: true };
   }
 };
 
@@ -72,9 +75,11 @@ export const createOrderInternalProduct = (data) => async (dispatch) => {
   try {
     await dksoluciones.post("orderInternal/product", data, getConfig());
     dispatch(setSuccess("Pedido creado exitosamente"));
+    return { success: true };
   } catch (error) {
     console.log(error);
-    dispatch(setError(error.response.data.message));
+    dispatch(setError(error.response?.data?.message || "Error al crear el pedido"));
+    return { error: true };
   }
 };
 
@@ -88,7 +93,7 @@ export const searchOrdersInternalByDate = (date) => async (dispatch) => {
     
     dispatch(setOrdersByDate(data.data));
   } catch (error) {
-    console.log(error.response.data);
+    console.log(error.response?.data);
   }
 };
 
@@ -128,7 +133,7 @@ export const downloadSalesInternal = (date) => async (dispatch) => {
       console.log(response);
   } catch (error) {
       console.log(error);
-      dispatch(setError(error.response.data.message));
+      dispatch(setError(error.response?.data?.message));
   }
 }
 

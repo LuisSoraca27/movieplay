@@ -1,7 +1,6 @@
 import CryptoJS from 'crypto-js';
 
 const ENCRYPTION_KEY = import.meta.env.VITE_KEY_SECRET
-console.log(ENCRYPTION_KEY);
 
 export default function decrypt(encryptedText) {
     const parts = encryptedText.split(':');

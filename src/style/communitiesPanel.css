@@ -1,83 +1,138 @@
+.container-communities {
+  position: fixed;
+  right: 10px;
+  bottom: 10px;
+  padding: 10px;
+
+}
+.communities {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+}
+
 .button-communities {
-    height: 50px;
-    width: 180px;
-    background-color: #0191aa;
+  height: 50px;
+  width: 180px;
+  font-weight: 600;
+  background-color: #0191aa;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  flex-direction: column;
+  gap: 5px;
+  z-index: 2;
+  cursor: pointer;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.264);
+  font-size: 16px;
+  text-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.264);
+
+  a {
+    text-decoration: none;
     color: white;
-    position: fixed;
-    right: 10px;
-    bottom: 10px;
-    padding: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 10px;
-    z-index: 2;
-    cursor: pointer;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.264);
-    font-size: 16px;
-    font-weight: bold;
-    text-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.264);
   }
-  
-  .button-communities:hover {
-    background-color: #017f96;
+}
+
+.button-communities-recharge {
+  height: 50px;
+  width: 180px;
+  background: linear-gradient(90deg, #22af45, #03d156);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  margin-bottom: 5px;
+  z-index: 2;
+  cursor: pointer;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.264);
+  font-size: 16px;
+  font-weight: 600;
+  text-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.264);
+  animation: sliden 1.2s infinite ease-in-out;
+}
+
+.button-communities-recharge i {
+  color: white;
+  text-decoration: none;
+  font-style: normal;
+}
+
+@keyframes sliden {
+  0% {
+    transform: translateY(0);
+    background-size: 200% 200%; /* Aumentamos el tamaño del fondo */
+    background-position: 0% 50%; /* Posición inicial */
   }
-  
-  .button-communities-content {
-    position: relative;
-    z-index: 1;
+  50% {
+    transform: translateY(8px);
+    background-size: 200% 200%; /* Mantenemos el tamaño del fondo */
+    background-position: 100% 50%; /* Movemos el fondo hacia la derecha */
   }
-  
-  .close-icon {
-    font-size: 0.9rem;
-    position: absolute;
-    top: -20px;
-    right: -40px;
-    z-index: 2;
-    cursor: pointer;
-    background-color: #ef4444;
-    color: white;
-    border-radius: 50%;
-    padding: 5px;
+  100% {
+    transform: translateY(0);
+    background-size: 200% 200%; /* Mantenemos el tamaño del fondo */
+    background-position: 0% 50%; /* Volvemos a la posición inicial */
   }
-  
-  .close-icon:hover {
-    background-color: #d63636;
-  }
-  
+}
+
+.button-communities:hover {
+  background-color: #017f96;
+}
+
+
+.close-icon {
+  font-size: 0.9rem;
+  position: absolute;
+  top: -15px;
+  right: 0px;
+  z-index: 4;
+  cursor: pointer;
+  background-color: #ef4444;
+  color: white;
+  border-radius: 50%;
+  padding: 5px;
+}
+
+.close-icon:hover {
+  background-color: #d63636;
+}
+
+.communities {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.communities-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  padding: 20px;
+  background-color: white;
+  border-radius: 7px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.264);
+  color: #2a2a2a;
+  font-size: 17px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.communities-item:hover {
+  background-color: #f0f0f1;
+}
+
+.communities-item i {
+  margin-right: 10px;
+  font-size: 25px;
+}
+
+@media screen and (max-width: 768px) {
   .communities {
-    width: 340px;
-    margin-top: 40px;
+    width: 100%;
   }
-
-
-  .communities-item {
-    display: flex;
-    align-items: center;
-    justify-content: start;
-    padding: 20px;
-    background-color: white;
-    border-radius: 7px;
-    margin-bottom: 20px;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.264);
-    color: #2a2a2a;
-    font-size: 17px;
-    cursor: pointer;
-    text-decoration: none
-  }
-
-  .communities-item:hover {
-    background-color: #f0f0f1;
-  }
-
-  .communities-item i {
-    margin-right: 10px;
-    font-size: 25px;
-  }
-
-  @media screen and (max-width: 768px) {
-    .communities {
-      width: 100%;
-    }
-    
-  }
+}

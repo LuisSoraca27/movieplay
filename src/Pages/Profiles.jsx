@@ -1,84 +1,69 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import CardProfile from "../Components/CardProfile";
-import { setProfileThunk } from "../features/user/profileSlice";
+import CardProfilePreview from "../Components/CardProfilePreview";
+import { setProfileThunk, invalidateProfilesCache } from "../features/user/profileSlice";
 import IsLoading from "../Components/IsLoading";
 import "../style/profile.css";
 import "../style/cardprofile.css";
-import netflix from "../assets/img/netflix.png";
-import amazon_prime from "../assets/img/amazon_prime.png";
-import disney_plus from "../assets/img/disney_plus_p.webp";
-import max_premium from "../assets/img/max_premium.png";
-import max_estandar from "../assets/img/max_estandar.png";
-import crunchyroll from "../assets/img/crunchyroll.webp";
-import paramount_plus from "../assets/img/paramount-plus.png";
-import plex from "../assets/img/plex.png";
-import vix from "../assets/img/vix.png";
-import iptv from "../assets/img/iptvmes.png";
-import rakuten from "../assets/img/rakuten.png";
-import profenet from "../assets/img/profenet.png";
-import Dbasico from "../assets/img/Dbasico.png";
-import Destandar from "../assets/img/Destandar.png";
-import Dpremium from "../assets/img/Dpremium.png";
-import flujotv from "../assets/img/flujotv.png";
-import universal_plus from "../assets/img/universal_plus.png";
-import mubi from "../assets/img/mubi.png";
-import DGOcompleto from "../assets/img/DGOcompleto.png";
-import apple_tv from "../assets/img/apple_tv.png";
-import microsoft365 from "../assets/img/microsoft365.png";
-import netflix_extra from "../assets/img/netflix_extra.png";
-import clarovideo from "../assets/img/clarovideo.png";
-import wplay from "../assets/img/wplay.png";
-import chatgpt from "../assets/img/chatgpt.png";
-import capcut from "../assets/img/capcut.png";
-import amazonmusic from "../assets/img/amazonmusic.png";
 import { setIsLoading } from "../features/isLoading/isLoadingSlice";
 import ModalProfile from "./ModalProfile";
 import { setBalanceThunk } from "../features/balance/balanceSlice";
 import ViewNotificationImg from "../Components/Notifications/ViewNotificationImg";
 import RegisterOrder from "../Components/Order/RegisterOrder";
 
-const categoryImageMap = {
-  netflix: [netflix, "Netflix"],
-  amazon_prime: [amazon_prime, "Amazon Prime Video"],
-  disney_plus: [disney_plus, "Disney+"],
-  max_premium: [max_premium, "Max Premium"],
-  max_estandar: [max_estandar, "Max Estandar"],
-  crunchyroll: [crunchyroll, "Crunchyroll"],
-  profenet: [profenet, "El profenet"],
-  paramount_plus: [paramount_plus, "Paramount+"],
-  vix: [vix, "Vix+"],
-  plex: [plex, "Plex"],
-  iptv: [iptv, "IPTV"],
-  rakuten: [rakuten, "Rakuten Viki"],
-  Dbasico: [Dbasico, "Disney+ Basico"],
-  Destandar: [Destandar, "Disney+ Estándar"],
-  Dpremium: [Dpremium, "Disney+ Premium"],
-  magistv: [flujotv, "Flujo TV"],
-  universal: [universal_plus, "Universal+"],
-  mubi: [mubi, "Mubi"],
-  directvgo: [DGOcompleto, "DirectTvGO"],
-  apple_tv: [apple_tv, "Apple TV"],
-  microsoft365: [microsoft365, "Microsoft 365"],
-  netflix_extra: [netflix_extra, "Netflix Internacional"],
-  clarovideo: [clarovideo, "Claro Video"],
-  wplay: [wplay, "Wplay"],
-  chatgpt: [chatgpt, "ChatGPT"],
-  capcut: [capcut, "CapCut"],
-  amazonmusic: [amazonmusic, "Amazon Music"],
+// Configuración de visibilidad por categoría
+const categoryVisibility = {
+  hidden: [
+    "tidal",
+    "apple_music",
+    "youtube",
+    "dezzer",
+    "canva",
+    "calm",
+    "duolingo",
+    "star_plus",
+    "disney_plus",
+    "napster",
+    "regalo2",
+    "universal",
+  ],
+  adminOnly: ["regalo", "iptvbasico"],
+  restricted: {},
 };
 
 const Profiles = () => {
   const user = JSON.parse(localStorage.getItem("user"));
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState(null);
   const [reload, setReload] = useState(false);
-  const [isCommunityPanelOpen, setIsCommunityPanelOpen] = useState(true);
 
   const dispatch = useDispatch();
   const profiles = useSelector((state) => state.profiles.length);
   const isLoadingState = useSelector((state) => state.isLoading);
+
+  const isProfileVisible = (categoryName) => {
+    if (categoryVisibility.hidden.includes(categoryName)) {
+      return false;
+    }
+    if (categoryVisibility.adminOnly.includes(categoryName)) {
+      return user?.role === "admin" || user?.role === "superadmin";
+    }
+    if (categoryName in categoryVisibility.restricted) {
+      return categoryVisibility.restricted[categoryName](user);
+    }
+    return true;
+  };
+
+  const filterProfiles = () => {
+    const visibleProfiles = profiles.filter((profile) =>
+      isProfileVisible(profile.categoryName)
+    );
+    const profiles0 = visibleProfiles.filter((profile) => profile.total === "0");
+    const profilesComplete = visibleProfiles.filter(
+      (profile) => profile.total !== "0"
+    );
+    return [...profilesComplete, ...profiles0];
+  };
 
   const renderModal = () => {
     if (user?.role === "admin") {
@@ -90,7 +75,6 @@ const Profiles = () => {
         />
       );
     }
-
     return (
       <ModalProfile
         isOpen={isModalOpen}
@@ -104,30 +88,28 @@ const Profiles = () => {
   useEffect(() => {
     dispatch(setBalanceThunk(user?.id));
     dispatch(setIsLoading(true));
-    dispatch(setProfileThunk()).finally(() => {
+    // Si hay reload, invalidar caché para forzar datos frescos
+    if (reload) {
+      invalidateProfilesCache();
+    }
+    dispatch(setProfileThunk(reload)).finally(() => {
       dispatch(setIsLoading(false));
     });
   }, [dispatch, reload, user?.id]);
 
-  const handleCardClick = (data) => {
-    setModalData(data);
+  const handleCardClick = (profile) => {
+    setModalData({
+      total: profile.total,
+      categoryName: profile.categoryName,
+      displayName: profile.displayName,
+      logoUrl: profile.logoPublicUrl,
+      backgroundType: profile.backgroundType,
+      backgroundColor: profile.backgroundColor,
+      gradientColors: profile.gradientColors,
+      gradientDirection: profile.gradientDirection,
+      open: true,
+    });
     setIsModalOpen(true);
-  };
-
-  const filterProfiles = () => {
-    // Con stock (excluyendo netflix_extra)
-    const profilesWithStock = profiles.filter(
-      (profile) => profile.total !== "0" && profile.categoryName !== "netflix_extra"
-    );
-    // Netflix Internacional (para ponerlo al final del stock)
-    const netflixInternacional = profiles.filter(
-      (profile) => profile.categoryName === "netflix_extra"
-    );
-    // Sin stock (siempre al final)
-    const profilesNoStock = profiles.filter(
-      (profile) => profile.total === "0" && profile.categoryName !== "netflix_extra"
-    );
-    return [...profilesWithStock, ...netflixInternacional, ...profilesNoStock];
   };
 
   return (
@@ -136,58 +118,37 @@ const Profiles = () => {
       {isLoadingState ? (
         <IsLoading />
       ) : (
-        <div style={{ position: "relative" }}>
+        <div className="p-4 md:p-6">
+          {/* Page Header */}
+          <div className="mb-8 text-center">
+            <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+              Perfiles
+            </h1>
+            <p className="text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500 mt-3">
+              Encuentra aquí el perfil individual de tu plataforma favorita
+            </p>
+          </div>
+
           <div className="container-profile">
-            <div className="container-title">
-              <h1>Perfiles</h1>
-              <p>
-                Encuentra aquí el perfil individual de tu plataforma favorita
-              </p>
-            </div>
             {filterProfiles().map((profile, index) => {
-              const img = categoryImageMap[profile?.categoryName]?.[0];
-              const title = categoryImageMap[profile?.categoryName]?.[1];
-
-              switch (profile.categoryName) {
-                case "tidal":
-                case "apple_music":
-                case "youtube":
-                case "dezzer":
-                case "canva":
-                case "calm":
-                case "duolingo":
-                case "star_plus":
-                case "disney_plus":
-                case "napster":
-                case "iptvbasico":
-                case "regalo2":
-                case "spotify":
-                case "mcafee":
-                case "playstation":
-                case "xbox_pass":
-                  return null;
-
-                default:
-                  return (
-                    <CardProfile
-                      key={index}
-                      total={profile.total}
-                      background={profile.categoryName}
-                      img={img}
-                      title={title}
-                      onClick={() =>
-                        handleCardClick({
-                          total: profile.total,
-                          categoryName: profile.categoryName,
-                          background: profile.categoryName,
-                          img: img,
-                          title: title,
-                          open: isModalOpen,
-                        })
-                      }
-                    />
-                  );
+              if (isProfileVisible(profile.categoryName)) {
+                return (
+                  <CardProfilePreview
+                    key={profile.id || index}
+                    logoUrl={profile.logoPublicUrl}
+                    displayName={profile.displayName || profile.categoryName}
+                    backgroundType={profile.backgroundType || 'solid'}
+                    backgroundColor={profile.backgroundColor || '#000000'}
+                    gradientColors={profile.gradientColors || ['#000000', '#333333']}
+                    gradientDirection={profile.gradientDirection || 'to bottom'}
+                    logoSize={profile.logoSize || 'medium'}
+                    total={profile.total}
+                    showAvailability={true}
+                    onClick={() => handleCardClick(profile)}
+                  />
+                );
               }
+              return null;
             })}
           </div>
         </div>

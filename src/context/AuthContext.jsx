@@ -16,15 +16,17 @@ export function AuthContextProvider({ children }) {
     const login = useCallback(async ({ email, password }) => {
         try {
             const res = await dksoluciones.post('user/login', { email, password })
-            const { user, token } = res.data.data;
+            const { user, token, subscription } = res.data.data;
             localStorage.setItem('token', token);
             localStorage.setItem('user', JSON.stringify(user));
             localStorage.setItem('auth', true);
+            localStorage.setItem('subscription', JSON.stringify(subscription));
+            localStorage.removeItem('subscriptionBlocked');
             setIsAuthenticated(true);
             setUserAuth(user);
         } catch (error) {
             console.log(error)
-            dispatch(setError(error.response.data.message))
+            dispatch(setError(error.response?.data?.message))
         }
     }, []);
 
@@ -32,6 +34,8 @@ export function AuthContextProvider({ children }) {
         localStorage.removeItem('user');
         localStorage.removeItem('token');
         localStorage.removeItem('auth');
+        localStorage.removeItem('subscription');
+        localStorage.removeItem('subscriptionBlocked');
         setIsAuthenticated(false);
         setUserAuth({});
     }, []);

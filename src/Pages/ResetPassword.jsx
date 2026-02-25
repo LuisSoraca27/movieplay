@@ -1,17 +1,26 @@
-import { useState, useRef } from "react";
-import { Password } from "primereact/password";
-import { Button } from "primereact/button";
-import { InputOtp } from "primereact/inputotp";
+import { useState } from "react";
+import { Input, Button } from "@heroui/react";
+import { addToast } from "@heroui/toast";
 import dksoluciones from "../api/config";
-import { Toast } from "primereact/toast";
-import Swal from "sweetalert2";
 import { Link, useNavigate } from "react-router-dom";
+import { Eye, EyeOff } from "lucide-react";
+import { motion } from "framer-motion";
+
+// Importing Logos (Matching Login.jsx/ForgotPassword.jsx)
+import netflix from "../assets/img/netflix.png";
+import prime from "../assets/img/amazon_prime.png";
+import hbo from "../assets/img/hbo_max.png";
+import appletv from "../assets/img/apple_tv.png";
+import hulu from "../assets/img/paramount-plus.png";
 
 function ResetPassword() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const [isConfirmVisible, setIsConfirmVisible] = useState(false);
+
   const [errors, setErrors] = useState({
     password: "",
     confirmPassword: "",
@@ -24,8 +33,10 @@ function ResetPassword() {
   });
   const [render, setRender] = useState(true);
 
-  const toast = useRef(null);
   const Navigate = useNavigate();
+
+  const toggleVisibility = () => setIsVisible(!isVisible);
+  const toggleConfirmVisibility = () => setIsConfirmVisible(!isConfirmVisible);
 
   const submitOtp = async (e) => {
     e.preventDefault();
@@ -41,11 +52,10 @@ function ResetPassword() {
     } catch (error) {
       console.log(error);
       setLoading(false);
-      toast.current.show({
-        severity: "error",
-        summary: "Lo sentimos",
-        detail: "Codigo invalido",
-        life: 5000,
+      addToast({
+        title: "Error",
+        description: error.response?.data?.message || "Código inválido",
+        color: "danger",
       });
     }
   };
@@ -76,8 +86,7 @@ function ResetPassword() {
     return "";
   };
 
-  const handlePasswordChange = (e) => {
-    const value = e.target.value;
+  const handlePasswordChange = (value) => {
     setPassword(value);
     setTouched((prev) => ({ ...prev, password: true }));
     setErrors((prev) => ({
@@ -88,8 +97,7 @@ function ResetPassword() {
     }));
   };
 
-  const handleConfirmPasswordChange = (e) => {
-    const value = e.target.value;
+  const handleConfirmPasswordChange = (value) => {
     setConfirmPassword(value);
     setTouched((prev) => ({ ...prev, confirmPassword: true }));
     setErrors((prev) => ({
@@ -107,7 +115,7 @@ function ResetPassword() {
     });
 
     if (render) {
-      if (password.length !== 6) {
+      if (otp.length !== 6) {
         setErrors((prev) => ({
           ...prev,
           otp: "El código debe tener 6 dígitos",
@@ -135,162 +143,274 @@ function ResetPassword() {
         code: otp,
       });
       if (res.status === 200) {
-        Swal.fire({
-          title: "Contraseña restablecida",
-          text: "Tu contraseña ha sido restablecida exitosamente",
-          icon: "success",
-          confirmButtonText: "Aceptar",
-        }).then(() => {
-          Navigate("/login");
+        addToast({
+          title: "Éxito",
+          description: "Tu contraseña ha sido restablecida exitosamente",
+          color: "success",
         });
+        setTimeout(() => {
+          Navigate("/login");
+        }, 2000);
       }
     } catch (error) {
       console.log(error);
       setLoading(false);
-      toast.current.show({
-        severity: "error",
-        summary: "Lo sentimos",
-        detail: "Ocurrio un error",
-        life: 5000,
+      addToast({
+        title: "Error",
+        description: "Ocurrió un error",
+        color: "danger",
       });
     }
   };
 
-  const renderResetPassword = () => {
+  const renderFormContent = () => {
     if (!render) {
       return (
-        <>
-          <h2>Restablecer contraseña</h2>
-          <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label htmlFor="password">Nueva contraseña</label>
-              <Password
-                id="password"
-                name="password"
-                value={password}
-                className={
-                  errors.password && touched.password ? "p-invalid" : ""
-                }
-                placeholder="Ingresa tu nueva contraseña"
-                onChange={handlePasswordChange}
-                onBlur={() =>
-                  setTouched((prev) => ({ ...prev, password: true }))
-                }
-                toggleMask
-                feedback={false}
-                style={{ width: "100%", display: "block" }}
-              />
-              {errors.password && touched.password && (
-                <small className="p-error block mt-2">{errors.password}</small>
-              )}
-            </div>
-            <div className="form-group">
-              <label htmlFor="confirmPassword">Confirmar contraseña</label>
-              <Password
-                id="confirmPassword"
-                name="confirmPassword"
-                value={confirmPassword}
-                className={
-                  errors.confirmPassword && touched.confirmPassword
-                    ? "p-invalid"
-                    : ""
-                }
-                placeholder="Confirma tu nueva contraseña"
-                onChange={handleConfirmPasswordChange}
-                onBlur={() =>
-                  setTouched((prev) => ({ ...prev, confirmPassword: true }))
-                }
-                feedback={false}
-                toggleMask
-                style={{ width: "100%", display: "block" }}
-              />
-              {errors.confirmPassword && touched.confirmPassword && (
-                <small className="p-error block mt-2">
-                  {errors.confirmPassword}
-                </small>
-              )}
-            </div>
+        <div className="w-full max-w-[400px] relative flex flex-col justify-center">
+          <div className="mb-8">
+            <h2 className="text-[#0B1C33] text-3xl font-extrabold mb-1 drop-shadow-sm">Nueva Contraseña</h2>
+            <h3 className="text-[#4A5568] text-lg font-medium drop-shadow-sm">Ingresa tu nueva contraseña segura</h3>
+          </div>
+
+          <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+            <Input
+              label="Nueva contraseña"
+              labelPlacement="outside"
+              placeholder="Ingresa tu nueva contraseña"
+              variant="faded"
+              radius="sm"
+              endContent={
+                <button className="focus:outline-none" type="button" onClick={toggleVisibility}>
+                  {isVisible ? (
+                    <EyeOff className="text-xl text-gray-600" />
+                  ) : (
+                    <Eye className="text-xl text-gray-600" />
+                  )}
+                </button>
+              }
+              type={isVisible ? "text" : "password"}
+              value={password}
+              onValueChange={handlePasswordChange}
+              isInvalid={touched.password && !!errors.password}
+              errorMessage={touched.password && errors.password}
+              classNames={{
+                inputWrapper: "bg-white/50 border-white/50 hover:bg-white/70 focus:bg-white transition-colors",
+                label: "font-semibold text-gray-700 pb-2",
+                input: "text-gray-800"
+              }}
+            />
+
+            <Input
+              label="Confirmar contraseña"
+              labelPlacement="outside"
+              placeholder="Confirma tu nueva contraseña"
+              variant="faded"
+              radius="sm"
+              endContent={
+                <button className="focus:outline-none" type="button" onClick={toggleConfirmVisibility}>
+                  {isConfirmVisible ? (
+                    <EyeOff className="text-xl text-gray-600" />
+                  ) : (
+                    <Eye className="text-xl text-gray-600" />
+                  )}
+                </button>
+              }
+              type={isConfirmVisible ? "text" : "password"}
+              value={confirmPassword}
+              onValueChange={handleConfirmPasswordChange}
+              isInvalid={touched.confirmPassword && !!errors.confirmPassword}
+              errorMessage={touched.confirmPassword && errors.confirmPassword}
+              classNames={{
+                inputWrapper: "bg-white/50 border-white/50 hover:bg-white/70 focus:bg-white transition-colors",
+                label: "font-semibold text-gray-700 pb-2",
+                input: "text-gray-800"
+              }}
+            />
+
             <Button
               type="submit"
-              label="Restablecer"
-              className="p-button-rounded"
-              severity="success"
-              loading={loading}
-              disabled={
+              className="w-full bg-[#1C1D1F] hover:bg-[#2D2E30] text-white font-bold mt-2 shadow-lg"
+              size="lg"
+              radius="full"
+              isLoading={loading}
+              isDisabled={
                 loading ||
-                (touched.password && errors.password) ||
-                (touched.confirmPassword && errors.confirmPassword)
+                (touched.password && !!errors.password) ||
+                (touched.confirmPassword && !!errors.confirmPassword)
               }
-            />
+            >
+              Restablecer Contraseña
+            </Button>
           </form>
-          <p style={{ fontWeight: 500, textAlign: "center" }}>
-            Volver a{" "}
+          <div className="flex justify-center mt-4 text-[#4A5568] font-medium text-sm gap-2">
             <Link
-              style={{
-                color: "#2f73f1",
-                cursor: "pointer",
-                textDecoration: "none",
-              }}
+              className="text-[#2f73f1] hover:text-[#1a5cbd] transition-colors font-semibold"
               to="/login"
             >
-              Iniciar sesión
+              Volver a Iniciar sesión
             </Link>
-          </p>
-        </>
+          </div>
+        </div>
       );
     } else {
       return (
-        <>
-          <h2>Codigo de verificación</h2>
-          <p>
-            Recibiste un codigo de 6 digitos por correo electrónico, por favor
-            ingresalo
-          </p>
-          <form onSubmit={submitOtp}>
-            <InputOtp
+        <div className="w-full max-w-[400px] relative flex flex-col justify-center">
+          <div className="mb-8">
+            <h2 className="text-[#0B1C33] text-3xl font-extrabold mb-1 drop-shadow-sm">Verificación</h2>
+            <h3 className="text-[#4A5568] text-lg font-medium drop-shadow-sm">
+              Ingresa el código de 6 dígitos que enviamos a tu correo
+            </h3>
+          </div>
+
+          <form onSubmit={submitOtp} className="flex flex-col gap-6">
+            <Input
+              type="text"
+              label="Código de Verificación"
+              labelPlacement="outside"
+              placeholder="000000"
+              variant="faded"
+              radius="sm"
               value={otp}
-              onChange={(e) => setOtp(e.value)}
-              numInputs={6}
-              length={6}
-              integerOnly
-              className={errors.otp && touched.otp ? "p-invalid" : ""}
-              onBlur={() => setTouched((prev) => ({ ...prev, otp: true }))}
+              onValueChange={(val) => {
+                setOtp(val);
+                setTouched((prev) => ({ ...prev, otp: true }));
+              }}
+              isInvalid={touched.otp && !!errors.otp}
+              errorMessage={touched.otp && errors.otp}
+              maxLength={6}
+              classNames={{
+                inputWrapper: "bg-white/50 border-white/50 hover:bg-white/70 focus:bg-white transition-colors",
+                label: "font-semibold text-gray-700 pb-2",
+                input: "text-center text-3xl tracking-[0.5em] font-bold text-gray-800 placeholder:tracking-normal placeholder:text-base",
+                innerWrapper: "justify-center"
+              }}
             />
-            {errors.otp && touched.otp && (
-              <small className="p-error block mt-2">{errors.otp}</small>
-            )}
+
             <Button
               type="submit"
-              label="Verificar"
-              className="p-button-rounded"
-              severity="success"
-              loading={loading}
-              disabled={loading || otp.length !== 6}
-            />
+              className="w-full bg-[#1C1D1F] hover:bg-[#2D2E30] text-white font-bold mt-2 shadow-lg"
+              size="lg"
+              radius="full"
+              isLoading={loading}
+              isDisabled={loading || otp.length !== 6}
+            >
+              Verificar Código
+            </Button>
           </form>
-          <p style={{ fontWeight: 500, textAlign: "center" }}>
-            Volver a{" "}
+          <div className="flex justify-center mt-4 text-[#4A5568] font-medium text-sm gap-2">
             <Link
-              style={{
-                color: "#2f73f1",
-                cursor: "pointer",
-                textDecoration: "none",
-              }}
+              className="text-[#2f73f1] hover:text-[#1a5cbd] transition-colors font-semibold"
               to="/login"
             >
-              Iniciar sesión
+              Volver a Iniciar sesión
             </Link>
-          </p>
-        </>
+          </div>
+        </div>
       );
     }
   };
 
   return (
     <>
-      <Toast ref={toast} />
-      <div className="containerLogin">
-        <div className="login-container">{renderResetPassword()}</div>
+      <div className="flex min-h-screen w-full bg-gradient-to-br from-[#E5F1FD] via-[#f0f9ff] to-[#E5F1FD] overflow-hidden relative">
+
+        {/* Background Decorative Blobs */}
+        <motion.div
+          animate={{
+            scale: [1, 1.2, 1],
+            rotate: [0, 90, 0],
+            opacity: [0.3, 0.5, 0.3],
+          }}
+          transition={{
+            duration: 15,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+          className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-blue-400 rounded-full mix-blend-multiply filter blur-[128px] opacity-30 z-0"
+        />
+        <motion.div
+          animate={{
+            scale: [1, 1.1, 1],
+            x: [0, 50, 0],
+            opacity: [0.3, 0.6, 0.3],
+          }}
+          transition={{
+            duration: 12,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 2
+          }}
+          className="absolute bottom-[-10%] right-[-5%] w-[600px] h-[600px] bg-purple-300 rounded-full mix-blend-multiply filter blur-[128px] opacity-30 z-0"
+        />
+
+        {/* Left Side - Promotional Content */}
+        <motion.div
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
+          className="hidden lg:flex w-[65%] flex-col justify-center px-16 relative z-10"
+        >
+          <div className="max-w-2xl">
+            <h1 className="text-[#0B1C33] text-6xl font-bold leading-tight mb-6 drop-shadow-sm">
+              Tu negocio de streaming <br /> en un solo lugar.
+            </h1>
+            <p className="text-[#4A5568] text-2xl mb-12 font-medium">
+              Gestiona tus cuentas y clientes de forma fácil y rápida.
+            </p>
+
+            {/* Infinite Carousel */}
+            <div className="relative w-full overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
+              <motion.div
+                className="flex gap-8 w-max"
+                animate={{
+                  x: [0, -1036],
+                }}
+                transition={{
+                  duration: 25,
+                  repeat: Infinity,
+                  ease: "linear",
+                }}
+              >
+                {/* First Set of Logos */}
+                {[...Array(2)].map((_, i) => (
+                  <div key={i} className="flex gap-8">
+                    <div className="w-20 h-20 bg-black/80 backdrop-blur-md rounded-2xl flex items-center justify-center overflow-hidden border border-white/20 shadow-lg shrink-0">
+                      <img src={netflix} alt="Netflix" className="w-full h-full object-cover" />
+                    </div>
+                    <div className="w-20 h-20 bg-[#0063e5]/80 backdrop-blur-md rounded-2xl flex items-center justify-center overflow-hidden border border-white/20 shadow-lg shrink-0">
+                      <span className="text-white font-bold text-sm">Disney+</span>
+                    </div>
+                    <div className="w-20 h-20 bg-[#00A8E1]/80 backdrop-blur-md rounded-2xl flex items-center justify-center overflow-hidden border border-white/20 shadow-lg shrink-0">
+                      <img src={prime} alt="Prime Video" className="w-full h-full object-contain p-2" />
+                    </div>
+                    <div className="w-20 h-20 bg-[#38003c]/80 backdrop-blur-md rounded-2xl flex items-center justify-center overflow-hidden border border-white/20 shadow-lg shrink-0">
+                      <img src={hbo} alt="HBO Max" className="w-full h-full object-cover" />
+                    </div>
+                    <div className="w-20 h-20 bg-[#2f2f2f]/80 backdrop-blur-md rounded-2xl flex items-center justify-center overflow-hidden border border-white/20 shadow-lg shrink-0">
+                      <img src={appletv} alt="Apple TV+" className="w-full h-full object-contain p-3" />
+                    </div>
+                    <div className="w-20 h-20 bg-[#1ce783]/80 backdrop-blur-md rounded-2xl flex items-center justify-center overflow-hidden border border-white/20 shadow-lg shrink-0">
+                      <span className="text-black font-bold text-sm">Hulu</span>
+                    </div>
+                    <div className="w-20 h-20 bg-[#E50914]/10 backdrop-blur-md rounded-2xl flex items-center justify-center overflow-hidden border border-white/20 shadow-lg shrink-0">
+                      <span className="text-red-600 font-bold text-xs">YT Premium</span>
+                    </div>
+                  </div>
+                ))}
+              </motion.div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Right Side - Form Content */}
+        <motion.div
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="w-full lg:w-[35%] flex items-center justify-center p-6 lg:p-12 h-screen overflow-y-auto relative z-20"
+        >
+          {renderFormContent()}
+        </motion.div>
       </div>
     </>
   );

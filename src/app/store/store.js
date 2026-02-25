@@ -2,7 +2,6 @@ import { configureStore } from '@reduxjs/toolkit'
 import userReducer from '../../features/user/userSlice'
 import profileSlice from '../../features/user/profileSlice'
 import comboSlice from '../../features/user/comboSlice'
-import courseSlice from '../../features/course/courseSlice'
 import licenseSlice from '../../features/license/licenseSlice'
 import accountSlice from '../../features/account/accountSlice'
 import isLoadingSlice from '../../features/isLoading/isLoadingSlice'
@@ -12,16 +11,23 @@ import OrdersSlice from '../../features/orders/OrdersSlice'
 import notificationSlice from '../../features/notifications/notificationSlice'
 import OutlaySlice from '../../features/outlay/OutlaySlice'
 import customerSlice from '../../features/customer/customerSlice'
-import totalItemsSlice  from '../../features/combo/totalItemsSlice'
+import totalItemsSlice from '../../features/combo/totalItemsSlice'
 import ordersInternalSlice from '../../features/ordersInternal/ordersIternalSlice'
 import dashboardSlice from '../../features/dashboard/dashboardSlice'
+import historyRechargeSlice from '../../features/historyRecharge/HistoryRechargeSlice'
+import dailySalesSlice from '../../features/DailySale/dailySaleSlice'
+import inventoryManagerSlice from '../../features/InventoryManager/InventoryManagerSlice'
+import cartSlice from '../../features/cart/cartSlice'
+import kioskSlice from '../../features/kiosk/kioskSlice'
+import kioskCartSlice from '../../features/kioskCart/kioskCartSlice'
+import categoriesSlice from '../../features/categories/categoriesSlice'
+import storeSettingsSlice from '../../features/storeSettings/storeSettingsSlice'
 
 export const store = configureStore({
     reducer: {
         user: userReducer,
         profiles: profileSlice,
         combos: comboSlice,
-        courses: courseSlice,
         licenses: licenseSlice,
         accounts: accountSlice,
         isLoading: isLoadingSlice,
@@ -34,6 +40,14 @@ export const store = configureStore({
         totalItems: totalItemsSlice,
         ordersInternal: ordersInternalSlice,
         dashboard: dashboardSlice,
+        historyRecharge: historyRechargeSlice,
+        dailySales: dailySalesSlice,
+        inventoryManager: inventoryManagerSlice,
+        cart: cartSlice,
+        kiosk: kioskSlice,
+        kioskCart: kioskCartSlice,
+        categoriesCP: categoriesSlice,
+        storeSettings: storeSettingsSlice
     },
-    devTools: true
+    devTools: import.meta.env.VITE_NODE_ENV === "production" ? false : true
 })

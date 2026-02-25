@@ -1,253 +1,271 @@
-import { useEffect, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
-import { Dropdown } from "primereact/dropdown";
-import { InputText } from "primereact/inputtext";
-import { Button } from "primereact/button";
-import { Dialog } from "primereact/dialog";
+import { useEffect, useState, useMemo } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Textarea, Select, SelectItem, Divider } from "@heroui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { createProfileThunk } from "../../features/user/profileSlice";
-import "../../style/inventory.css";
-import useErrorHandler from "../../Helpers/useErrorHandler";
-import { Toast } from "primereact/toast";
-import { optionsCategory } from "../../utils/functions/selectNameCategoryOptions";
+import { fetchCategories } from "../../features/categories/categoriesSlice";
+import { addToast } from "@heroui/toast";
+import { Check, X } from "lucide-react";
 
 const CreateProfile = ({ show, onClose, reCharge }) => {
-  const toast = useRef(null);
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
     reset,
+    watch
   } = useForm();
-  const [selectedOption, setSelectedOption] = useState("");
+
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const { error, success } = useSelector((state) => state.error);
-  const handleErrors = useErrorHandler(error, success);
-  const footerContent = (
-    <div>
-      <Button
-        type="button"
-        label="Confirmar"
-        icon="pi pi-check"
-        onClick={() => onSubmit()}
-        autoFocus
-        severity="success"
-      />
-    </div>
-  );
 
-  const onSubmit = handleSubmit((data) => {
+  // Obtener categorías desde Redux
+  const { categories } = useSelector((state) => state.categoriesCP);
+
+  // Convertir categorías al formato esperado
+  const optionsCategory = useMemo(() => {
+    if (!categories || categories.length === 0) {
+      return [];
+    }
+    return categories.map(cat => ({
+      name: cat.displayName || cat.name,
+      value: String(cat.id)
+    }));
+  }, [categories]);
+
+  const categoryId = watch("categoryId");
+  const isIPTV = categoryId === "11" || categories?.find(c => String(c.id) === categoryId)?.name === "iptv";
+
+  // Cargar categorías al montar
+  useEffect(() => {
+    if (show && categories?.length === 0) {
+      dispatch(fetchCategories());
+    }
+  }, [show, dispatch, categories?.length]);
+
+  useEffect(() => {
+    if (error) addToast({ title: 'Error', description: error, color: 'danger' });
+    if (success) addToast({ title: 'Éxito', description: success, color: 'success' });
+  }, [error, success]);
+
+  const onSubmit = (data) => {
+    setLoading(true);
     const dataProfile = {
       ...data,
-      categoryId: selectedOption.code,
+      categoryId: data.categoryId,
     };
-    console.log(selectedOption);
-    
+
     dispatch(createProfileThunk(dataProfile)).then(() => {
+      setLoading(false);
       onClose();
       reset();
       reCharge();
     });
-  });
+  };
 
-  useEffect(() => {
-    handleErrors(toast.current);
-  }, [error, success]);
+  const inputClasses = {
+    label: "text-slate-500 font-bold uppercase tracking-wider text-[10px]",
+    inputWrapper: "border-slate-200 group-hover:border-slate-300 focus-within:!border-slate-900 bg-white",
+    input: "text-slate-800 font-semibold",
+  };
 
   return (
-    <div>
-      <Toast ref={toast} />
-      <Dialog
-        visible={show}
-        onHide={onClose}
-        modal
-        style={{ width: "50vw" }}
-        header={`Crear ${selectedOption === "11" ? "IPTV" : "Perfil"}`}
-        footer={footerContent}
-      >
-        <form style={{ textAlign: "start", width: "100%" }}>
-          <div className="container-form-combos">
-            <div className="colum-form-1">
-              <div style={{ width: "100%" }}>
-                <label htmlFor="categoryId" className="style-label">
-                  Plataforma
-                </label>
-                <Dropdown
-                  optionLabel="name"
-                  value={selectedOption}
+    <Modal
+      isOpen={show}
+      onClose={onClose}
+      size="2xl"
+      scrollBehavior="inside"
+      classNames={{
+        base: "rounded-[2rem] border border-slate-100 shadow-2xl safe-area-y",
+        header: "border-b border-slate-100 py-4",
+        footer: "border-t border-slate-100 py-4",
+        closeButton: "hover:bg-slate-100 active:bg-slate-200 rounded-full transition-colors right-4 top-4"
+      }}
+    >
+      <ModalContent className="bg-white">
+        <ModalHeader className="flex flex-col gap-1">
+          <h2 className="text-xl font-bold text-slate-800">
+            {isIPTV ? "Crear IPTV" : "Crear Perfil"}
+          </h2>
+          <span className="text-sm font-medium text-slate-500">
+            Complete la información requerida
+          </span>
+        </ModalHeader>
+        <ModalBody className="py-6">
+          <form id="create-profile-form" onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            {/* Información básica */}
+            <div className="space-y-4">
+              <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">
+                Información Básica
+              </h3>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Controller
                   name="categoryId"
-                  id="categoryId"
-                  {...register("categoryId", { required: true })}
-                  options={optionsCategory}
-                  onChange={(e) => setSelectedOption(e.value)}
-                  placeholder="Selecciona una plataforma"
-                  style={{ width: "100%" }}
-                />
-              </div>
-              <br />
-              <div style={{ width: "100%" }}>
-                <label htmlFor="name">Nombre</label>
-                <InputText
-                  type="text"
-                  className={`${errors.name ? "p-invalid" : ""}`}
-                  name="name"
-                  {...register("name", { required: true })}
-                  style={{ width: "100%" }}
-                />
-                {errors.name && (
-                  <small id="username-help">Campo requerido</small>
-                )}
-              </div>
-
-              <br />
-
-              <div style={{ width: "100%" }}>
-                <label htmlFor="description" className="style-label">
-                  Descripción
-                </label>
-                <InputText
-                  type="text"
-                  className={`${errors.description ? "p-invalid" : ""}`}
-                  name="description"
-                  {...register("description", {
-                    required: true,
-                    maxLength: 230,
-                  })}
-                  style={{ width: "100%" }}
-                />
-                {errors.description &&
-                  errors.description.type === "required" && (
-                    <small className="invalid-feedback">Campo requerido</small>
+                  control={control}
+                  rules={{ required: "La plataforma es requerida" }}
+                  render={({ field }) => (
+                    <Select
+                      label="PLATAFORMA"
+                      variant="bordered"
+                      labelPlacement="outside"
+                      selectedKeys={field.value ? [field.value] : []}
+                      onChange={(e) => field.onChange(e.target.value)}
+                      isInvalid={!!errors.categoryId}
+                      errorMessage={errors.categoryId?.message}
+                      classNames={{
+                        ...inputClasses,
+                        trigger: "border-slate-200 group-hover:border-slate-300 focus-within:!border-slate-900 bg-white"
+                      }}
+                    >
+                      {optionsCategory.map((opt) => (
+                        <SelectItem key={opt.value} value={opt.value}>
+                          {opt.name}
+                        </SelectItem>
+                      ))}
+                    </Select>
                   )}
-                {errors.description &&
-                  errors.description.type === "maxLength" && (
-                    <small className="invalid-feedback">
-                      La descripción debe tener como máximo 230 caracteres
-                    </small>
-                  )}
+                />
+
+                <Input
+                  label="NOMBRE"
+                  variant="bordered"
+                  labelPlacement="outside"
+                  placeholder="Nombre del perfil"
+                  isInvalid={!!errors.name}
+                  errorMessage={errors.name?.message}
+                  classNames={inputClasses}
+                  {...register("name", { required: "El nombre es requerido" })}
+                />
               </div>
 
-              <br />
+              <Textarea
+                label="DESCRIPCIÓN"
+                variant="bordered"
+                labelPlacement="outside"
+                minRows={2}
+                maxRows={3}
+                placeholder="Detalles adicionales..."
+                isInvalid={!!errors.description}
+                errorMessage={errors.description?.message}
+                classNames={inputClasses}
+                {...register("description", {
+                  required: "La descripción es requerida",
+                  maxLength: { value: 230, message: "Máximo 230 caracteres" }
+                })}
+              />
 
-              <div style={{ width: "100%" }}>
-                <label htmlFor="price" className="style-label">
-                  Precio
-                </label>
-                <InputText
+              <div className="grid grid-cols-2 gap-4">
+                <Input
                   type="number"
-                  className={`form-control  form-control-lg ${
-                    errors.price ? "p-invalid" : ""
-                  }`}
-                  name="price"
-                  {...register("price", { required: true })}
-                  style={{ width: "100%" }}
+                  label="PRECIO"
+                  variant="bordered"
+                  labelPlacement="outside"
+                  placeholder="0.00"
+                  startContent={
+                    <span className="text-slate-400 text-sm font-bold">$</span>
+                  }
+                  isInvalid={!!errors.price}
+                  errorMessage={errors.price?.message}
+                  classNames={{
+                    ...inputClasses,
+                    input: "text-slate-800 font-bold"
+                  }}
+                  {...register("price", { required: "El precio es requerido" })}
                 />
-                {errors.price && (
-                  <small className="invalid-feedback">Campo requerido</small>
-                )}
-              </div>
-              <br />
-              <div style={{ width: "100%" }}>
-                <label htmlFor="durationOfService" className="style-label">
-                  Duración del servicio
-                </label>
-                <InputText
+                <Input
                   type="number"
-                  className={` ${errors.durationOfService ? "p-invalid" : ""}`}
-                  name="durationOfService"
-                  {...register("durationOfService", { required: true })}
-                  style={{ width: "100%" }}
+                  label="DURACIÓN (DÍAS)"
+                  variant="bordered"
+                  labelPlacement="outside"
+                  placeholder="30"
+                  isInvalid={!!errors.durationOfService}
+                  errorMessage={errors.durationOfService?.message}
+                  classNames={inputClasses}
+                  {...register("durationOfService", { required: "La duración es requerida" })}
                 />
-                {errors.durationOfService && (
-                  <small className="invalid-feedback">Campo requerido</small>
-                )}
               </div>
             </div>
 
-            <div className="colum-form-2">
-              <div style={{ width: "100%" }}>
-                <label htmlFor="emailAccount" className="style-label">
-                  {selectedOption === "11" ? "Nombre IPTV" : "Correo de cuenta"}
-                </label>
-                <InputText
-                  type="text"
-                  className={`form-control  form-control-lg ${
-                    errors.emailAccount ? "p-invalid" : ""
-                  }`}
-                  name="emailAccount"
-                  {...register("emailAccount", { required: true })}
-                  style={{ width: "100%" }}
+            <Divider className="my-4" />
+
+            {/* Credenciales de cuenta */}
+            <div className="space-y-4">
+              <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">
+                {isIPTV ? "Datos de IPTV" : "Credenciales de Cuenta"}
+              </h3>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Input
+                  label={isIPTV ? "NOMBRE IPTV" : "CORREO"}
+                  variant="bordered"
+                  labelPlacement="outside"
+                  placeholder={isIPTV ? "Nombre del servicio" : "correo@cuenta.com"}
+                  isInvalid={!!errors.emailAccount}
+                  errorMessage={errors.emailAccount?.message}
+                  classNames={inputClasses}
+                  {...register("emailAccount", { required: "Campo requerido" })}
                 />
-                {errors.emailAccount && (
-                  <small className="invalid-feedback">Campo requerido</small>
-                )}
-              </div>
 
-              <br />
-
-              <div style={{ width: "100%" }}>
-                <label htmlFor="passwordAccount" className="style-label">
-                  {selectedOption === "11" ? "Usuario" : "Contraseña de cuenta"}
-                </label>
-                <InputText
-                  type="password"
-                  className={`form-control form-control-lg ${
-                    errors.passwordAccount ? "is-invalid" : ""
-                  }`}
-                  name="passwordAccount"
-                  {...register("passwordAccount", { required: true })}
-                  style={{ width: "100%" }}
+                <Input
+                  type={isIPTV ? "text" : "password"}
+                  label={isIPTV ? "USUARIO" : "CONTRASEÑA"}
+                  variant="bordered"
+                  labelPlacement="outside"
+                  placeholder="••••••••"
+                  isInvalid={!!errors.passwordAccount}
+                  errorMessage={errors.passwordAccount?.message}
+                  classNames={inputClasses}
+                  {...register("passwordAccount", { required: "Campo requerido" })}
                 />
-                {errors.passwordAccount && (
-                  <small className="invalid-feedback">Campo requerido</small>
-                )}
-              </div>
 
-              <br />
-
-              <div style={{ width: "100%" }}>
-                <label htmlFor="profileAccount" className="style-label">
-                  {selectedOption === "11" ? "Contraseña" : "Perfil de cuenta"}
-                </label>
-                <InputText
-                  type="text"
-                  className={`form-control form-control-lg ${
-                    errors.profileAccount ? "p-invalid" : ""
-                  }`}
-                  name="profileAccount"
-                  {...register("profileAccount", { required: true })}
-                  style={{ width: "100%" }}
+                <Input
+                  label={isIPTV ? "CONTRASEÑA" : "PERFIL"}
+                  variant="bordered"
+                  labelPlacement="outside"
+                  placeholder={isIPTV ? "••••••••" : "Nombre del perfil"}
+                  isInvalid={!!errors.profileAccount}
+                  errorMessage={errors.profileAccount?.message}
+                  classNames={inputClasses}
+                  {...register("profileAccount", { required: "Campo requerido" })}
                 />
-                {errors.profileAccount && (
-                  <small className="invalid-feedback">Campo requerido</small>
-                )}
-              </div>
 
-              <br />
-
-              <div style={{ width: "100%" }}>
-                <label htmlFor="pincodeAccount" className="style-label">
-                  {selectedOption === "11" ? "URL" : "Pin de perfil"}
-                </label>
-                <InputText
-                  type="text"
-                  className={`form-control form-control-lg ${
-                    errors.pincodeAccount ? "p-invalid" : ""
-                  }`}
-                  name="pincodeAccount"
-                  {...register("pincodeAccount", { required: true })}
-                  style={{ width: "100%" }}
+                <Input
+                  label={isIPTV ? "URL" : "PIN"}
+                  variant="bordered"
+                  labelPlacement="outside"
+                  placeholder={isIPTV ? "http://..." : "0000"}
+                  isInvalid={!!errors.pincodeAccount}
+                  errorMessage={errors.pincodeAccount?.message}
+                  classNames={inputClasses}
+                  {...register("pincodeAccount", { required: "Campo requerido" })}
                 />
-                {errors.pincodeAccount && (
-                  <small className="invalid-feedback">Campo requerido</small>
-                )}
               </div>
-              <br />
             </div>
-          </div>
-        </form>
-      </Dialog>
-    </div>
+          </form>
+        </ModalBody>
+        <ModalFooter>
+          <Button
+            variant="bordered"
+            onPress={onClose}
+            className="border-slate-200 font-semibold text-slate-700 uppercase tracking-widest text-xs"
+          >
+            Cancelar
+          </Button>
+          <Button
+            className="bg-slate-900 text-white font-bold uppercase tracking-widest text-xs shadow-lg hover:bg-slate-800"
+            form="create-profile-form"
+            type="submit"
+            isLoading={loading}
+            startContent={!loading && <Check size={16} />}
+          >
+            Confirmar
+          </Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
   );
 };
 

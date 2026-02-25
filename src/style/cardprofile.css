@@ -1,312 +1,462 @@
 .card-profile {
-  width: 210px;
-  height: 300px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.264);
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease-in-out;
-  margin: 30px 10px;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+    width: 240px;
+    height: 320px;
+    border-radius: 18px;
+    box-shadow:
+        0 10px 30px -5px rgba(0, 0, 0, 0.25),
+        0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    margin: 15px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
+/* Efecto de brillo sutil */
+.card-profile::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60%;
+    background: linear-gradient(180deg,
+            rgba(255, 255, 255, 0.15) 0%,
+            rgba(255, 255, 255, 0.05) 40%,
+            transparent 100%);
+    pointer-events: none;
+    z-index: 1;
+}
 
+/* Efecto shimmer al pasar el cursor */
+.card-profile::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg,
+            transparent 40%,
+            rgba(255, 255, 255, 0.15) 50%,
+            transparent 60%);
+    transform: translateX(-100%) rotate(45deg);
+    transition: transform 0.6s ease;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.card-profile:hover::after {
+    transform: translateX(100%) rotate(45deg);
+}
+
+/* Contenedor de la muesca - DISEÑO ORIGINAL */
 .container-eyelash {
-  position: absolute;
-  width: 100%;
-  height: 50px;
-  top: 10px;
-
+    position: absolute;
+    width: 100%;
+    height: 50px;
+    top: 10px;
+    z-index: 5;
 }
 
+/* Barra blanca horizontal - DISEÑO ORIGINAL */
 .eyelash {
-  width: 40%;
-  height: 20px;
-  border-radius: 25px;
-  background-color: white;
-  margin: 0 auto;
+    width: 40%;
+    height: 20px;
+    border-radius: 25px;
+    background-color: rgb(255, 255, 255);
+    margin: 0 auto;
 }
 
+/* Círculo blanco arriba - DISEÑO ORIGINAL */
 .eyelash-circle {
-  width: 23px;
-  height: 20px;
-  border-radius: 27px;
-  background-color: white;
-  margin: 0 auto;
-  position: relative;
-  top: 10px;
+    width: 23px;
+    height: 20px;
+    border-radius: 27px;
+    background-color: white;
+    margin: 0 auto;
+    position: relative;
+    top: 10px;
 }
 
-
-.img-card {
-  width: 95%;
+/* Logo de la plataforma */
+.card-profile img {
+    width: 75%;
+    max-height: 130px;
+    object-fit: contain;
+    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.35));
+    z-index: 2;
+    transition: transform 0.3s ease;
 }
 
+/* Texto de disponibilidad */
 .card-profile strong {
-  color: white;
-  position: absolute;
-  bottom: 25px;
-  font-size: 15px;
-  font-weight: 400;
+    color: white;
+    position: absolute;
+    bottom: 24px;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 20px;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 24px;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 3;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+/* Indicador de disponibilidad */
 .available {
-  background-color: #25d366ff;
-  width: 17px;
-  height: 17px;
-  border-radius: 50%;
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  border: 2px solid #fff;
-  z-index: 1;
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    box-shadow:
+        0 0 12px rgba(34, 197, 94, 0.6),
+        0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 6;
 }
 
+/* Hover effect */
 .card-profile:hover {
-  transform: scale(1.05);
+    transform: translateY(-10px) scale(1.03);
+    box-shadow:
+        0 25px 50px -12px rgba(0, 0, 0, 0.35),
+        0 0 0 1px rgba(255, 255, 255, 0.12) inset;
 }
 
+.card-profile:hover img {
+    transform: scale(1.05);
+}
 
+/* Active/Press effect */
+.card-profile:active {
+    transform: translateY(-5px) scale(1.02);
+    transition: all 0.15s ease;
+}
+
+/* Responsive */
 @media(max-width: 1000px) {
-  .card-profile {
-    width: 150px;
-    height: 250px;
-    margin: 10px 7px;
-  }
-
-  .container-eyelash {
-    top: 5px;
-  }
-
-  .eyelash {
-    width: 35%;
-    height: 15px;
-  }
-
-  .eyelash-circle {
-    width: 18px;
-    height: 18px;
-  }
-
-  .card-profile strong {
-    font-size: 12px;
-  }
-
+    .card-profile {
+        width: 180px;
+        height: 250px;
+        margin: 10px;
+        border-radius: 14px;
+    }
 }
 
+@media(max-width: 600px) {
+    .card-profile {
+        width: 100%;
+        max-width: 180px;
+        height: 230px;
+        margin: 0;
+        border-radius: 14px;
+    }
+
+    .container-eyelash {
+        top: 5px;
+    }
+
+    .eyelash {
+        width: 35%;
+        height: 15px;
+    }
+
+    .eyelash-circle {
+        width: 18px;
+        height: 18px;
+    }
+
+    .card-profile img {
+        width: 70%;
+        max-height: 95px;
+    }
+
+    .card-profile strong {
+        font-size: 11px;
+        padding: 6px 14px;
+        bottom: 18px;
+    }
+
+    .available {
+        width: 12px;
+        height: 12px;
+        top: 12px;
+        right: 12px;
+    }
+}
+
+@media(max-width: 480px) {
+    .card-profile {
+        width: 100%;
+        max-width: 155px;
+        height: 210px;
+        margin: 0;
+        border-radius: 12px;
+    }
+
+    .container-eyelash {
+        top: 4px;
+    }
+
+    .eyelash {
+        width: 30%;
+        height: 12px;
+    }
+
+    .eyelash-circle {
+        width: 15px;
+        height: 15px;
+        top: 8px;
+    }
+
+    .card-profile img {
+        width: 65%;
+        max-height: 75px;
+    }
+
+    .card-profile strong {
+        font-size: 10px;
+        padding: 5px 12px;
+        bottom: 14px;
+    }
+
+    .available {
+        width: 10px;
+        height: 10px;
+        top: 10px;
+        right: 10px;
+    }
+}
+
+/* Backgrounds */
 .background-canva {
-  background: linear-gradient(to bottom, #00c4cc, #7d2ae7);
+    background: linear-gradient(to bottom, #00c4cc, #7d2ae7);
 }
 
 .background-calm {
-  background: linear-gradient(to bottom, #3bbdec, #5a58e5);
+    background: linear-gradient(to bottom, #3bbdec, #5a58e5);
 }
 
 .background-combo_plus {
-  background: radial-gradient(circle, #2f136a, #051433);
+    background: radial-gradient(circle, #2f136a, #051433);
 }
-
-.background-magistv {
-  background: #fe6539;
-}
-
 
 .background-regalo {
-  background: radial-gradient(circle, #4696be, #1945f6);
+    background: radial-gradient(circle, #4696be, #1945f6);
 }
 
 .background-universal {
-  background: #080808;
+    background: #080808;
 }
 
 .background-duolingo {
-  background: #78c802
+    background: #78c802;
 }
 
 .background-netflix {
-  background: #000000;
+    background: #000000;
 }
 
 .background-netflix_semi {
-  background: #000000;
+    background: #000000;
 }
 
 .background-netflix_extra {
-  background: #000000;
+    background: #000000;
 }
 
 .background-amazon_prime {
-  background: #19222d;
-}
-
-.background-Dbasico {
-  background: linear-gradient(to bottom, #001d2b, #008891);
-}
-
-.background-Destandar {
-  background: linear-gradient(to bottom, #001d2b, #008891);
-}
-
-.background-Dpremium {
-  background: linear-gradient(to bottom, #001d2b, #008891);
-}
-
-.background-microsoft365 {
-  background: linear-gradient(to bottom, #d7a6e8, #e7caf6, #f3b5f1, #8d80c6);
-}
-
-.background-max_estandar {
-  background: radial-gradient(#1E1E1E, #020202);
-}
-
-.background-max_premium {
-  background: radial-gradient(#1E1E1E, #020202);
-}
-
-.background-mcafee {
-  background: radial-gradient(#BA171A, #BA171A);
-}
-
-.background-atresplayer {
-  background: radial-gradient(#1C1C1C, #1C1C1C);
-}
-
-.background-wacrm {
-  background: radial-gradient(#000000, #000000);
-}
-
-.background-crm {
-  background: radial-gradient(#000000, #000000);
-}
-
-.background-wadefender {
-  background: radial-gradient(#000000, #000000);
-}
-
-.background-wasender {
-  background: radial-gradient(#2e6667, #153132);
-}
-
-.background-star_plus {
-  background: #242039;
-}
-
-.background-paramount_plus {
-  background: #0a6aff;
-}
-
-.background-vix {
-  background: #f25500;
-}
-
-.background-plex {
-  background: linear-gradient(to bottom left, #27282b, #000000);
-}
-
-.background-crunchyroll {
-  background: linear-gradient(to bottom, #f16700, #f16700);
-}
-
-.background-napster {
-  background: linear-gradient(to bottom, #01202f, #037b9d);
-}
-
-.background-spotify {
-  background: #080808;
-}
-
-.background-youtube {
-  background: #ff0000;
-}
-
-.background-tidal {
-  background: #000000;
-}
-
-.background-iptv {
-  background: #553de4;
-}
-
-.background-rakuten {
-  background: #149eff;
-}
-
-.background-office {
-  background: #149eff;
-}
-
-.background-apple_music {
-  background: linear-gradient(to bottom, #fb233b, #fb233b);
-}
-
-.background-dezzer {
-  background: linear-gradient(to bottom, #000000, #000000);
-}
-
-.background-clarovideo {
-  background: #E81F3B;
+    background: #19222d;
 }
 
 .background-directvgo {
-  background: #081a2b;
+    background: linear-gradient(to bottom, #323232, #222222);
 }
 
-.background-mubi {
-  background: #081b8d;
+.background-Dbasico {
+    background: linear-gradient(to bottom, #001d2b, #008891);
 }
 
-.background-apple_tv {
-  background: #101112;
+.background-Destandar {
+    background: linear-gradient(to bottom, #001d2b, #008891);
 }
 
-.background-brazzers {
-  background: black;
+.background-Dpremium {
+    background: linear-gradient(to bottom, #001d2b, #008891);
 }
 
-.background-canva {
-  background: linear-gradient(to bottom, #00c4cc, #7d2ae7);
+.background-Dpromocion {
+    background: linear-gradient(to bottom, #001d2b, #008891);
 }
 
-.background-pornhub {
-  background: #000000;
+.background-hbo_max {
+    background: radial-gradient(circle, #1E1E1E, #020202);
 }
 
-.background-xbox_pass {
-  background: linear-gradient(to bottom, #107c10, #107c10);
+.background-plex {
+    background: linear-gradient(to bottom left, #27282b, #000000);
 }
 
-.background-playstation {
-  background: linear-gradient(to bottom, #0069C5, #033388);
+.background-star_plus {
+    background: #242039;
 }
 
-.background-acorntv {
-  background: #0b1733;
+.background-paramount_plus {
+    background: #0a6aff;
 }
 
-.background-profenet {
-  background: #8c0613;
+.background-vix {
+    background: #f25500;
 }
 
-.background-wplay {
-  background: #0D222E;
+.background-nextmovie {
+    background: radial-gradient(#767676, #363636);
+}
+
+.background-crunchyroll {
+    background: linear-gradient(to bottom, #f16700, #f16700);
+}
+
+.background-napster {
+    background: linear-gradient(to bottom, #01202f, #037b9d);
+}
+
+.background-spotify {
+    background: #080808;
+}
+
+.background-youtube {
+    background: #ff0000;
+}
+
+.background-tidal {
+    background: #000000;
+}
+
+.background-picsart {
+    background: linear-gradient(135deg, #ff00ff 0%, #8a2be2 25%, #4169e1 50%, #00bfff 75%, #00ffff 100%);
+}
+
+.background-jellyfin {
+    background: #000B25;
+}
+
+.background-iptv {
+    background: linear-gradient(135deg, #4800bc, #e806a4);
+}
+
+.background-iptvmes {
+    background: linear-gradient(135deg, #4800bc, #e806a4);
+}
+
+.background-iptvbasico {
+    background: linear-gradient(135deg, #4800bc, #e806a4);
+}
+
+.background-rakuten {
+    background: #149eff;
+}
+
+.background-apple_music {
+    background: linear-gradient(to bottom, #fb233b, #fb233b);
+}
+
+.background-dezzer {
+    background: linear-gradient(to bottom, #000000, #000000);
+}
+
+.background-tvmia {
+    background: linear-gradient(to right, #00989f, #004c5c);
 }
 
 .background-chatgpt {
-  background: #16AC86
+    background: #16AC86;
 }
 
-.background-capcut {
-  background: linear-gradient(135deg, #000000 0%, #000000 50%, #8B1F5B 70%, #C9447B 85%, #E76BA3 100%);
+.background-mubi {
+    background: #081b8d;
 }
 
-.background-amazonmusic {
-  background: linear-gradient(135deg, #4DD0E1 0%, #26C6DA 100%);
+.background-apple_tv {
+    background: #101112;
 }
 
+.background-brazzers {
+    background: black;
+}
+
+.background-pornhub {
+    background: #000000;
+}
+
+.background-xbox_pass {
+    background: linear-gradient(to bottom, #107c10, #107c10);
+}
+
+.background-profenet {
+    background: #8c0613;
+}
+
+.background-wasender {
+    background: radial-gradient(#2e6667, #153132);
+}
+
+.background-mcafee {
+    background: radial-gradient(#BA171A, #BA171A);
+}
+
+.background-atresplayer {
+    background: radial-gradient(#1C1C1C, #1C1C1C);
+}
+
+.background-wacrm {
+    background: radial-gradient(#4DC239, #4DC239);
+}
+
+.background-crm {
+    background: radial-gradient(#000000, #000000);
+}
+
+.background-wadefender {
+    background: radial-gradient(#f70000, #f70000);
+}
+
+.background-xxx {
+    background: radial-gradient(#c80704, #c80704);
+}
+
+.background-microsoft365 {
+    background: linear-gradient(to bottom, #d7a6e8, #e7caf6, #f3b5f1, #8d80c6);
+}
+
+/* No disponible */
 .no-available {
-  filter: grayscale(100%);
+    filter: grayscale(100%);
+    opacity: 0.55;
+}
+
+.no-available .available {
+    background: linear-gradient(135deg, #9ca3af, #6b7280);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.no-available:hover {
+    transform: none;
+    cursor: not-allowed;
+}
+
+.no-available:hover img {
+    transform: none;
 }

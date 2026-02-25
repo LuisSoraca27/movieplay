@@ -6,6 +6,7 @@ import { setError, setSuccess } from "../error/errorSlice";
 const initialState = {
     customers: [],
     customerByEmail: null,
+    isLoading: false,
 };
 
 const customerSlice = createSlice({
@@ -18,15 +19,21 @@ const customerSlice = createSlice({
         setCustomerByEmail: (state, action) => {
             state.customerByEmail = action.payload;
         },
+        setCustomersLoading: (state, action) => {
+            state.isLoading = action.payload;
+        },
     },
 });
 
 export const getCustomers = () => async (dispatch) => {
+    dispatch(setCustomersLoading(true));
     try {
         const { data } = await dksoluciones.get('customer/', getConfig());
         dispatch(setCustomer(data.data));
     } catch (error) {
         console.error(error);
+    } finally {
+        dispatch(setCustomersLoading(false));
     }
 };
 
@@ -47,7 +54,7 @@ export const getCustomerByEmail = (email) => async (dispatch) => {
         dispatch(setCustomerByEmail(data.data));
         dispatch(setSuccess('Cliente encontrado'));
     } catch (error) {
-        dispatch(setError(error.response.data.message || 'Error al encontrar el cliente' ));
+        dispatch(setError(error.response?.data?.message || 'Error al encontrar el cliente' ));
         dispatch(setCustomerByEmail(null));
         console.error(error);
     }
@@ -76,6 +83,6 @@ export const deleteCustomer = (id) => async (dispatch) => {
     }
 };
 
-export const { setCustomer, setCustomerByEmail } = customerSlice.actions;
+export const { setCustomer, setCustomerByEmail, setCustomersLoading } = customerSlice.actions;
 
 export default customerSlice.reducer;

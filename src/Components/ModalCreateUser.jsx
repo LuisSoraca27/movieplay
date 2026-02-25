@@ -1,12 +1,9 @@
-import React, { useEffect, useRef } from "react";
-import { Button } from "primereact/button";
-import { Dialog } from "primereact/dialog";
-import { InputText } from "primereact/inputtext";
-import { Dropdown } from "primereact/dropdown";
+import React, { useState } from "react";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Autocomplete, AutocompleteItem, Select, SelectItem } from "@heroui/react";
 import { createUserThunk } from "../features/user/userSlice";
-import { useDispatch, useSelector } from "react-redux";
-import useErrorHandler from "../Helpers/useErrorHandler";
-import { Toast } from "primereact/toast";
+import { useDispatch } from "react-redux";
+import { addToast } from "@heroui/toast";
+import { UserPlus, Mail, Lock, Phone, Globe, Shield, Check, X } from 'lucide-react';
 
 // eslint-disable-next-line react/prop-types
 const ModalCreateUser = ({ open, onClose }) => {
@@ -15,7 +12,7 @@ const ModalCreateUser = ({ open, onClose }) => {
     email: "",
     password: "",
     phone: "",
-    role: "",
+    role: "seller", // Default role
     country: "",
   };
 
@@ -68,174 +65,214 @@ const ModalCreateUser = ({ open, onClose }) => {
     { name: "Otro", code: "OT" },
   ];
 
-  const toast = useRef(null);
-  const [dataUser, setDataUser] = React.useState(initialData);
-  const [loading, setLoading] = React.useState(false);
-  const [country, setCountry] = React.useState(null);
+  const [dataUser, setDataUser] = useState(initialData);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  const { error, success } = useSelector((state) => state.error);
-  const handleError = useErrorHandler(error, success);
 
-  const selectedCountryTemplate = (option, props) => {
-    if (option) {
-      return (
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <img
-            alt={option.name}
-            src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
-            style={{ width: "18px", marginRight: "5px" }}
-          />
-          <div>{option.name}</div>
-        </div>
-      );
-    }
-
-    return <span>{props.placeholder}</span>;
+  const handleCountryChange = (key) => {
+    // key is the 'name' because used as key in AutocompleteItem
+    setDataUser({ ...dataUser, country: key });
   };
-
-  const countryOptionTemplate = (option) => {
-    return (
-      <div style={{ display: "flex", alignItems: "center" }}>
-        <img
-          alt={option.name}
-          src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
-          style={{ width: "18px", marginRight: "5px" }}
-        />
-        <div>{option.name}</div>
-      </div>
-    );
-  };
-
-  const handleCountryChange = (e) => {
-    const selectedCountry = e.value; 
-    console.log(selectedCountry);
-    
-    setCountry(selectedCountry); 
-    setDataUser({...dataUser, country: selectedCountry.name }); 
-};
-
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
     setDataUser({
       ...dataUser,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
   };
 
-  const handleSubmit = (e) => {
-    setLoading(true);
+  const handleRoleChange = (e) => {
+    setDataUser({
+      ...dataUser,
+      role: e.target.value
+    });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(createUserThunk(dataUser)).then(() => {
-      setLoading(false);
+    setLoading(true);
+    const result = await dispatch(createUserThunk(dataUser));
+    setLoading(false);
+
+    if (result?.success) {
       onClose();
       setDataUser(initialData);
-    });
+      addToast({ title: "Éxito", description: result.message || "Usuario creado exitosamente", color: "success" });
+    } else {
+      addToast({ title: "Error", description: result?.message || "Error al crear usuario", color: "danger" });
+    }
   };
 
-  useEffect(() => {
-    handleError(toast.current);
-  }, [error, success]);
+  const inputClasses = {
+    label: "text-slate-500 font-bold uppercase tracking-wider text-[10px]",
+    inputWrapper: "border-slate-200 group-hover:border-slate-300 focus-within:!border-slate-900 bg-white",
+    input: "text-slate-800 font-semibold",
+  };
 
   return (
-    <>
-      <Toast ref={toast} />
-      <Dialog
-        visible={open}
-        onHide={onClose}
-        className="p-fluid"
-        header="Crear usuario"
-        footer={
-          <div>
-            <Button
-              label="Crear usuario"
-              icon="pi pi-check"
-              className="p-button-success"
-              onClick={handleSubmit}
-              loading={loading}
-              disabled={loading}
-            />
-          </div>
-        }
-      >
-        <div style={{ padding: "20px" }}>
-          <div className="flex flex-column gap-2">
-            <label htmlFor="username">Nombre de usuario</label>
-            <InputText
-              id="username"
-              aria-describedby="username-help"
-              name="username"
-              onChange={handleChange}
-              value={dataUser.username}
-            />
-          </div>
-          <br />
-          <div className="p-field">
-            <label htmlFor="email">Correo electrónico</label>
-            <InputText
-              id="email"
-              name="email"
-              onChange={handleChange}
-              value={dataUser.email}
-              required
-            />
-          </div>
-          <br />
-          <div className="p-field">
-            <label htmlFor="password">Contraseña</label>
-            <InputText
-              id="password"
-              name="password"
-              type="password"
-              onChange={handleChange}
-              value={dataUser.password}
-              required
-            />
-          </div>
-          <br />
-          <div>
-            <label htmlFor="country">País</label>
-            <Dropdown
-              value={country}
-              options={countries}
-              optionLabel="name"
-              placeholder="Seleccione un país"
-              required
-              style={{ width: "100%", marginBottom: "10px", height: "44px" }}
-              onChange={handleCountryChange}
-              filter
-              valueTemplate={selectedCountryTemplate}
-              itemTemplate={countryOptionTemplate}
-            />
-          </div>
-          <div className="p-field">
-            <label htmlFor="phone">Numero de Whatsapp</label>
-            <InputText
-              id="phone"
-              name="phone"
-              type="phone"
-              onChange={handleChange}
-              value={dataUser.phone}
-              required
-            />
-          </div>
-          <br />
-          <div className="p-field">
-            <label htmlFor="role">Selecciona el Rol del usuario</label>
-            <Dropdown
-              id="role"
-              name="role"
-              options={[
-                { label: "Vendedor", value: "seller" },
-                { label: "Administrador", value: "admin" },
-              ]}
-              onChange={handleChange}
-              value={dataUser.role}
-              placeholder="Selecciona el rol"
-            />
-          </div>
-        </div>
-      </Dialog>
-    </>
+    <Modal
+      isOpen={open}
+      onClose={onClose}
+      size="2xl"
+      backdrop="blur"
+      scrollBehavior="inside"
+      classNames={{
+        base: "rounded-[2rem] border border-slate-100 shadow-2xl bg-white",
+        header: "border-b border-slate-100 py-6 px-8",
+        body: "py-8 px-8",
+        footer: "border-t border-slate-100 py-6 px-8",
+        closeButton: "hover:bg-slate-100 active:bg-slate-200 rounded-full transition-colors right-4 top-4"
+      }}
+    >
+      <ModalContent className="overflow-hidden">
+        {(onClose) => (
+          <>
+            <ModalHeader className="flex flex-col gap-1">
+              <div className="flex items-center gap-2">
+                <div className="p-2 bg-slate-100 rounded-lg text-slate-800">
+                  <UserPlus size={20} />
+                </div>
+                <h2 className="text-xl font-bold text-slate-800">Crear Nuevo Usuario</h2>
+              </div>
+              <p className="text-sm font-medium text-slate-500 pl-11">
+                Complete la información para registrar un nuevo usuario en el sistema.
+              </p>
+            </ModalHeader>
+            <ModalBody>
+              <form id="create-user-form" onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="col-span-full md:col-span-1">
+                  <Input
+                    autoFocus
+                    label="NOMBRE DE USUARIO"
+                    labelPlacement="outside"
+                    placeholder="Ej: juanperez"
+                    name="username"
+                    value={dataUser.username}
+                    onChange={handleChange}
+                    startContent={<UserPlus size={16} className="text-slate-400" />}
+                    variant="bordered"
+                    isRequired
+                    classNames={inputClasses}
+                  />
+                </div>
+                <div className="col-span-full md:col-span-1">
+                  <Input
+                    type="email"
+                    label="CORREO ELECTRÓNICO"
+                    labelPlacement="outside"
+                    placeholder="juan@ejemplo.com"
+                    name="email"
+                    value={dataUser.email}
+                    onChange={handleChange}
+                    startContent={<Mail size={16} className="text-slate-400" />}
+                    variant="bordered"
+                    isRequired
+                    classNames={inputClasses}
+                  />
+                </div>
+                <div className="col-span-full md:col-span-1">
+                  <Input
+                    type="password"
+                    label="CONTRASEÑA"
+                    labelPlacement="outside"
+                    placeholder="••••••••"
+                    name="password"
+                    value={dataUser.password}
+                    onChange={handleChange}
+                    startContent={<Lock size={16} className="text-slate-400" />}
+                    variant="bordered"
+                    isRequired
+                    classNames={inputClasses}
+                  />
+                </div>
+                <div className="col-span-full md:col-span-1">
+                  <Input
+                    type="tel"
+                    label="WHATSAPP / TELÉFONO"
+                    labelPlacement="outside"
+                    placeholder="300 123 4567"
+                    name="phone"
+                    value={dataUser.phone}
+                    onChange={handleChange}
+                    startContent={<Phone size={16} className="text-slate-400" />}
+                    variant="bordered"
+                    isRequired
+                    classNames={inputClasses}
+                  />
+                </div>
+
+                <div className="col-span-full md:col-span-1">
+                  <Autocomplete
+                    label="PAÍS"
+                    labelPlacement="outside"
+                    placeholder="Seleccione un país"
+                    variant="bordered"
+                    startContent={<Globe size={16} className="text-slate-400" />}
+                    onSelectionChange={handleCountryChange}
+                    selectedKey={dataUser.country}
+                    isRequired
+                    inputProps={{
+                      classNames: inputClasses
+                    }}
+                  >
+                    {countries.map((country) => (
+                      <AutocompleteItem key={country.name} textValue={country.name}>
+                        <div className="flex gap-2 items-center">
+                          <img
+                            alt={country.name}
+                            src={`https://flagcdn.com/w20/${country.code.toLowerCase()}.png`}
+                            className="w-5 h-4 object-cover rounded-sm shadow-sm"
+                          />
+                          <span>{country.name}</span>
+                        </div>
+                      </AutocompleteItem>
+                    ))}
+                  </Autocomplete>
+                </div>
+
+                <div className="col-span-full md:col-span-1">
+                  <Select
+                    label="ROL DEL USUARIO"
+                    labelPlacement="outside"
+                    placeholder="Seleccione un rol"
+                    name="role"
+                    selectedKeys={dataUser.role ? [dataUser.role] : []}
+                    onChange={handleRoleChange}
+                    startContent={<Shield size={16} className="text-slate-400" />}
+                    variant="bordered"
+                    isRequired
+                    classNames={inputClasses}
+                  >
+                    <SelectItem key="seller" value="seller">Vendedor</SelectItem>
+                    <SelectItem key="admin" value="admin">Administrador</SelectItem>
+                  </Select>
+                </div>
+              </form>
+            </ModalBody>
+            <ModalFooter className="flex justify-between items-center bg-white">
+              <Button
+                variant="bordered"
+                onPress={onClose}
+                className="border-slate-200 font-semibold text-slate-700 uppercase tracking-widest text-xs h-10 px-6 rounded-xl"
+              >
+                Cancelar
+              </Button>
+              <Button
+                type="submit"
+                form="create-user-form"
+                isLoading={loading}
+                isDisabled={loading}
+                startContent={!loading && <Check size={16} />}
+                className="bg-slate-900 text-white font-bold uppercase tracking-widest text-xs shadow-lg hover:bg-slate-800 h-10 px-6 rounded-xl"
+              >
+                Crear Usuario
+              </Button>
+            </ModalFooter>
+          </>
+        )}
+      </ModalContent>
+    </Modal>
   );
 };
 

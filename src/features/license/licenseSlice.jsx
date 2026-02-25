@@ -24,11 +24,6 @@ export const setLicenseThunk = () => async (dispatch) => {
         dispatch(setLicenses(data))
     } catch (error) {
         console.log(error)
-        if (error.response.data.message === 'Session expired') {
-            localStorage.removeItem('token')
-            localStorage.removeItem('user')
-            window.location.reload()
-        }
     }
 }
 
@@ -39,12 +34,7 @@ export const createLicenseThunk = (data) => async (dispatch) => {
         dispatch(setSuccess('Licencia creada'))
     } catch (error) {
         console.log(error)
-        dispatch(setError(error.response.data.message))
-        if (error.response.data.message === 'Session expired') {
-            localStorage.removeItem('token')
-            localStorage.removeItem('user')
-            window.location.reload()
-        }
+        dispatch(setError(error.response?.data?.message))
     }
 }
 
@@ -54,7 +44,7 @@ export const editLicenseThunk = (id, { name, description, price }) => async (dis
         dispatch(setSuccess(true))
     } catch (error) {
         console.log(error)
-        dispatch(setError(error.response.data.message))
+        dispatch(setError(error.response?.data?.message))
     }
 }
 
@@ -63,11 +53,6 @@ export const deleteLicenseThunk = (id) => async (dispatch) => {
         await dksoluciones.delete(`license/${id}`, getConfig())
     } catch (error) {
         console.log(error)
-        if (error.response.data.message === 'Session expired') {
-            localStorage.removeItem('token')
-            localStorage.removeItem('user')
-            window.location.reload()
-        }
     }
 }
 

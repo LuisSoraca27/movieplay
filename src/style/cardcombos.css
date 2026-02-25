@@ -3,6 +3,23 @@
   position: relative;
 }
 
+.product-price-container {
+  width: 100%;
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.product-price-offer {
+  font-size: 18px;
+  font-weight: 600;
+  color: #f32d2db7;
+  margin-top: 10px;
+  text-decoration: line-through;
+
+}
+
+
 .combo-image {
   width: 100%;
   height: 80%;

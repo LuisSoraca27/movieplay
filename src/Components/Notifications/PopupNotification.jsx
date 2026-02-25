@@ -1,254 +1,282 @@
-import { Dialog } from "primereact/dialog";
-import { Button } from "primereact/button";
-import { FileUpload } from "primereact/fileupload";
-import { useEffect, useRef, useState } from "react";
-import { Toast } from "primereact/toast";
-import { InputText } from "primereact/inputtext";
-import { Fieldset } from "primereact/fieldset";
-import {
-  uploadImgPopup,
-  getNotificationImgThunk,
-  deleteImgPopup,
-} from "../../features/notifications/notificationSlice";
+import { useRef, useState, useEffect } from "react";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Image, Tabs, Tab } from "@heroui/react";
 import { useDispatch, useSelector } from "react-redux";
-import useErrorHandler from "../../Helpers/useErrorHandler";
-import "../../style/notification.css";
+import {
+    uploadImgPopup,
+    getNotificationImgThunk,
+    deleteImgPopup,
+} from "../../features/notifications/notificationSlice";
+import { addToast } from "@heroui/toast";
+import FileUpload from "../ui/FileUpload";
+import { Trash2, Link, Image as ImageIcon, Plus, X } from "lucide-react";
 
 // eslint-disable-next-line react/prop-types
 const PopupNotification = ({ visible, setVisible }) => {
-  const initialValue = [
-    {
-      imagen: null,
-      linkImg: "",
-    },
-  ];
+    const dispatch = useDispatch();
+    const { notificationImg } = useSelector((state) => state.notification);
 
-  const toast = useRef(null);
-  const dispatch = useDispatch();
-  const [images, setImages] = useState(initialValue);
-  const { error, success } = useSelector((state) => state.error);
-  const { notificationImg } = useSelector((state) => state.notification);
-  const [loading, setLoading] = useState(false);
-  const [visibleImg, setVisibleImg] = useState(false);
+    const [images, setImages] = useState([{ imagen: null, linkImg: "" }]);
+    const [loading, setLoading] = useState(false);
+    const [activeTab, setActiveTab] = useState("list"); // "list" | "create"
 
-  const handleError = useErrorHandler(error, success, toast.current);
+    // Update view mode based on existing images
+    useEffect(() => {
+        setActiveTab(notificationImg.length > 0 ? "list" : "create");
+    }, [notificationImg]);
 
-  const handleRemoveImage = (index) => {
-    const newImages = images.filter((_, i) => i !== index);
-    setImages(newImages);
-  };
+    useEffect(() => {
+        dispatch(getNotificationImgThunk());
+    }, [dispatch]);
 
-  const handleDeleteImg = (id) => {
-    setLoading(true);
-    dispatch(deleteImgPopup(id))
-      .then(() => {
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+    const handleClose = () => {
+        setVisible(false);
+        setImages([{ imagen: null, linkImg: "" }]);
+    };
 
-  const handleCancelUpload = () => {
-    if (notificationImg.length === 0) {
-      setImages(initialValue);
-      setVisible(false);
-      return;
-    }
-    setVisibleImg(true);
-    setImages(initialValue);
-  };
+    const handleRemoveImage = (index) => {
+        const newImages = images.filter((_, i) => i !== index);
+        setImages(newImages);
+    };
 
-  const onUploadImg = (e) => {
-    e.preventDefault();
-    setLoading(true);
-    const formData = new FormData();
-    images.forEach((image, index) => {
-      formData.append(`image-${index}`, image.imagen);
-      formData.append(`linkImg-${index}`, image.linkImg);
-    });
-    console.log("formData", formData);
+    const handleDeleteImg = (id) => {
+        setLoading(true);
+        dispatch(deleteImgPopup(id))
+            .then(() => {
+                setLoading(false);
+                addToast({ title: "Éxito", description: "Imagen eliminada correctamente", color: "success" });
+            })
+            .catch((error) => {
+                setLoading(false);
+                console.error(error);
+                addToast({ title: "Error", description: "Error al eliminar imagen", color: "danger" });
+            });
+    };
 
-    dispatch(uploadImgPopup(formData)).then(() => {
-      setLoading(false);
-      setImages(initialValue);
-    });
-  };
+    const onUploadImg = () => {
+        setLoading(true);
+        const formData = new FormData();
+        images.forEach((image, index) => {
+            if (image.imagen) {
+                // Append each image file with the index-based field name
+                formData.append(`image-${index}`, image.imagen);
+                // Append the corresponding link for this image
+                formData.append(`linkImg-${index}`, image.linkImg || '');
+            }
+        });
 
-  useEffect(() => {
-    if (toast.current) {
-      handleError(toast.current);
-    }
-  }, [handleError, error, success]);
+        // Debug: Log FormData contents (optional, can be removed)
+        console.log('Uploading images:', images.length);
+        for (let pair of formData.entries()) {
+            console.log(pair[0], pair[1]);
+        }
 
-  useEffect(() => {
-    dispatch(getNotificationImgThunk());
-  }, [dispatch]);
+        dispatch(uploadImgPopup(formData))
+            .then(() => {
+                setLoading(false);
+                setImages([{ imagen: null, linkImg: "" }]);
+                addToast({ title: "Éxito", description: "Imágenes subidas correctamente", color: "success" });
+                setActiveTab("list");
+            })
+            .catch((error) => {
+                setLoading(false);
+                console.error('Upload error:', error);
+                addToast({ title: "Error", description: "Error al subir imágenes", color: "danger" });
+            });
+    };
 
-  useEffect(() => {
-    notificationImg.length !== 0 ? setVisibleImg(true) : setVisibleImg(false);
-  }, [notificationImg]);
-
-  useEffect(() => {
-    console.log(notificationImg);
-  }, [notificationImg]);
-
-  const footer = (
-    <div>
-      <Button
-        label="Cancelar"
-        icon="pi pi-times"
-        severity="danger"
-        onClick={handleCancelUpload}
-      />
-      <Button
-        label="Guardar"
-        icon="pi pi-check"
-        severity="success"
-        disabled={images.length === 0}
-        onClick={onUploadImg}
-        autoFocus
-        loading={loading}
-      />
-    </div>
-  );
-
-  return (
-    <div>
-      <Toast ref={toast} />
-      <Dialog
-        visible={visible}
-        header="Notificación Emergente"
-        modal={true}
-        onHide={() => setVisible(false)}
-        footer={!visibleImg && footer}
-      >
-        <div className="p-fluid container-notification-popup">
-          {visibleImg ? (
-            <div className="container-imagenes">
-              {notificationImg.map((imagen, index) => (
-                <div
-                  key={index}
-                  className="card-notification-popup"
-                  style={{ width: "47%", position: "relative" }}
-                >
-                  <img
-                    src={imagen.urlImagen}
-                    alt="Imagen de notificación"
-                    style={{ width: "100%" }}
-                  />
-                  <Button
-                    icon="pi pi-trash"
-                    severity="danger"
-                    style={{
-                      position: "absolute",
-                      top: "0",
-                      right: "0",
-                      margin: "10px",
-                    }}
-                    rounded
-                    onClick={() => handleDeleteImg(imagen.id)}
-                    disabled={loading}
-                    loading={loading}
-                  />
-                </div>
-              ))}
-              <Button
-                icon="pi pi-plus"
-                severity="secondary"
-                style={{ width: "47%", height: "200px" }}
-                outlined
-                onClick={() => setVisibleImg(false)}
-              />
-            </div>
-          ) : (
-            <form
-              className="p-fluid"
-              style={{ width: "100%" }}
-              encType="multipart/form-data"
+    return (
+        <>
+            <Modal
+                isOpen={visible}
+                onOpenChange={setVisible}
+                size="2xl"
+                scrollBehavior="inside"
+                backdrop="blur"
+                classNames={{
+                    base: "bg-white border border-slate-200 rounded-[2.5rem] shadow-2xl mx-4 my-8",
+                    header: "border-b border-slate-100 pb-6 pt-8 px-10",
+                    body: "py-8 px-10",
+                    footer: "border-t border-slate-100 py-6 px-10"
+                }}
             >
-              {images?.map((imagen, index) => (
-                <div key={index} className="card-notification-popup">
-                  <Fieldset
-                    legend={`Imagen ${index + 1}`}
-                    toggleable
-                    style={{ width: "100%", position: "relative" }}
-                  >
-                    <div className="card flex justify-content-start">
-                      <label
-                        htmlFor="img"
-                        style={{
-                          width: "100%",
-                          display: "block",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        Imagen de notificación
-                      </label>
-                      <Toast ref={toast}></Toast>
-                      <FileUpload
-                        mode="basic"
-                        url="/api/upload"
-                        accept="image/*"
-                        chooseLabel="Seleccionar imagen"
-                        cancelLabel="Cancelar"
-                        style={{ width: "100%" }}
-                        onRemove={() => handleRemoveImage(index)}
-                        onSelect={(e) => {
-                          const newImages = [...images];
-                          newImages[index].imagen = e.files[0];
-                          setImages(newImages);
-                        }}
-                      />
-                    </div>
-                    <br />
-                    <div>
-                      <label
-                        htmlFor="linkImg"
-                        style={{
-                          width: "100%",
-                          display: "block",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        Link de redirecion
-                      </label>
-                      <InputText
-                        id="linkImg"
-                        placeholder="https://"
-                        value={images.linkImg}
-                        onChange={(e) => {
-                          const newImages = [...images];
-                          newImages[index].linkImg = e.target.value;
-                          setImages(newImages);
-                        }}
-                        type="url"
-                      />
-                    </div>
-                    <Button
-                      className="p-button-danger p-button-text"
-                      icon="pi pi-times"
-                      severity="danger"
-                      onClick={() => handleRemoveImage(index)}
-                      style={{ position: "absolute", top: "-25px", right: "0" }}
-                    />
-                  </Fieldset>
-                </div>
-              ))}
-              <Button
-                type="text"
-                label="Agregrar imagen"
-                icon="pi pi-plus"
-                onClick={() =>
-                  setImages([...images, { imagen: null, linkImg: "" }])
-                }
-              />
-            </form>
-          )}
-        </div>
-      </Dialog>
-    </div>
-  );
+                <ModalContent>
+                    {(onClose) => (
+                        <>
+                            <ModalHeader className="flex flex-col gap-1">
+                                <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">Notificación Emergente</h2>
+                                <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400 mt-1">
+                                    Gestión de visuales publicitarios y anuncios popup
+                                </p>
+                            </ModalHeader>
+                            <ModalBody>
+                                {/* Tabs Hybrid Premium (Segment Control) */}
+                                <div className="flex justify-center mb-8">
+                                    <Tabs
+                                        radius="full"
+                                        variant="light"
+                                        selectedKey={activeTab}
+                                        onSelectionChange={(key) => setActiveTab(key)}
+                                        classNames={{
+                                            tabList: "gap-4 p-1.5 bg-slate-200/40 backdrop-blur-md rounded-2xl w-fit border border-slate-200/60 shadow-inner-sm",
+                                            cursor: "bg-slate-900 shadow-xl border border-slate-800",
+                                            tab: "h-10 px-8",
+                                            tabContent: "font-bold uppercase text-[11px] tracking-[0.15em] group-data-[selected=true]:text-white text-slate-500"
+                                        }}
+                                    >
+                                        <Tab
+                                            key="list"
+                                            title="IMÁGENES ACTIVAS"
+                                            startContent={<ImageIcon size={14} />}
+                                        />
+                                        <Tab
+                                            key="create"
+                                            title="NUEVA IMAGEN"
+                                            startContent={<Plus size={14} />}
+                                        />
+                                    </Tabs>
+                                </div>
+
+                                {activeTab === "list" ? (
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pb-4">
+                                        {notificationImg.length === 0 ? (
+                                            <div className="col-span-full py-20 flex flex-col items-center justify-center text-slate-300 bg-slate-50/50 border-2 border-dashed border-slate-200 rounded-[2rem]">
+                                                <ImageIcon size={48} className="opacity-50" />
+                                                <p className="mt-4 font-bold uppercase tracking-widest text-[10px] text-slate-400">No hay imágenes activas</p>
+                                                <Button
+                                                    size="sm"
+                                                    variant="flat"
+                                                    className="mt-6 bg-slate-900 text-white font-bold uppercase tracking-wider text-[10px] h-10 px-6 rounded-xl shadow-md"
+                                                    onPress={() => setActiveTab("create")}
+                                                >
+                                                    Agregar una
+                                                </Button>
+                                            </div>
+                                        ) : (
+                                            notificationImg.map((img, index) => (
+                                                <div key={index} className="relative group rounded-[2rem] overflow-hidden shadow-sm border border-slate-100 bg-white transition-all hover:shadow-lg hover:border-slate-200">
+                                                    <Image
+                                                        src={img.urlImagen}
+                                                        alt="Notificación"
+                                                        classNames={{
+                                                            wrapper: "w-full h-52 object-cover",
+                                                            img: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                                        }}
+                                                    />
+                                                    <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                                                        <Button
+                                                            isIconOnly
+                                                            color="danger"
+                                                            size="sm"
+                                                            className="rounded-xl shadow-xl bg-red-500 text-white hover:bg-red-600 active:scale-90 transition-all border border-red-400"
+                                                            onPress={() => handleDeleteImg(img.id)}
+                                                            isLoading={loading}
+                                                        >
+                                                            <Trash2 size={16} />
+                                                        </Button>
+                                                    </div>
+                                                    {img.linkImg && (
+                                                        <div className="p-4 bg-slate-50 border-t border-slate-100 text-[10px] font-bold uppercase tracking-wider text-slate-500 truncate flex items-center gap-2">
+                                                            <Link size={12} className="text-slate-400" />
+                                                            {img.linkImg}
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            ))
+                                        )}
+                                    </div>
+                                ) : (
+                                    <div className="space-y-8 pb-4">
+                                        {images.map((img, index) => (
+                                            <div key={index} className="p-8 border border-slate-200 rounded-[2rem] relative bg-white shadow-sm space-y-8 transition-all hover:border-slate-300">
+                                                <div className="flex justify-between items-center">
+                                                    <div className="flex items-center gap-3">
+                                                        <div className="w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold text-xs">
+                                                            {index + 1}
+                                                        </div>
+                                                        <span className="font-extrabold text-slate-900 tracking-tight text-lg">Subir Imagen</span>
+                                                    </div>
+                                                    {images.length > 1 && (
+                                                        <Button
+                                                            isIconOnly
+                                                            size="sm"
+                                                            color="danger"
+                                                            variant="light"
+                                                            className="rounded-xl hover:bg-red-50 text-red-500 transition-all"
+                                                            onPress={() => handleRemoveImage(index)}
+                                                        >
+                                                            <X size={16} />
+                                                        </Button>
+                                                    )}
+                                                </div>
+
+                                                <div className="space-y-8">
+                                                    <FileUpload
+                                                        onFileSelect={(file) => {
+                                                            const newImages = [...images];
+                                                            newImages[index].imagen = file;
+                                                            setImages(newImages);
+                                                        }}
+                                                    />
+
+                                                    <Input
+                                                        label="ENLACE DE REDIRECCIÓN (OPCIONAL)"
+                                                        labelPlacement="outside"
+                                                        variant="underlined"
+                                                        placeholder="https://tutienda.com/oferta"
+                                                        startContent={<Link size={16} className="text-slate-400 mb-1" />}
+                                                        value={img.linkImg}
+                                                        classNames={{
+                                                            label: "text-slate-400 font-bold tracking-wider text-[10px]",
+                                                            input: "text-slate-800 font-semibold text-base py-2",
+                                                            inputWrapper: "border-slate-200"
+                                                        }}
+                                                        onChange={(e) => {
+                                                            const newImages = [...images];
+                                                            newImages[index].linkImg = e.target.value;
+                                                            setImages(newImages);
+                                                        }}
+                                                    />
+                                                </div>
+                                            </div>
+                                        ))}
+
+                                        <Button
+                                            variant="flat"
+                                            className="w-full bg-slate-50 border-2 border-dashed border-slate-200 text-slate-500 font-bold uppercase tracking-widest text-[10px] h-16 rounded-[2rem] hover:bg-slate-100 hover:border-slate-300 transition-all hover:scale-[1.01] active:scale-95 px-6"
+                                            startContent={<Plus size={18} />}
+                                            onPress={() => setImages([...images, { imagen: null, linkImg: "" }])}
+                                        >
+                                            Agregar otra imagen al lote
+                                        </Button>
+                                    </div>
+                                )}
+                            </ModalBody>
+                            <ModalFooter className="gap-4">
+                                <Button
+                                    color="default"
+                                    variant="light"
+                                    className="font-bold uppercase tracking-widest text-[10px] text-slate-400 hover:text-slate-600 h-12 px-8 rounded-xl"
+                                    onPress={handleClose}
+                                >
+                                    Cerrar Panel
+                                </Button>
+                                {activeTab === "create" && (
+                                    <Button
+                                        className="bg-slate-900 text-white font-bold uppercase tracking-wider text-[11px] h-12 px-10 rounded-xl shadow-lg hover:bg-slate-800 hover:scale-105 active:scale-95 transition-all"
+                                        onPress={onUploadImg}
+                                        isLoading={loading}
+                                        isDisabled={images.some(img => !img.imagen)}
+                                    >
+                                        Guardar en el Sistema
+                                    </Button>
+                                )}
+                            </ModalFooter>
+                        </>
+                    )}
+                </ModalContent>
+            </Modal>
+        </>
+    );
 };
 
 export default PopupNotification;

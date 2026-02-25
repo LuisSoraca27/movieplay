@@ -1,133 +1,143 @@
-import { useEffect, useState } from 'react';
-import ViewProduct from '../ViewProduct';
-import { setProfilesThunk, deleteProfileThunk } from '../../features/user/profileSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import Swal from 'sweetalert2';
-import CreateProfile from './CreateProfile';
-import EditProfile from './EditProfile';
-import UploadExcel from '../UploadExcel';
+import { useEffect, useState, useMemo } from "react";
+import ViewProduct from "../ViewProduct";
+import {
+  setProfilesThunk,
+  deleteProfileThunk,
+} from "../../features/user/profileSlice";
+import { fetchCategories } from "../../features/categories/categoriesSlice";
+import { useDispatch, useSelector } from "react-redux";
+import CreateProfile from "./CreateProfile";
+import EditProfile from "./EditProfile";
+import UploadExcel from "../UploadExcel";
+import ConfirmModal from "../ui/ConfirmModal";
+import { addToast } from "@heroui/toast";
 
 const ProfileProduct = () => {
+  const dispatch = useDispatch();
 
-    const optionsCategory = [
-        { name: 'Netflix', value: 'netflix' },
-        { name: 'Max Premium', value: 'max_premium' },
-        { name: 'Max Estandar', value: 'max_estandar' },
-        { name: 'amazon Prime Video', value: 'amazon_prime' },
-        { name: 'Paramount+', value: 'paramount_plus' },
-        { name: 'Vix+', value: 'vix' },
-        { name: 'Plex', value: 'plex' },
-        { name: 'Crunchyroll', value: 'crunchyroll' },
-        { name: 'Black Code', value: 'profenet' },
-        { name: 'IPTV', value: 'iptv' },
-        { name: 'Rakuten Viki', value: 'rakuten' },
-        { name: 'Disney+ Basico', value: 'Dbasico' },
-        { name: 'Disney+ Estándar', value: 'Destandar' },
-        { name: 'Disney+ Premium', value: 'Dpremium' },
-        { name: 'Flujo TV', value: 'magistv' },
-        { name: 'Mubi', value: 'mubi' },
-        { name: 'universal+', value: 'universal' },
-        { name: 'ClaroVideo', value: 'clarovideo' },
-        { name: 'DirectTv GO', value: 'directvgo' },
-        { name: 'Apple TV', value: 'apple_tv' },
-        { name: 'Netflix Extra', value: 'netflix_extra' },
-        { name: 'Microsoft 365', value: 'microsoft365' },
-        { name: 'Wplay', value: 'wplay' },
-        { name: 'ChatGPT', value: 'chatgpt' },
-        { name: 'CapCut', value: 'capcut' },
-        { name: 'Amazon Music', value: 'amazonmusic' },
-    ]
+  // Obtener categorías desde Redux
+  const { categories } = useSelector((state) => state.categoriesCP);
+  const profiles = useSelector((state) => state.profiles.profiles);
 
-
-    const [categoryPerfiles, setCategoryPerfiles] = useState('netflix');
-    const [reload, setReload] = useState(false)
-    const [show, setShow] = useState(false);
-
-    // Estado para los datos del perfil
-    const [dataProfile, setDataProfile] = useState({})
-
-    // Estado para el modal editar
-    const [openEdit, setOpenEdit] = useState(false);
-
-    // Estado para el modal crear desde excel
-    const [openExcel, setOpenExcel] = useState(false);
-
-    const handleEdit = (data) => {
-        setDataProfile(data)
-        setOpenEdit(true)
+  // Convertir categorías al formato esperado por ViewProduct
+  const optionsCategory = useMemo(() => {
+    if (!categories || categories.length === 0) {
+      return [{ name: "Cargando...", value: "" }];
     }
+    return categories.map(cat => ({
+      name: cat.displayName || cat.name,
+      value: cat.name
+    }));
+  }, [categories]);
 
-    const handleCategory = (e) => {
-        setCategoryPerfiles(e.target.value)
+  const [categoryPerfiles, setCategoryPerfiles] = useState("");
+  const [reload, setReload] = useState(false);
+  const [show, setShow] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+  // Estado para los datos del perfil
+  const [dataProfile, setDataProfile] = useState({});
+
+  // Estado para el modal editar
+  const [openEdit, setOpenEdit] = useState(false);
+
+  // Estado para el modal crear desde excel
+  const [openExcel, setOpenExcel] = useState(false);
+
+  const handleEdit = (data) => {
+    setDataProfile(data);
+    setOpenEdit(true);
+  };
+
+  const handleCategory = (e) => {
+    setCategoryPerfiles(e.target.value);
+  };
+
+  const handleDeleteClick = (id) => {
+    setDeleteId(id);
+    setIsDeleteModalOpen(true);
+  };
+
+  const confirmDelete = () => {
+    if (deleteId) {
+      dispatch(deleteProfileThunk(deleteId))
+        .then(() => {
+          addToast({ title: 'Éxito', description: "Perfil eliminado correctamente", color: 'success' });
+          setReload(!reload);
+        })
+        .finally(() => {
+          setIsDeleteModalOpen(false);
+          setDeleteId(null);
+        });
     }
+  };
 
-    const handleDelete = (id) => {
-        Swal.fire({
-            title: '¿Estas seguro?',
-            text: "No podras revertir esta acción",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: '!Si, eliminar!',
-            cancelButtonText: 'Cancelar'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                dispatch(deleteProfileThunk(id))
-                    .finally(() => {
-                        setReload(!reload)
-                    }
-                    )
+  // Cargar categorías al montar
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, [dispatch]);
 
-            }
-        }
-        )
+  // Establecer primera categoría como default cuando se cargan
+  useEffect(() => {
+    if (categories?.length > 0 && !categoryPerfiles) {
+      setCategoryPerfiles(categories[0].name);
     }
+  }, [categories, categoryPerfiles]);
 
+  // Cargar perfiles cuando cambia la categoría
+  useEffect(() => {
+    if (categoryPerfiles) {
+      dispatch(setProfilesThunk(categoryPerfiles));
+    }
+  }, [dispatch, categoryPerfiles, reload]);
 
-    const dispatch = useDispatch()
-    const profiles = useSelector(state => state.profiles.profiles)
+  return (
+    <>
+      <UploadExcel
+        show={openExcel}
+        onClose={() => setOpenExcel(false)}
+        reCharge={() => setReload(!reload)}
+        url="profile/uploadexcelprofile"
+        title="Subir Perfiles (Excel)"
+        templateEndpoint="profile/template"
+      />
+      <EditProfile
+        show={openEdit}
+        onClose={() => setOpenEdit(false)}
+        reCharge={() => setReload(!reload)}
+        data={dataProfile}
+      />
 
+      <CreateProfile
+        show={show}
+        onClose={() => setShow(false)}
+        reCharge={() => setReload(!reload)}
+      />
 
-    useEffect(() => {
-        dispatch(setProfilesThunk(categoryPerfiles))
-    }, [dispatch, categoryPerfiles, reload])
+      <ConfirmModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={confirmDelete}
+        title="Eliminar Perfil"
+        message="¿Estás seguro de que deseas eliminar este perfil? Esta acción no se puede deshacer."
+        confirmColor="danger"
+      />
 
-
-    return (
-        <>
-            <UploadExcel
-                show={openExcel}
-                onClose={() => setOpenExcel(false)}
-                reCharge={() => setReload(!reload)}
-                url='profile/uploadexcelprofile'
-            />
-            <EditProfile
-                show={openEdit}
-                onClose={() => setOpenEdit(false)}
-                reCharge={() => setReload(!reload)}
-                data={dataProfile}
-            />
-
-            <CreateProfile
-                show={show}
-                onClose={() => setShow(false)}
-                reCharge={() => setReload(!reload)}
-            />
-            <ViewProduct
-                category={categoryPerfiles}
-                optionsCategory={optionsCategory}
-                products={profiles}
-                handleCategory={handleCategory}
-                handleDelete={handleDelete}
-                handleEdit={handleEdit}
-                setShow={setShow}
-                handleExcel={() => setOpenExcel(true)}
-                isEdit={true}
-                seeEmail={true}
-            />
-        </>
-    );
+      <ViewProduct
+        category={categoryPerfiles}
+        optionsCategory={optionsCategory}
+        products={profiles}
+        handleCategory={handleCategory}
+        handleDelete={handleDeleteClick}
+        handleEdit={handleEdit}
+        setShow={setShow}
+        handleExcel={() => setOpenExcel(true)}
+        isEdit={true}
+        seeEmail={true}
+      />
+    </>
+  );
 };
 
 export default ProfileProduct;

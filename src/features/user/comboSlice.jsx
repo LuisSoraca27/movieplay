@@ -17,73 +17,74 @@ export const comboSlice = createSlice({
         },
         setComboById: (state, action) => {
             return [...state, action.payload]
-          },
-          clearCombos(state) {
-            state.items = []; 
-          },
+        },
+        clearCombos(state) {
+            state.items = [];
+        },
     },
 });
 
 
-export const setComboThunk = (page = 1) => async (dispatch) => {
+export const setComboThunk = ({ page = 1, categoryId = null } = {}) => async (dispatch) => {
+    dispatch(setIsLoading(true));
     try {
-        const res = await dksoluciones.get(`combo/?page=${page}`, getConfig());
+        let url = `combo/?page=${page}`;
+        if (categoryId) {
+            url += `&categoryId=${categoryId}`;
+        }
+        const res = await dksoluciones.get(url, getConfig());
         const { data, pagination } = res.data;
         dispatch(setCombos(data));
         dispatch(setTotalItems(pagination.totalItems));
     } catch (error) {
         console.log(error);
-        if (error.response?.data?.message === 'Session expired') {
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
-            window.location.reload();
-        }
+    } finally {
+        dispatch(setIsLoading(false));
     }
 };
 
 
-export const fetchCombosByNameThunk = ({name, page = 1}) => async (dispatch) => {
-    
+export const fetchCombosByNameThunk = ({ name, page = 1 }) => async (dispatch) => {
+    dispatch(setIsLoading(true));
     try {
         const res = await dksoluciones.get(`combo?name=${encodeURIComponent(name)}&page=${page}`, getConfig());
         const { data, pagination } = res.data;
         dispatch(setCombos(data));
-        dispatch(setTotalItems(pagination.totalItems)); 
+        dispatch(setTotalItems(pagination.totalItems));
     } catch (error) {
         console.log(error);
-        if (error.response && error.response.data.message === 'Session expired') {
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
-            window.location.reload();
-        } else {
-            dispatch(setError(error.response?.data?.message || "Error al buscar combos"));
-        }
+        dispatch(setError(error.response?.data?.message || "Error al buscar combos"));
+    } finally {
+        dispatch(setIsLoading(false));
     }
 };
 
 
 export const fetchComboByIdThunk = (id) => async (dispatch) => {
+    dispatch(setCombos([]));
+    dispatch(setIsLoading(true));
     try {
-      const res = await dksoluciones.get(`combo/id/${id}`, getConfig());
-      const { data } = res.data;
-      dispatch(setCombos([]))
-      dispatch(setComboById(data));
+        const res = await dksoluciones.get(`combo/id/${id}`, getConfig());
+        const { data } = res.data;
+        dispatch(setComboById(data));
     } catch (error) {
-      console.log(error);
-      dispatch(setError(error.response?.data?.message || "Error al buscar el combo"));
+        console.log(error);
+        dispatch(setError(error.response?.data?.message || "Error al buscar el combo"));
+    } finally {
+        dispatch(setIsLoading(false));
     }
-  };
+};
 
 
 export const createComboThunk = (form) => async (dispatch) => {
     try {
         const res = await dksoluciones.post('combo/', form, getConfig())
         console.log(res);
-        
+
         dispatch(setSuccess('Combo creado con éxito!'))
     } catch (error) {
         console.log(error)
-        dispatch(setError(error.response.data.message))
+        dispatch(setError(error.response?.data?.message))
     }
 }
 
@@ -93,12 +94,7 @@ export const updateComboThunk = (id, data) => async (dispatch) => {
         dispatch(setSuccess(true))
     } catch (error) {
         console.log(error)
-        if (error.response.data.message === 'Session expired') {
-            localStorage.removeItem('token')
-            localStorage.removeItem('user')
-            window.location.reload()
-        }
-        dispatch(setError(error.response.data.message))
+        dispatch(setError(error.response?.data?.message))
     }
 }
 
@@ -107,28 +103,20 @@ export const deleteComboThunk = (id) => async (dispatch) => {
         await dksoluciones.delete(`combo/${id}`, getConfig())
     } catch (error) {
         console.log(error)
-        if (error.response.data.message === 'Session expired') {
-            localStorage.removeItem('token')
-            localStorage.removeItem('user')
-            window.location.reload()
-        }
     }
 }
 
 export const buyComboThunk = (data) => async (dispatch) => {
- try {
-    const res = await dksoluciones.post("order/combo", data, getConfig())
-      console.log(res.data);
-       dispatch(setSuccess(true))
- } catch (error) {
-    console.log(error);
-    dispatch(setError(error.response.data.message))
- }
+    try {
+        const res = await dksoluciones.post("order/combo", data, getConfig())
+        console.log(res.data);
+        dispatch(setSuccess(true))
+    } catch (error) {
+        console.log(error);
+        dispatch(setError(error.response?.data?.message))
+    }
 }
 
-
-// Este Thunk se usa para realizar la compra de cursos y licencias
-//Se recibe el tipo de producto que se va a comprar
 
 export const buyProductThunk = (id, type, email, subject) => async (dispatch) => {
 
@@ -137,12 +125,7 @@ export const buyProductThunk = (id, type, email, subject) => async (dispatch) =>
         dispatch(setSuccess(true))
     } catch (error) {
         console.log(error)
-        if (error.response.data.message === 'Session expired') {
-            localStorage.removeItem('token')
-            localStorage.removeItem('user')
-            window.location.reload()
-        }
-        dispatch(setError(error.response.data.message))
+        dispatch(setError(error.response?.data?.message))
     }
 }
 

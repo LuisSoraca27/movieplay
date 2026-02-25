@@ -1,119 +1,113 @@
 /* eslint-disable react/prop-types */
-import { Dialog } from "primereact/dialog";
-import { Button } from "primereact/button";;
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Button,
+  Divider,
+} from "@heroui/react";
+import { Download, X, ShoppingBag } from "lucide-react";
 import { jsPDF } from "jspdf";
 import decrypt from "../../Helpers/decrypt";
 
 const Detailorder = ({ showModal, handleClose, data }) => {
   const productDetails = data?.productDetails;
 
-  const styles = {
-    container: {
-      padding: "1rem",
-      fontFamily: "'Roboto', sans-serif",
-      lineHeight: "1.5",
-    },
-    title: {
-      fontSize: "1.25rem",
-      fontWeight: "bold",
-      marginBottom: "1rem",
-      color: "#333",
-    },
-    label: {
-      fontWeight: "bold",
-      marginRight: "0.5rem",
-    },
-    value: {
-      color: "#555",
-    },
-    divider: {
-      margin: "1rem 0",
-      borderBottom: "1px solid #ddd",
-    },
-    footer: {
-      display: "flex",
-      justifyContent: "space-between",
-    },
-  };
-
   const renderDetails = () => {
     if (productDetails && productDetails.id?.startsWith("profile")) {
       return (
-        <div>
-          <b>PERFIL ENTREGADO</b>
-          <p>
-            <span style={styles.label}>Nombre:</span>
-            <span style={styles.value}>{productDetails.name}</span>
-          </p>
-          <p>
-            <span style={styles.label}>Descripción:</span>
-            <span style={styles.value}>{productDetails.description}</span>
-          </p>
-          <p>
-            <span style={styles.label}>Precio:</span>
-            <span style={styles.value}>${productDetails.price}</span>
-          </p>
-          <p>
-            <span style={styles.label}>Correo:</span>
-            <span style={styles.value}>
-              {decrypt(productDetails.emailAccount)}
-            </span>
-          </p>
-          <p>
-            <span style={styles.label}>Contraseña:</span>
-            <span style={styles.value}>
-              {decrypt(productDetails.passwordAccount)}
-            </span>
-          </p>
-          <p>
-            <span style={styles.label}>Perfil:</span>
-            <span style={styles.value}>{productDetails.profileAccount}</span>
-          </p>
-          <p>
-            <span style={styles.label}>Pin:</span>
-            <span style={styles.value}>{productDetails.pincodeAccount}</span>
-          </p>
-          <p>
-            <span style={styles.label}>Fecha de creación:</span>
-            <span style={styles.value}>
-              {new Date(productDetails.createdAt).toLocaleString()}
-            </span>
-          </p>
+        <div className="space-y-4">
+          <div className="flex items-center gap-2 mb-2">
+            <div className="h-6 w-1 bg-indigo-500 rounded-full"></div>
+            <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+              PERFIL ENTREGADO
+            </h4>
+          </div>
+          <div className="space-y-3 bg-slate-50 p-4 rounded-2xl border border-slate-100">
+            <div className="flex justify-between items-center border-b border-slate-200 pb-2">
+              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Nombre</span>
+              <span className="text-sm font-bold text-slate-800">{productDetails.name}</span>
+            </div>
+            <div className="flex justify-between items-center border-b border-slate-200 pb-2">
+              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Descripción</span>
+              <span className="text-sm font-semibold text-slate-700">{productDetails.description}</span>
+            </div>
+            <div className="flex justify-between items-center border-b border-slate-200 pb-2">
+              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Precio</span>
+              <span className="text-sm font-bold text-emerald-600">${productDetails.price}</span>
+            </div>
+            <div className="flex flex-col gap-1 border-b border-slate-200 pb-2">
+              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Correo</span>
+              <span className="text-sm font-mono text-slate-700 break-all bg-white px-2 py-1 rounded border border-slate-100">
+                {decrypt(productDetails.emailAccount)}
+              </span>
+            </div>
+            <div className="flex flex-col gap-1 border-b border-slate-200 pb-2">
+              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Contraseña</span>
+              <span className="text-sm font-mono text-slate-700 bg-white px-2 py-1 rounded border border-slate-100">
+                {decrypt(productDetails.passwordAccount)}
+              </span>
+            </div>
+            <div className="flex justify-between items-center border-b border-slate-200 pb-2">
+              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Perfil</span>
+              <span className="text-sm font-bold text-slate-800">{productDetails.profileAccount}</span>
+            </div>
+            <div className="flex justify-between items-center border-b border-slate-200 pb-2">
+              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Pin</span>
+              <span className="text-sm font-mono text-slate-800 bg-slate-200 px-2 rounded">{productDetails.pincodeAccount}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Creación</span>
+              <span className="text-sm font-semibold text-slate-600">
+                {new Date(productDetails.createdAt).toLocaleDateString()}
+              </span>
+            </div>
+          </div>
         </div>
       );
     } else if (productDetails && productDetails.id?.startsWith("account")) {
       return (
-        <div>
-          <p>
-            <span style={styles.label}>Nombre:</span>
-            <span style={styles.value}>{productDetails.name}</span>
-          </p>
-          <p>
-            <span style={styles.label}>Descripción:</span>
-            <span style={styles.value}>{productDetails.description}</span>
-          </p>
-          <p>
-            <span style={styles.label}>Precio:</span>
-            <span style={styles.value}>${productDetails.price}</span>
-          </p>
-          <p>
-            <span style={styles.label}>Correo:</span>
-            <span style={styles.value}>
-              {decrypt(productDetails.emailAccount)}
-            </span>
-          </p>
-          <p>
-            <span style={styles.label}>Contraseña:</span>
-            <span style={styles.value}>
-              {decrypt(productDetails.passwordAccount)}
-            </span>
-          </p>
-          <p>
-            <span style={styles.label}>Fecha de creación:</span>
-            <span style={styles.value}>
-              {new Date(productDetails.createdAt).toLocaleString()}
-            </span>
-          </p>
+        <div className="space-y-4">
+          <div className="flex items-center gap-2 mb-2">
+            <div className="h-6 w-1 bg-purple-500 rounded-full"></div>
+            <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+              CUENTA ENTREGADA
+            </h4>
+          </div>
+          <div className="space-y-3 bg-slate-50 p-4 rounded-2xl border border-slate-100">
+            <div className="flex justify-between items-center border-b border-slate-200 pb-2">
+              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Nombre</span>
+              <span className="text-sm font-bold text-slate-800">{productDetails.name}</span>
+            </div>
+            <div className="flex justify-between items-center border-b border-slate-200 pb-2">
+              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Descripción</span>
+              <span className="text-sm font-semibold text-slate-700">{productDetails.description}</span>
+            </div>
+            <div className="flex justify-between items-center border-b border-slate-200 pb-2">
+              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Precio</span>
+              <span className="text-sm font-bold text-emerald-600">${productDetails.price}</span>
+            </div>
+            <div className="flex flex-col gap-1 border-b border-slate-200 pb-2">
+              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Correo</span>
+              <span className="text-sm font-mono text-slate-700 break-all bg-white px-2 py-1 rounded border border-slate-100">
+                {decrypt(productDetails.emailAccount)}
+              </span>
+            </div>
+            <div className="flex flex-col gap-1 border-b border-slate-200 pb-2">
+              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Contraseña</span>
+              <span className="text-sm font-mono text-slate-700 bg-white px-2 py-1 rounded border border-slate-100">
+                {decrypt(productDetails.passwordAccount)}
+              </span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Creación</span>
+              <span className="text-sm font-semibold text-slate-600">
+                {new Date(productDetails.createdAt).toLocaleDateString()}
+              </span>
+            </div>
+          </div>
         </div>
       );
     } else if (
@@ -123,71 +117,57 @@ const Detailorder = ({ showModal, handleClose, data }) => {
       const { profiles, accounts } = productDetails;
 
       return (
-        <div>
-          <b>COMBO ENTREGADO</b>
-          {profiles && (
-            <div>
-              <b>Perfiles:</b>
+        <div className="space-y-6">
+          <div className="flex items-center gap-2 mb-2">
+            <div className="h-6 w-1 bg-pink-500 rounded-full"></div>
+            <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+              COMBO ENTREGADO
+            </h4>
+          </div>
+
+          {profiles && profiles.length > 0 && (
+            <div className="space-y-3">
+              <h5 className="text-[10px] font-bold text-indigo-500 uppercase tracking-wider pl-1">Perfiles</h5>
               {profiles.map((profile, index) => (
-                <div key={`profile-${index}`} style={{ marginBottom: "1rem" }}>
-                  <p>
-                    <span style={styles.label}>Nombre:</span>
-                    <span style={styles.value}>{profile.name}</span>
-                  </p>
-                  <p>
-                    <span style={styles.label}>Descripción:</span>
-                    <span style={styles.value}>{profile.description}</span>
-                  </p>
-                  <p>
-                    <span style={styles.label}>Precio:</span>
-                    <span style={styles.value}>${profile.price}</span>
-                  </p>
-                  <p>
-                    <span style={styles.label}>Correo:</span>
-                    <span style={styles.value}>
-                      {decrypt(profile.emailAccount)}
-                    </span>
-                  </p>
-                  <p>
-                    <span style={styles.label}>Contraseña:</span>
-                    <span style={styles.value}>
-                      {decrypt(profile.passwordAccount)}
-                    </span>
-                  </p>
-                  <hr />
+                <div key={`profile-${index}`} className="bg-indigo-50/50 rounded-xl p-3 border border-indigo-100 space-y-2">
+                  <div className="flex justify-between">
+                    <span className="text-xs font-bold text-slate-700">{profile.name}</span>
+                    <span className="text-xs font-bold text-emerald-600">${profile.price}</span>
+                  </div>
+                  <div className="grid grid-cols-1 gap-2 text-xs">
+                    <div className="flex flex-col">
+                      <span className="text-[9px] font-bold text-slate-400 uppercase">Correo</span>
+                      <span className="font-mono text-slate-600 bg-white px-2 py-1 rounded border border-indigo-100">{decrypt(profile.emailAccount)}</span>
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-[9px] font-bold text-slate-400 uppercase">Contraseña</span>
+                      <span className="font-mono text-slate-600 bg-white px-2 py-1 rounded border border-indigo-100">{decrypt(profile.passwordAccount)}</span>
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
           )}
-          {accounts && (
-            <div>
-              <b>Cuentas:</b>
+
+          {accounts && accounts.length > 0 && (
+            <div className="space-y-3">
+              <h5 className="text-[10px] font-bold text-purple-500 uppercase tracking-wider pl-1">Cuentas</h5>
               {accounts.map((account, index) => (
-                <div key={`account-${index}`} style={{ marginBottom: "1rem" }}>
-                  <p>
-                    <span style={styles.label}>Nombre:</span>
-                    <span style={styles.value}>{account.name}</span>
-                  </p>
-                  <p>
-                    <span style={styles.label}>Descripción:</span>
-                    <span style={styles.value}>{account.description}</span>
-                  </p>
-                  <p>
-                    <span style={styles.label}>Precio:</span>
-                    <span style={styles.value}>${account.price}</span>
-                  </p>
-                  <p>
-                    <span style={styles.label}>Correo:</span>
-                    <span style={styles.value}>
-                      {decrypt(account.emailAccount)}
-                    </span>
-                  </p>
-                  <p>
-                    <span style={styles.label}>Contraseña:</span>
-                    <span style={styles.value}>
-                      {decrypt(account.passwordAccount)}
-                    </span>
-                  </p>
+                <div key={`account-${index}`} className="bg-purple-50/50 rounded-xl p-3 border border-purple-100 space-y-2">
+                  <div className="flex justify-between">
+                    <span className="text-xs font-bold text-slate-700">{account.name}</span>
+                    <span className="text-xs font-bold text-emerald-600">${account.price}</span>
+                  </div>
+                  <div className="grid grid-cols-1 gap-2 text-xs">
+                    <div className="flex flex-col">
+                      <span className="text-[9px] font-bold text-slate-400 uppercase">Correo</span>
+                      <span className="font-mono text-slate-600 bg-white px-2 py-1 rounded border border-purple-100">{decrypt(account.emailAccount)}</span>
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-[9px] font-bold text-slate-400 uppercase">Contraseña</span>
+                      <span className="font-mono text-slate-600 bg-white px-2 py-1 rounded border border-purple-100">{decrypt(account.passwordAccount)}</span>
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
@@ -195,6 +175,7 @@ const Detailorder = ({ showModal, handleClose, data }) => {
         </div>
       );
     }
+    return null;
   };
 
   const handleDownloadInvoice = () => {
@@ -244,55 +225,90 @@ const Detailorder = ({ showModal, handleClose, data }) => {
   };
 
   return (
-    <Dialog
-      visible={showModal}
-      onHide={handleClose}
-      style={{ width: "400px" }}
-      header="Detalles de la Compra"
-      footer={
-        <div style={styles.footer}>
-          <Button
-            label="Descargar Reporte"
-            icon="pi pi-download"
-            onClick={handleDownloadInvoice}
-            severity="success"
-          />
-          <Button
-            label="Cerrar"
-            icon="pi pi-times"
-            onClick={handleClose}
-            severity="danger"
-          />
-        </div>
-      }
+    <Modal
+      isOpen={showModal}
+      onClose={handleClose}
+      size="md"
+      scrollBehavior="inside"
+      classNames={{
+        base: "bg-white border border-slate-200 shadow-2xl rounded-[2.5rem]",
+        header: "border-b border-slate-100 p-6 pb-2",
+        body: "p-6 overflow-y-auto custom-scrollbar",
+        footer: "border-t border-slate-100 p-6 pt-2"
+      }}
     >
-      <div style={styles.container}>
-        <p>
-          <span style={styles.label}>N° de Compra:</span>
-          <span style={styles.value}>{data?.id}</span>
-        </p>
-        <p>
-          <span style={styles.label}>Producto:</span>
-          <span style={styles.value}>{data?.nameProduct}</span>
-        </p>
-        <p>
-          <span style={styles.label}>Precio:</span>
-          <span style={styles.value}>${data?.priceProduct}</span>
-        </p>
-        <p>
-          <span style={styles.label}>Fecha de Compra:</span>
-          <span style={styles.value}>
-            {new Date(data?.createdAt).toLocaleString()}
-          </span>
-        </p>
-        <p>
-          <span style={styles.label}>Usuario:</span>
-          <span style={styles.value}>{data?.username}</span>
-        </p>
-        <div style={styles.divider}></div>
-        {renderDetails()}
-      </div>
-    </Dialog>
+      <ModalContent>
+        <ModalHeader className="flex flex-col gap-1">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-slate-100 rounded-xl text-slate-600">
+              <ShoppingBag size={20} />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-xl font-extrabold text-slate-900 tracking-tight">Detalles</span>
+              <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">ID COMPRA: #{data?.id}</span>
+            </div>
+          </div>
+        </ModalHeader>
+        <ModalBody>
+          <div className="space-y-3">
+            <div className="grid grid-cols-1 gap-4 text-sm bg-slate-50/50 p-4 rounded-2xl border border-slate-100">
+              <div className="flex flex-col gap-1">
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Producto</span>
+                <span className="text-sm font-bold text-slate-800">
+                  {data?.nameProduct}
+                </span>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="flex flex-col gap-1">
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Usuario</span>
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 rounded-full bg-slate-200 flex items-center justify-center text-[10px] font-bold text-slate-600">
+                      {data?.username?.charAt(0) || "?"}
+                    </div>
+                    <span className="text-sm font-semibold text-slate-700 truncate">
+                      {data?.username || "Desconocido"}
+                    </span>
+                  </div>
+                </div>
+                <div className="flex flex-col gap-1">
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Precio</span>
+                  <span className="text-sm font-bold text-emerald-600">
+                    ${data?.priceProduct}
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Fecha de Compra</span>
+                <span className="text-sm font-semibold text-slate-700">
+                  {data?.createdAt && new Date(data.createdAt).toLocaleString()}
+                </span>
+              </div>
+            </div>
+            <Divider className="my-2 border-slate-100" />
+            {renderDetails()}
+          </div>
+        </ModalBody>
+        <ModalFooter>
+          <Button
+            variant="light"
+            onPress={handleClose}
+            startContent={<X size={16} />}
+            className="font-bold text-slate-500 uppercase tracking-wider text-[11px]"
+          >
+            Cerrar
+          </Button>
+          <Button
+            className="bg-slate-900 text-white font-bold uppercase tracking-wider text-[11px] shadow-lg"
+            onPress={handleDownloadInvoice}
+            startContent={<Download size={16} />}
+          >
+            Descargar Reporte
+          </Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
   );
 };
 

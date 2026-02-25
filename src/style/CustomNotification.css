@@ -1,15 +1,143 @@
-.message-content {
+/* Contenedor principal de la notificación */
+.custom-notification {
     width: 100%;
-    background-color: #6366f1;
-    margin: 10px;
-    padding: 10px;
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    color: white;
-    font-weight: bold;
+    margin-bottom: 0;
 }
 
-.message-text {
-    width: 95%;
+/* Card moderna de notificación */
+.notification-card {
+    background: #ffffff;
+    border: 1px solid #e1e5e9;
+    border-radius: 12px;
+    padding: 0;
+    color: #2c3e50;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    position: relative;
+}
+
+.notification-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #3498db, #2ecc71);
+}
+
+.notification-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+    border-color: #3498db;
+}
+
+/* Header de la notificación */
+.notification-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 20px 16px 20px;
+    margin-bottom: 0;
+    background: transparent;
+}
+
+.notification-icon {
+    background: #f8f9fa;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    color: #6c757d;
+    border: 1px solid #e9ecef;
+}
+
+.notification-meta {
+    flex: 1;
+    margin-left: 16px;
+    display: flex;
+    align-items: center;
+}
+
+.notification-date {
+    font-size: 0.875rem;
+    color: #6c757d;
+    font-weight: 400;
+    background: #f8f9fa;
+    padding: 4px 8px;
+    border-radius: 12px;
+    border: 1px solid #e9ecef;
+}
+
+.delete-button {
+    color: #dc3545 !important;
+    background: transparent !important;
+    border: 1px solid #dc354545 !important;
+    transition: all 0.2s ease !important;
+}
+
+.delete-button:hover {
+    background: #dc354510 !important;
+    border-color: #dc3545 !important;
+    transform: scale(1.05);
+}
+
+/* Cuerpo de la notificación */
+.notification-body {
+    padding: 0 20px 20px 20px;
+    background: #ffffff;
+}
+
+.notification-message {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.6;
+    font-weight: 400;
+    color: #495057;
+}
+
+/* Variantes de color para diferentes tipos */
+.notification-card.info .notification-card::before {
+    background: linear-gradient(90deg, #17a2b8, #138496);
+}
+
+.notification-card.success .notification-card::before {
+    background: linear-gradient(90deg, #28a745, #20c997);
+}
+
+.notification-card.warning .notification-card::before {
+    background: linear-gradient(90deg, #ffc107, #fd7e14);
+}
+
+.notification-card.danger .notification-card::before {
+    background: linear-gradient(90deg, #dc3545, #e83e8c);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .notification-header {
+        padding: 12px 16px 8px 16px;
+    }
+    
+    .notification-body {
+        padding: 8px 16px 16px 16px;
+    }
+    
+    .notification-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+    }
+    
+    .notification-date {
+        font-size: 0.8rem;
+    }
+    
+    .notification-message {
+        font-size: 0.9rem;
+    }
 }

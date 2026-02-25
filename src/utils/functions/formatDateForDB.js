@@ -9,3 +9,8 @@ function formatDateForDB(date) {
   }
 
   export default formatDateForDB
+
+
+
+console.log(formatDateForDB(new Date()) );
+// 2021-09-29 16:00:00.000-03:00

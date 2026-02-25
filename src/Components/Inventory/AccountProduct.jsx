@@ -1,57 +1,40 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setAccountsThunk,
   deleteAccountThunk,
 } from "../../features/account/accountSlice";
+import { fetchCategories } from "../../features/categories/categoriesSlice";
 import ViewProduct from "../ViewProduct";
-import Swal from "sweetalert2";
 import CreateAccount from "./CreateAccount";
 import EditAccount from "./EditAccount";
 import UploadExcel from "../UploadExcel";
+import ConfirmModal from "../ui/ConfirmModal";
+import { addToast } from "@heroui/toast";
 
 const AccountProduct = () => {
-  const [categoryPerfiles, setCategoryPerfiles] = useState("netflix");
+  const dispatch = useDispatch();
+
+  // Obtener categorías desde Redux
+  const { categories } = useSelector((state) => state.categoriesCP);
+  const accounts = useSelector((state) => state.accounts.accounts);
+
+  // Convertir categorías al formato esperado por ViewProduct
+  const optionsCategory = useMemo(() => {
+    if (!categories || categories.length === 0) {
+      return [{ name: "Cargando...", value: "" }];
+    }
+    return categories.map(cat => ({
+      name: cat.displayName || cat.name,
+      value: cat.name
+    }));
+  }, [categories]);
+
+  const [categoryPerfiles, setCategoryPerfiles] = useState("");
   const [reload, setReload] = useState(false);
   const [show, setShow] = useState(false);
-
-  const optionsCategory = [
-    { name: 'Netflix', value: 'netflix' },
-    { name: 'Max Premium', value: 'max_premium' },
-    { name: 'Max Estandar', value: 'max_estandar' },
-    { name: 'amazon Prime Video', value: 'amazon_prime' },
-    { name: 'Paramount+', value: 'paramount_plus' },
-    { name: 'Vix+', value: 'vix' },
-    { name: 'Plex', value: 'plex' },
-    { name: 'Crunchyroll', value: 'crunchyroll' },
-    { name: 'Black Code', value: 'profenet' },
-    { name: 'IPTV', value: 'iptv' },
-    { name: 'Rakuten Viki', value: 'rakuten' },
-    { name: 'Disney+ Basico', value: 'Dbasico' },
-    { name: 'Disney+ Estándar', value: 'Destandar' },
-    { name: 'Disney+ Premium', value: 'Dpremium' },
-    { name: 'Flujo TV', value: 'magistv' },
-    { name: 'Spotify', value: 'spotify' },
-    { name: 'youtube premium', value: 'youtube' },
-    { name: 'Tidal', value: 'tidal' },
-    { name: 'Mubi', value: 'mubi' },
-    { name: 'universal+', value: 'universal' },
-    { name: 'Canva', value: 'canva' },
-    { name: 'Duolingo', value: 'duolingo' },
-    { name: 'Microsoft 365', value: 'microsoft365' },
-    { name: 'McAfee', value: 'mcafee' },
-    { name: 'TvMia', value: 'tvmia' },
-    { name: 'DirectTv GO', value: 'directvgo' },
-    { name: 'Apple TV', value: 'apple_tv' },
-    { name: 'Netflix Extra', value: 'netflix_extra' },
-    { name: 'Playstation Plus', value: 'playstation' },
-    { name: 'Xbox Game Pass', value: 'xbox_pass' },
-    { name: 'CapCut', value: 'capcut' },
-    { name: 'Amazon Music', value: 'amazonmusic' },
-  ];
-
-  const dispatch = useDispatch();
-  const accounts = useSelector((state) => state.accounts.accounts);
+  const [deleteId, setDeleteId] = useState(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   // Estado para los datos de la cuenta
   const [dataAccount, setDataAccount] = useState({});
@@ -69,30 +52,44 @@ const AccountProduct = () => {
 
   const handleCategory = (e) => {
     setCategoryPerfiles(e.target.value);
-    console.log(e.target.value);
   };
 
-  const handleDelete = (id) => {
-    Swal.fire({
-      title: "¿Estas seguro?",
-      text: "No podras revertir esta acción",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "!Si, eliminar!",
-      cancelButtonText: "Cancelar",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        dispatch(deleteAccountThunk(id)).finally(() => {
+  const handleDeleteClick = (id) => {
+    setDeleteId(id);
+    setIsDeleteModalOpen(true);
+  };
+
+  const confirmDelete = () => {
+    if (deleteId) {
+      dispatch(deleteAccountThunk(deleteId))
+        .then(() => {
+          addToast({ title: 'Éxito', description: "Cuenta eliminada correctamente", color: 'success' });
           setReload(!reload);
+        })
+        .finally(() => {
+          setIsDeleteModalOpen(false);
+          setDeleteId(null);
         });
-      }
-    });
+    }
   };
 
+  // Cargar categorías al montar
   useEffect(() => {
-    dispatch(setAccountsThunk(categoryPerfiles));
+    dispatch(fetchCategories());
+  }, [dispatch]);
+
+  // Establecer primera categoría como default cuando se cargan
+  useEffect(() => {
+    if (categories?.length > 0 && !categoryPerfiles) {
+      setCategoryPerfiles(categories[0].name);
+    }
+  }, [categories, categoryPerfiles]);
+
+  // Cargar cuentas cuando cambia la categoría
+  useEffect(() => {
+    if (categoryPerfiles) {
+      dispatch(setAccountsThunk(categoryPerfiles));
+    }
   }, [dispatch, categoryPerfiles, reload]);
 
   return (
@@ -102,6 +99,8 @@ const AccountProduct = () => {
         onClose={() => setOpenExcel(false)}
         reCharge={() => setReload(!reload)}
         url="account/uploadexcelaccount"
+        title="Subir Cuentas (Excel)"
+        templateEndpoint="account/template"
       />
 
       <EditAccount
@@ -115,13 +114,23 @@ const AccountProduct = () => {
         onClose={() => setShow(false)}
         reCharge={() => setReload(!reload)}
       />
+
+      <ConfirmModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={confirmDelete}
+        title="Eliminar Cuenta"
+        message="¿Estás seguro de que deseas eliminar esta cuenta? Esta acción no se puede deshacer."
+        confirmColor="danger"
+      />
+
       <ViewProduct
         category={categoryPerfiles}
         optionsCategory={optionsCategory}
         products={accounts}
         handleCategory={handleCategory}
         handleEdit={handleEdit}
-        handleDelete={handleDelete}
+        handleDelete={handleDeleteClick}
         handleExcel={() => setOpenExcel(true)}
         setShow={setShow}
         isEdit={true}

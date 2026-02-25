@@ -1,95 +1,71 @@
 import '../style/ContentMenu.css';
 import logo from '../assets/logo.png';
-import { Button } from 'primereact/button';
+import { Button } from "@heroui/react";
 import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../context/AuthContext';
-
+import { useSelector } from 'react-redux';
+import { Home, Users, Bell, ShoppingCart, Info, User } from 'lucide-react';
 
 const ContentMenu = () => {
-
     const navigate = useNavigate();
-    const HandleNavigate = (path) => {
+    const handleNavigate = (path) => {
         navigate(path);
-    }
+    };
 
-    const { logout } = useAuthContext()
+    const { logout } = useAuthContext();
+    const user = JSON.parse(localStorage.getItem('user'));
+    const publicSettings = useSelector((state) => state.storeSettings.publicSettings);
+    const storeLogo = publicSettings?.logo || logo;
 
-    const user = JSON.parse(localStorage.getItem('user'))
+    const adminMenu = [
+        { label: 'Inicio', icon: Home, path: '/' },
+        { label: 'Usuarios', icon: Users, path: '/usuarios' },
+        { label: 'Notificaciones', icon: Bell, path: '/notificaciones' },
+        { label: 'Ventas', icon: ShoppingCart, path: '/pedidos' },
+        { label: 'Soporte', icon: Info, path: '/soporte' },
+    ];
 
-    const contentMenu = () => {
+    const sellerMenu = [
+        { label: 'Inicio', icon: Home, path: '/' },
+        { label: 'Mi cuenta', icon: User, path: '/mi-perfil' },
+        { label: 'Mis compras', icon: ShoppingCart, path: '/pedidos-usuarios' },
+        { label: 'Soporte', icon: Info, path: '/soporte' },
+    ];
 
-        if (user?.role === 'admin') {
-            return (
-                <>
-                <li onClick={() => HandleNavigate('/')}>
-                    <i className="pi pi-fw pi-home" style={{  fontSize: '25px' }}></i>
-                       <span>Inicio</span>
-                    </li>
-                    <li onClick={() => HandleNavigate('/usuarios')}>
-                    <i className="pi pi-fw pi-users" style={{ fontSize: '25px' }}></i>
-                       <span>Usuarios</span>
-                     </li>
-                    <li onClick={() => HandleNavigate('/notificaciones')}>
-                    <i className="pi pi-fw pi-bell" style={{ fontSize: '25px' }}></i>
-                        <span>Notificaciones</span>
-                     </li>
-                    <li onClick={() => HandleNavigate('/pedidos')}>
-                    <i className="pi pi-fw pi-shopping-cart" style={{  fontSize: '25px' }}></i>
-                       <span>Ventas</span>
-                    </li>
-                    <li onClick={() => HandleNavigate('/soporte')}>
-                    <i className="pi pi-fw pi-info-circle" style={{ fontSize: '25px' }}></i>
-                        <span>Soporte</span>
-                    </li>
-                </>
-            )
-        } else if (user?.role === 'seller') {
-            return (
-                <>
-                <li onClick={() => HandleNavigate('/')}>
-                    <i className="pi pi-fw pi-home" style={{  fontSize: '25px' }}></i>
-                       <span>Inicio</span>
-                    </li>
-                    <li onClick={() => HandleNavigate('/mi-perfil')}>
-                       <i className="pi pi-fw pi-user" style={{  fontSize: '25px' }}></i>
-                       <span>Mi cuenta</span>
-                    </li>
-                 <li onClick={() => HandleNavigate('/pedidos-usuarios')}>
-                    <i className="pi pi-fw pi-shopping-cart" style={{  fontSize: '25px' }}></i>
-                       <span>Mis compras</span>
-                </li>
-                <li onClick={() => HandleNavigate('/soporte')}>
-                    <i className="pi pi-fw pi-info-circle" style={{ fontSize: '25px' }}></i>
-                        <span>Soporte</span>
-                </li>
-                </>
-            )
-        }
-    }
+    const menuItems = user?.role === 'admin' ? adminMenu : sellerMenu;
 
     return (
         <div className='content-menu'>
             <div className="content-header">
-                <img src={logo} alt="Logo" width='150px' />
+                <img src={storeLogo} alt="Logo" width='150px' />
             </div>
             <div className='content-nav'>
-                {/* <Menu
-                    model={items}
-                    className='menu p-mb-4'
-                /> */}
                 <ul>
-                  {contentMenu()}
+                    {menuItems.map((item, index) => {
+                        const Icon = item.icon;
+                        return (
+                            <li key={index} onClick={() => handleNavigate(item.path)}>
+                                <Icon size={25} className="text-primary" />
+                                <span>{item.label}</span>
+                            </li>
+                        );
+                    })}
                 </ul>
             </div>
             <div className='content-footer'>
-            <span className='menu_user'>
-            <i className="pi pi-fw pi-user" style={{ color: 'var(--primary-color)', fontSize: '25px' }}></i>
-            {
-                user?.username
-            }
-            <p>{user?.role === 'admin' ? 'Administrador' : 'Aliado'}</p>
-            </span>
-            <Button label="Cerrar Sesión" size='small' severity="danger" rounded onClick={logout} />
+                <span className='menu_user'>
+                    <User size={25} className="text-primary" />
+                    {user?.username}
+                    <p>{user?.role === 'admin' ? 'Administrador' : 'Aliado'}</p>
+                </span>
+                <Button
+                    color="danger"
+                    size="sm"
+                    radius="full"
+                    onPress={logout}
+                >
+                    Cerrar Sesión
+                </Button>
             </div>
             <div style={{ textAlign: 'center', marginTop: '17px' }}>
                 <strong style={{ color: 'white', fontSize: '14px' }}>Dk Soluciones V1.5</strong>

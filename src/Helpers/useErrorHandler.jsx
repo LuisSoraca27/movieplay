@@ -1,24 +1,35 @@
 import { useDispatch } from 'react-redux';
 import { removeError, removeSuccess } from '../features/error/errorSlice';
+import { addToast } from "@heroui/toast";
 
-const useErrorHandler = (error, success,) => {
+const useErrorHandler = (error, success) => {
   const dispatch = useDispatch();
 
-  const showSuccess = (toast, successMessage) => {
-    toast.show({ severity: 'success', summary: 'Éxito', detail: successMessage, life: 2000 });
+  const showSuccess = (successMessage) => {
+    addToast({
+      title: 'Éxito',
+      description: successMessage,
+      color: 'success',
+      timeout: 2000
+    });
     dispatch(removeSuccess());
   };
 
-  const showError = (toast, errorMessage) => {
-    toast.show({ severity: 'error', summary: 'Error', detail: errorMessage, life: 2000 });
+  const showError = (errorMessage) => {
+    addToast({
+      title: 'Error',
+      description: errorMessage,
+      color: 'danger',
+      timeout: 2000
+    });
     dispatch(removeError());
   };
 
-  const handleErrors = (toast) => {
+  const handleErrors = () => {
     if (error) {
-      showError(toast, error);
+      showError(error);
     } else if (success) {
-      showSuccess(toast, success);
+      showSuccess(success);
     }
   };
 

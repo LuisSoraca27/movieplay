@@ -1,163 +1,142 @@
-import { Button } from "primereact/button";
-import { Sidebar } from "primereact/sidebar";
-import { useNavigate } from "react-router-dom";
+import { Button, Drawer, DrawerContent, DrawerHeader, DrawerBody, DrawerFooter } from "@heroui/react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContext";
+import { useSelector } from "react-redux";
 import logo from "../assets/logo.png";
-import "../style/menuLeft.css";
+import {
+  Home, Users, History, Package, ShoppingCart,
+  BarChart3, Info, User as UserIcon, Power, ChevronRight, CreditCard
+} from "lucide-react";
 
 // eslint-disable-next-line react/prop-types
 const SidebarLeft = ({ visible, onHide }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { logout } = useAuthContext();
+  const user = JSON.parse(localStorage.getItem("user"));
+  const publicSettings = useSelector((state) => state.storeSettings.publicSettings);
+  const storeLogo = publicSettings?.logo || logo;
+
   const itemsAdmin = [
-    {
-      label: "Inicio",
-      icon: "pi pi-fw pi-home",
-      link: "/",
-    },
-    {
-      label: "Usuarios",
-      icon: "pi pi-fw pi-users",
-      link: "/usuarios",
-    },
-    {
-      label: "Clientes",
-      icon: "pi pi-users",
-      link: "/clientes",
-    },
-    {
-      label: "Inventario",
-      icon: "pi pi-box",
-      link: "/inventario",
-    },
-    {
-      label: "Ventas internas",
-      icon: "pi pi-shopping-cart",
-      link: "/pedidos-internos",
-    },
-    {
-      label: "Ventas externas",
-      icon: "pi pi-shopping-cart",
-      link: "/pedidos",
-    },
-    {
-      label: "Gastos",
-      icon: "pi pi-money-bill",
-      link: "/gastos",
-    },
-    {
-      label: "Soporte",
-      icon: "pi pi-info-circle",
-      link: "/soporte",
-    },
+    { label: "Inicio", icon: Home, link: "/" },
+    { label: "Usuarios", icon: Users, link: "/usuarios" },
+    { label: "Clientes", icon: Users, link: "/clientes" },
+    { label: "Historial de recargas", icon: History, link: "/historial-recargas" },
+    // { label: "Inventario", icon: Package, link: "/inventario" },
+    { label: "Ventas internas", icon: ShoppingCart, link: "/pedidos-internos" },
+    { label: "Ventas externas", icon: ShoppingCart, link: "/pedidos" },
+    { label: "Ventas diarias", icon: BarChart3, link: "/ventas-diarias" },
+    { label: "Mi Plan", icon: CreditCard, link: "/mi-plan" },
+    { label: "Soporte", icon: Info, link: "/soporte" },
+  ];
+
+  const itemsSuperAdmin = [
+    ...itemsAdmin.filter((item) => item.link !== "/mi-plan"),
+    { label: "Suscripciones", icon: CreditCard, link: "/suscripciones" },
   ];
 
   const itemsSeller = [
-    {
-      label: "Inicio",
-      icon: "pi pi-home",
-      link: "/",
-    },
-    {
-      label: "Mi cuenta",
-      icon: "pi pi-user",
-      link: "/mi-perfil",
-    },
-    {
-      label: "Mis pedidos",
-      icon: "pi pi-shopping-cart",
-      link: "/pedidos-usuarios",
-    },
-    {
-      label: "Soporte",
-      icon: "pi pi-info-circle",
-      link: "/soporte",
-    },
+    { label: "Inicio", icon: Home, link: "/" },
+    { label: "Mi cuenta", icon: UserIcon, link: "/mi-perfil" },
+    { label: "Mis pedidos", icon: ShoppingCart, link: "/pedidos-usuarios" },
+    { label: "Soporte", icon: Info, link: "/soporte" },
   ];
 
-  const navigate = useNavigate();
-  const { logout } = useAuthContext();
-  const user = JSON.parse(localStorage.getItem("user"));
+  const menuItems = user?.role === "superadmin" ? itemsSuperAdmin : user?.role === "admin" ? itemsAdmin : itemsSeller;
 
   const handleNavigate = (path) => {
     onHide();
     navigate(path);
   };
 
-  const renderMenuItems = () => {
-    if (user?.role === "admin") {
-      return (
-        <>
-          {itemsAdmin.map((item, index) => (
-            <li
-              key={index}
-              onClick={() => handleNavigate(item.link)}
-              className="p-menuitem-link"
-              style={{ margin: "15px 0" }}
-            >
-              <i
-                className={`${item.icon} p-menuitem-icon`}
-                style={{ fontSize: "25px" }}
-              ></i>
-              <span className="menu-link">{item.label}</span>
-            </li>
-          ))}
-        </>
-      );
-    } else if (user?.role === "seller") {
-      return (
-        <>
-          {itemsSeller.map((item, index) => (
-            <li
-              key={index}
-              onClick={() => handleNavigate(item.link)}
-              className="p-menuitem-link"
-              style={{ margin: "15px 0" }}
-            >
-              <i
-                className={`${item.icon} p-menuitem-icon`}
-                style={{ fontSize: "25px" }}
-              ></i>
-              <span className="menu-link">{item.label}</span>
-            </li>
-          ))}
-        </>
-      );
-    }
-  };
+  const userInitial = user?.username?.charAt(0)?.toUpperCase() || "U";
 
   return (
-    <Sidebar
-      visible={visible}
-      onHide={onHide}
-      position="left"
-      style={{ backgroundColor: "#0f172a" }}
+    <Drawer
+      isOpen={visible}
+      onClose={onHide}
+      placement="left"
+      size="xs"
+      classNames={{
+        base: "bg-[#1C1D1F]",
+        header: "border-b border-white/[0.06]",
+        footer: "border-t border-white/[0.06]",
+        closeButton: "text-white/40 hover:text-white hover:bg-white/10 rounded-xl",
+      }}
     >
-      <div className="content-menu-sidebar">
-        <div className="content-header-sidebar">
-          <img src={logo} alt="Logo" width="120px" />
-        </div>
-        <div className="content-nav">
-          <ul>{renderMenuItems()}</ul>
-        </div>
-        <div className="menu-footer">
-          <Button
-            icon="pi pi-power-off"
-            rounded
-            text
-            severity="danger"
-            size="large"
-            aria-label="Logout"
-            style={{ marginRight: "2px", position: "relative", top: "5px" }}
-            onClick={logout}
-          />
-          <div className="menu-user">
-            <span className="menu-name-user">{user?.username}</span>
-            <span className="menu-role-user">
-              {user?.role === "admin" ? "Administrador" : "Aliado"}
-            </span>
-          </div>
-        </div>
-      </div>
-    </Sidebar>
+      <DrawerContent>
+        {(onClose) => (
+          <>
+            <DrawerHeader className="justify-center py-7">
+              <img src={storeLogo} alt="Logo" className="w-28 h-auto object-contain" />
+            </DrawerHeader>
+
+            <DrawerBody className="px-3 py-4">
+              <ul className="space-y-1">
+                {menuItems.map((item, index) => {
+                  const Icon = item.icon;
+                  const isActive = location.pathname === item.link;
+                  return (
+                    <li key={index}>
+                      <button
+                        onClick={() => handleNavigate(item.link)}
+                        className={`
+                          w-full flex items-center gap-3.5 px-3.5 py-3 rounded-2xl transition-all duration-300 group
+                          ${isActive
+                            ? "bg-white/[0.08] text-white"
+                            : "text-white/50 hover:text-white hover:bg-white/[0.05]"
+                          }
+                        `}
+                      >
+                        <div className={`
+                          p-2 rounded-xl transition-all duration-300
+                          ${isActive
+                            ? "bg-white/10 shadow-lg shadow-white/[0.03]"
+                            : "bg-white/[0.04] group-hover:bg-white/[0.08]"
+                          }
+                        `}>
+                          <Icon size={17} strokeWidth={isActive ? 2.5 : 2} />
+                        </div>
+                        <span className={`text-[13px] tracking-wide ${isActive ? "font-bold" : "font-medium"}`}>
+                          {item.label}
+                        </span>
+                        {isActive && (
+                          <ChevronRight size={14} className="ml-auto text-white/30" />
+                        )}
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </DrawerBody>
+
+            <DrawerFooter className="flex flex-col gap-4 px-4 py-5">
+              {/* User Card */}
+              <div className="flex items-center gap-3 w-full px-3 py-3 rounded-2xl bg-white/[0.04] border border-white/[0.06]">
+                <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center">
+                  <span className="text-white text-sm font-black">{userInitial}</span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-[13px] font-bold text-white tracking-wide">{user?.username}</span>
+                  <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-white/30">
+                    {user?.role === "superadmin" ? "Super Admin" : user?.role === "admin" ? "Administrador" : "Aliado"}
+                  </span>
+                </div>
+              </div>
+
+              <Button
+                variant="flat"
+                onPress={logout}
+                startContent={<Power size={16} />}
+                className="w-full h-11 rounded-2xl bg-red-500/10 text-red-400 font-bold text-[11px] uppercase tracking-wider hover:bg-red-500/20 transition-all border border-red-500/10"
+              >
+                Cerrar Sesión
+              </Button>
+            </DrawerFooter>
+          </>
+        )}
+      </DrawerContent>
+    </Drawer>
   );
 };
 

@@ -1,69 +1,76 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   setComboThunk,
   deleteComboThunk,
 } from "../../features/user/comboSlice";
 import ViewProduct from "../ViewProduct";
-import Swal from "sweetalert2";
 import CreateCombo from "./CreateCombo";
 import EditCombo from "./EditCombo";
-import { Toast } from "primereact/toast";
-import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
-import { Paginator } from "primereact/paginator";
+import { Pagination } from "@heroui/react";
+import ConfirmModal from "../ui/ConfirmModal";
+import { addToast } from "@heroui/toast";
 
 const ComboProduct = () => {
   const [reload, setReload] = useState(false);
   const [show, setShow] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [dataCombo, setDataCombo] = useState({});
-  
-  // Estado para la paginación
-  const [page, setPage] = useState(0);
-  const [rows, setRows] = useState(10); 
+  const [deleteId, setDeleteId] = useState(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-  const toast = useRef(null);
+  // Estado para la paginación (HeroUI usa 1-based indexing)
+  const [page, setPage] = useState(1);
+  const rows = 10;
+
   const dispatch = useDispatch();
   const combos = useSelector((state) => state.combos);
   const totalCombos = useSelector((state) => state.totalItems);
+  const { error, success } = useSelector((state) => state.error);
 
   const handleEdit = (data) => {
     setOpenEdit(true);
     setDataCombo(data);
   };
 
-  const handleDelete = (id) => {
-    const accept = () => {
-        dispatch(deleteComboThunk(id)).finally(() => {
-        toast.current.show({ severity: 'info', summary: 'Confirmado', detail: 'Combo eliminado', life: 3000 });
-        setReload(!reload);
+  const handleDeleteClick = (id) => {
+    setDeleteId(id);
+    setIsDeleteModalOpen(true);
+  };
+
+  const confirmDelete = () => {
+    if (deleteId) {
+      dispatch(deleteComboThunk(deleteId))
+        .then(() => {
+          addToast({ title: 'Éxito', description: "Combo eliminado correctamente", color: 'success' });
+          setReload(!reload);
+        })
+        .finally(() => {
+          setIsDeleteModalOpen(false);
+          setDeleteId(null);
         });
     }
-    confirmDialog({
-        message: '¿Estas seguro de eliminar este combo?',
-        header: 'Confirmación de Eliminación', 
-        icon: 'pi pi-info-circle',
-        defaultFocus: 'reject',
-        acceptClassName: 'p-button-danger',
-        accept,
-    });
   };
 
   // Cargar combos al iniciar o cuando se recargue
   useEffect(() => {
-    dispatch(setComboThunk(page + 1)); // Enviar la página al backend (page + 1 si backend empieza en 1)
+    dispatch(setComboThunk(page));
   }, [dispatch, reload, page]);
 
-  const onPageChange = (event) => {
-    setPage(event.page);
-    setRows(event.rows);
+  useEffect(() => {
+    if (error) addToast({ title: 'Error', description: error, color: 'danger' });
+    if (success) addToast({ title: 'Éxito', description: success, color: 'success' });
+  }, [error, success]);
 
-    // Desplazar al inicio de la página
+  const onPageChange = (newPage) => {
+    setPage(newPage);
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
   };
+
+  const totalPages = Math.ceil(totalCombos / rows) || 1;
 
   return (
     <>
@@ -79,23 +86,35 @@ const ComboProduct = () => {
         reCharge={() => setReload(!reload)}
         combo={dataCombo}
       />
+
+      <ConfirmModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={confirmDelete}
+        title="Eliminar Combo"
+        message="¿Estás seguro de que deseas eliminar este combo? Esta acción no se puede deshacer."
+        confirmColor="danger"
+      />
+
       <ViewProduct
         products={combos}
-        handleDelete={handleDelete}
+        handleDelete={handleDeleteClick}
         setShow={setShow}
         isEdit={true}
         handleEdit={handleEdit}
       />
-      <Toast ref={toast} />
-      <ConfirmDialog />
 
-      {/* Agrega el Paginator aquí */}
-      <Paginator
-        first={page * rows}
-        rows={rows}
-        totalRecords={totalCombos} // Total de registros para calcular el número de páginas
-        onPageChange={onPageChange}
-      />
+      <div className="flex w-full justify-center mt-4 mb-4">
+        <Pagination
+          isCompact
+          showControls
+          showShadow
+          color="primary"
+          page={page}
+          total={totalPages}
+          onChange={onPageChange}
+        />
+      </div>
     </>
   );
 };

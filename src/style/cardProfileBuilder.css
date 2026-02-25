@@ -1,0 +1,220 @@
+/* ==================== Card Profile Builder Styles ==================== */
+
+/* Contenedor de previsualización */
+.card-preview-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    min-height: 400px;
+}
+
+/* Placeholder cuando no hay logo */
+.card-profile-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 75%;
+    height: 130px;
+    border: 2px dashed rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    z-index: 2;
+}
+
+.card-profile-placeholder span {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* Escalas de la card */
+.card-profile-small {
+    width: 180px !important;
+    height: 240px !important;
+}
+
+.card-profile-small img {
+    width: 70% !important;
+    max-height: 100px !important;
+}
+
+.card-profile-small .card-profile-placeholder {
+    width: 70%;
+    height: 100px;
+}
+
+.card-profile-small .container-eyelash {
+    top: 5px;
+}
+
+.card-profile-small .eyelash {
+    width: 35%;
+    height: 15px;
+}
+
+.card-profile-small .eyelash-circle {
+    width: 18px;
+    height: 18px;
+}
+
+.card-profile-small strong {
+    font-size: 11px;
+    padding: 6px 14px;
+    bottom: 18px;
+}
+
+.card-profile-small .available {
+    width: 12px;
+    height: 12px;
+    top: 12px;
+    right: 12px;
+}
+
+.card-profile-large {
+    width: 280px !important;
+    height: 380px !important;
+}
+
+.card-profile-large img {
+    width: 80% !important;
+    max-height: 160px !important;
+}
+
+.card-profile-large .card-profile-placeholder {
+    width: 80%;
+    height: 160px;
+}
+
+/* Animación de hover en el builder */
+.card-preview-container .card-profile {
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Hover en cards de la lista */
+.card-preview-container .card-profile:hover {
+    animation: none;
+}
+
+/* Grid de categorías */
+.categories-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    justify-content: center;
+}
+
+/* Contenedor de card con overlay */
+.category-card-wrapper {
+    position: relative;
+}
+
+.category-card-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.category-card-wrapper:hover .category-card-overlay {
+    opacity: 1;
+}
+
+/* Color picker mejorado */
+input[type="color"] {
+    -webkit-appearance: none;
+    border: none;
+    padding: 0;
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+input[type="color"]::-webkit-color-swatch {
+    border: none;
+    border-radius: 8px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .card-preview-container {
+        min-height: 350px;
+    }
+}
+
+@media (max-width: 768px) {
+    .card-preview-container {
+        min-height: 300px;
+        padding: 16px;
+    }
+    
+    .card-preview-container .card-profile {
+        animation: none;
+    }
+}
+
+/* Transiciones suaves para cambios de estilo */
+.card-profile {
+    transition: all 0.3s ease;
+}
+
+/* Estado de selección en la lista de categorías */
+.category-selected {
+    outline: 3px solid var(--heroui-primary);
+    outline-offset: 3px;
+}
+
+/* Botones de tipo de fondo */
+.background-type-button {
+    transition: all 0.2s ease;
+}
+
+.background-type-button:hover {
+    transform: scale(1.05);
+}
+
+.background-type-button.active {
+    transform: scale(1.02);
+}
+
+/* Efecto de gradiente en los colores seleccionados */
+.gradient-colors-preview {
+    height: 24px;
+    border-radius: 12px;
+    margin-top: 8px;
+}
+
+/* Loading state para las cards */
+.card-profile.loading {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.card-profile.loading::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 18px;
+}
