@@ -324,29 +324,31 @@ const KioskSettings = () => {
                             onSelectionChange={setActiveTab}
                             variant="light"
                             radius="full"
-                            size="lg"
+                            size="md"
                             classNames={{
-                                tabList: "gap-4 p-1.5 bg-slate-200/40 backdrop-blur-md rounded-2xl w-fit mx-auto border border-slate-200/60 shadow-inner-sm",
-                                cursor: "bg-slate-900 shadow-xl border border-slate-800",
-                                tab: "h-10 px-6 md:px-8",
-                                tabContent: "font-bold uppercase text-[11px] tracking-[0.15em] group-data-[selected=true]:text-white text-slate-500 transition-colors duration-300"
+                                tabList: "gap-2 p-2 bg-slate-200/40 backdrop-blur-md rounded-2xl w-full border border-slate-200/60",
+                                cursor: "bg-slate-900 shadow-xl border border-slate-800 rounded-xl",
+                                tab: "h-11 px-3 md:px-8 flex-1 md:flex-initial min-w-0",
+                                tabContent: "font-bold uppercase text-[11px] tracking-wider group-data-[selected=true]:text-white text-slate-500 transition-colors duration-300"
                             }}
                         >
                             <Tab
                                 key="general"
                                 title={
-                                    <div className="flex items-center gap-2">
-                                        <Settings size={16} />
-                                        <span>Personalización</span>
+                                    <div className="flex items-center gap-1.5">
+                                        <Settings size={15} />
+                                        <span className="hidden sm:inline">Personalización</span>
+                                        <span className="sm:hidden">Diseño</span>
                                     </div>
                                 }
                             />
                             <Tab
                                 key="pricing"
                                 title={
-                                    <div className="flex items-center gap-2">
-                                        <Coins size={16} />
-                                        <span>Precios y Ganancia</span>
+                                    <div className="flex items-center gap-1.5">
+                                        <Coins size={15} />
+                                        <span className="hidden sm:inline">Precios y Ganancia</span>
+                                        <span className="sm:hidden">Precios</span>
                                     </div>
                                 }
                             />

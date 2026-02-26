@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchPublicKiosk, fetchKioskProducts, resetPublicKiosk } from '../features/kiosk/kioskSlice';
 import { addItem, openCart } from '../features/kioskCart/kioskCartSlice';
 import { getKioskSlug } from '../utils/domain';
-import { getCategoryImage, getCategoryBackground } from '../utils/categoryImages';
 import '../style/cardprofile.css';
 import KioskHeader from '../Components/Kiosk/KioskHeader';
 import KioskNavbar from '../Components/Kiosk/KioskNavbar';
@@ -16,6 +15,51 @@ import { Spinner, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Butt
 import { addToast } from '@heroui/toast';
 import { Store, Package, MessageCircle, User, CreditCard, FileKey, ShoppingBag, Info, CheckCircle2 } from 'lucide-react';
 import { selectCategoriesCPs } from '../utils/functions/selectNameCategoryOptions';
+
+const ItemsGrid = ({ items, type, emptyMessage, onCardClick, onAddToCart, addingToCartId }) => {
+    if (!items || items.length === 0) {
+        return (
+            <div className="w-full text-center py-16 flex flex-col items-center">
+                <div className="w-24 h-24 bg-gray-100 dark:bg-zinc-800 rounded-full flex items-center justify-center mb-6 animate-pulse">
+                    <Package className="w-12 h-12 text-gray-300 dark:text-gray-600" />
+                </div>
+                <p className="text-gray-500 dark:text-gray-400 font-medium text-lg">{emptyMessage}</p>
+                <p className="text-gray-400 dark:text-gray-500 text-sm mt-2">Intenta con otra búsqueda</p>
+            </div>
+        );
+    }
+
+    const isCategory = type === 'profile' || type === 'account';
+
+    return (
+        <div className="flex flex-wrap justify-center py-6">
+            {items.map((item, index) => {
+                const itemId = item.categoryId || item.productId || item.id || index;
+                const isAdding = addingToCartId === itemId;
+
+                return isCategory ? (
+                    <KioskCategoryCard
+                        key={`${type}-${itemId}`}
+                        item={item}
+                        type={type}
+                        onCardClick={onCardClick}
+                        onAddToCart={onAddToCart}
+                        isAdding={isAdding}
+                    />
+                ) : (
+                    <KioskProductCard
+                        key={`${type}-${itemId}`}
+                        item={item}
+                        type={type}
+                        onCardClick={onCardClick}
+                        onAddToCart={onAddToCart}
+                        isAdding={isAdding}
+                    />
+                );
+            })}
+        </div>
+    );
+};
 
 const PublicKiosk = () => {
     const { slug: paramSlug } = useParams();
@@ -95,8 +139,7 @@ const PublicKiosk = () => {
 
         let productName = item.name;
         if (type === 'profile' || type === 'account') {
-            const [, displayName] = getCategoryImage(item.categoryName);
-            productName = displayName;
+            productName = item.displayName || item.categoryName;
         }
 
         dispatch(addItem({
@@ -105,7 +148,7 @@ const PublicKiosk = () => {
             name: productName,
             price: item.finalPrice,
             type: type,
-            imageUrl: item.image || ''
+            imageUrl: item.image || item.logoUrl || ''
         }));
 
         addToast({
@@ -123,8 +166,7 @@ const PublicKiosk = () => {
             let productName, productTypeText;
 
             if (selectedItem.itemType === 'profile' || selectedItem.itemType === 'account') {
-                const [, displayName] = getCategoryImage(selectedItem.categoryName);
-                productName = displayName;
+                productName = selectedItem.displayName || selectedItem.categoryName;
                 productTypeText = selectedItem.itemType === 'profile' ? 'Perfil' : 'Cuenta';
             } else {
                 productName = selectedItem.name;
@@ -157,52 +199,6 @@ const PublicKiosk = () => {
             </div>
         );
     }
-
-    // Grid component
-    const ItemsGrid = ({ items, type, emptyMessage }) => {
-        if (!items || items.length === 0) {
-            return (
-                <div className="w-full text-center py-16 flex flex-col items-center">
-                    <div className="w-24 h-24 bg-gray-100 dark:bg-zinc-800 rounded-full flex items-center justify-center mb-6 animate-pulse">
-                        <Package className="w-12 h-12 text-gray-300 dark:text-gray-600" />
-                    </div>
-                    <p className="text-gray-500 dark:text-gray-400 font-medium text-lg">{emptyMessage}</p>
-                    <p className="text-gray-400 dark:text-gray-500 text-sm mt-2">Intenta con otra búsqueda</p>
-                </div>
-            );
-        }
-
-        const isCategory = type === 'profile' || type === 'account';
-
-        return (
-            <div className="flex flex-wrap justify-center py-6">
-                {items.map((item, index) => {
-                    const itemId = item.categoryId || item.productId || item.id || index;
-                    const isAdding = addingToCartId === itemId;
-
-                    return isCategory ? (
-                        <KioskCategoryCard
-                            key={`${type}-${itemId}`}
-                            item={item}
-                            type={type}
-                            onCardClick={handleCardClick}
-                            onAddToCart={handleAddToCart}
-                            isAdding={isAdding}
-                        />
-                    ) : (
-                        <KioskProductCard
-                            key={`${type}-${itemId}`}
-                            item={item}
-                            type={type}
-                            onCardClick={handleCardClick}
-                            onAddToCart={handleAddToCart}
-                            isAdding={isAdding}
-                        />
-                    );
-                })}
-            </div>
-        );
-    };
 
     const profilesCount = filteredProducts.profiles?.length || 0;
     const accountsCount = filteredProducts.accounts?.length || 0;
@@ -250,6 +246,9 @@ const PublicKiosk = () => {
                                 items={filteredProducts[activeTab]}
                                 type={activeTab.slice(0, -1)}
                                 emptyMessage={searchTerm ? `No se encontraron resultados para "${searchTerm}"` : `No hay ${activeTab === 'profiles' ? 'perfiles' : activeTab === 'accounts' ? 'cuentas' : activeTab === 'combos' ? 'combos' : 'servicios'} disponibles`}
+                                onCardClick={handleCardClick}
+                                onAddToCart={handleAddToCart}
+                                addingToCartId={addingToCartId}
                             />
                         ) : (
                             <div className="flex flex-col items-center justify-center py-20">
@@ -279,20 +278,38 @@ const PublicKiosk = () => {
                                     <div className="flex flex-col items-center justify-center min-h-[250px]">
                                         {(() => {
                                             if (selectedItem.itemType === 'profile' || selectedItem.itemType === 'account') {
-                                                const [img, displayName] = getCategoryImage(selectedItem.categoryName);
-                                                const backgroundClass = getCategoryBackground(selectedItem.categoryName);
+                                                const bgStyle = (() => {
+                                                    const { backgroundType, backgroundColor, gradientColors, gradientDirection } = selectedItem;
+                                                    if (backgroundType === 'linear-gradient') {
+                                                        const colors = Array.isArray(gradientColors) ? gradientColors : ['#000000', '#333333'];
+                                                        return { background: `linear-gradient(${gradientDirection || 'to bottom'}, ${colors.join(', ')})` };
+                                                    }
+                                                    if (backgroundType === 'radial-gradient') {
+                                                        const colors = Array.isArray(gradientColors) ? gradientColors : ['#000000', '#333333'];
+                                                        return { background: `radial-gradient(circle, ${colors.join(', ')})` };
+                                                    }
+                                                    return { background: backgroundColor || '#000000' };
+                                                })();
+                                                const displayName = selectedItem.displayName || selectedItem.categoryName;
                                                 return (
-                                                    <div className={`card-profile ${backgroundClass} scale-90 pointer-events-none`}>
+                                                    <div
+                                                        className="card-profile scale-90 pointer-events-none"
+                                                        style={bgStyle}
+                                                    >
                                                         <div className="container-eyelash">
                                                             <div className="eyelash-circle"></div>
                                                             <div className="eyelash"></div>
                                                         </div>
-                                                        {img && (
+                                                        {selectedItem.logoUrl ? (
                                                             <img
-                                                                src={img}
+                                                                src={selectedItem.logoUrl}
                                                                 alt={displayName}
                                                                 className="object-contain"
                                                             />
+                                                        ) : (
+                                                            <span className="text-white font-bold text-lg text-center px-4 z-[2] drop-shadow-lg">
+                                                                {displayName}
+                                                            </span>
                                                         )}
                                                     </div>
                                                 );
@@ -321,7 +338,7 @@ const PublicKiosk = () => {
                                     <div className="flex flex-col gap-6">
                                         <div>
                                             <h2 className="text-2xl font-black text-gray-900 dark:text-white leading-tight mb-3">
-                                                {selectedItem.name || selectedItem.categoryName || 'Sin nombre'}
+                                                {selectedItem.displayName || selectedItem.name || selectedItem.categoryName || 'Sin nombre'}
                                             </h2>
                                             <div className="flex flex-wrap gap-2">
                                                 <div className="px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-bold tracking-wider uppercase">

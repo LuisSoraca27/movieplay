@@ -19,7 +19,7 @@ const ModalAccount = ({ data, onClose, reCharge }) => {
     const [subject, setSubject] = useState('');
     const [accountSelected, setAccountSelected] = useState(null);
     const [purchase, setPurchase] = useState(false);
-    const [checked, setChecked] = useState(false);
+    const [checked, setChecked] = useState(true);
 
     const handleSelect = (key) => {
         const selected = accounts.find(account => account.id === key);

@@ -32,7 +32,7 @@ const ModalProfile = ({ data, onClose, reCharge }) => {
   const [subject, setSubject] = useState("");
   const [profileSelected, setProfileSelected] = useState(null);
   const [purchase, setPurchase] = useState(false);
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(true);
 
   const handleSelect = (e) => {
     const profileId = e.target.value;

@@ -1,91 +1,32 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Textarea, Select, SelectItem } from "@heroui/react";
 import { updateComboThunk } from "../../features/user/comboSlice";
+import { fetchCategories } from "../../features/categories/categoriesSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { addToast } from "@heroui/toast";
 import { Check, Upload, X } from "lucide-react";
 import { selectCategoriesCPs } from "../../utils/functions/selectNameCategoryOptions";
 
 const EditCombo = ({ show, onClose, reCharge, combo }) => {
-  const opcionesPlataformas = [
-    { name: "Netflix Original", code: "2" },
-    { name: "Max", code: "3" },
-    { name: "Disney Premium+", code: "4" },
-    { name: "Disney+ Estandar", code: "30" },
-    { name: "Disney+ Basico", code: "29" },
-    { name: "Disney+ Promoción", code: "42" },
-    { name: "Iptv Basico", code: "39" },
-    { name: "Iptv Mes", code: "40" },
-    { name: "Prime Video", code: "1" },
-    { name: "Paramount+", code: "6" },
-    { name: "Vix+", code: "7" },
-    { name: "Next Movie", code: "8" },
-    { name: "Universal+", code: "18" },
-    { name: "Crunchyroll", code: "9" },
-    { name: "El ProfeNet", code: "10" },
-    { name: "Iptv Promoción", code: "11" },
-    { name: "Apple TV", code: "19" },
-    { name: "Pornhub", code: "20" },
-    { name: "Spotify", code: "14" },
-    { name: "Rakuten Viki", code: "22" },
-    { name: "Mubi", code: "24" },
-    { name: "WASender", code: "25" },
-    { name: "Regalo", code: "26" },
-    { name: "TvMia", code: "28" },
-    { name: "Microsoft 365", code: "31" },
-    { name: "Netflix Extra", code: "32" },
-    { name: "Macfee", code: "33" },
-    { name: "AtresPlayer", code: "34" },
-    { name: "WaCrm", code: "35" },
-    { name: "Crm", code: "36" },
-    { name: "WaDefender", code: "37" },
-    { name: "XXX", code: "38" },
-    { name: "Regalo 2", code: "41" },
-    { name: "Netlix SemiOriginal", code: "43" },
-    { name: "Directv GO", code: "directvgo" },
-  ];
-
-  const opcionesPlataformasAccount = [
-    { name: "Netflix", code: "2" },
-    { name: "Max", code: "3" },
-    { name: "Amazon Prime Video", code: "1" },
-    { name: "Paramount+", code: "6" },
-    { name: "Vix+", code: "7" },
-    { name: "Plex", code: "8" },
-    { name: "Crunchyroll", code: "9" },
-    { name: "El ProfeNet", code: "10" },
-    { name: "Iptv", code: "11" },
-    { name: "Youtube Premium", code: "12" },
-    { name: "Tidal", code: "13" },
-    { name: "Spotify", code: "14" },
-    { name: "Deezer", code: "15" },
-    { name: "Apple Music", code: "16" },
-    { name: "Canva", code: "17" },
-    { name: "Universal+", code: "18" },
-    { name: "Apple TV", code: "19" },
-    { name: "Pornhub", code: "20" },
-    { name: "Duolingo", code: "21" },
-    { name: "Rakuten Viki", code: "22" },
-    { name: "Calm", code: "23" },
-    { name: "Mubi", code: "24" },
-    { name: "Napster", code: "27" },
-    { name: "WASender", code: "25" },
-    { name: "TvMia", code: "28" },
-    { name: "Microsoft 365", code: "31" },
-    { name: "Macfee", code: "33" },
-    { name: "AtresPlayer", code: "34" },
-    { name: "WaCrm", code: "35" },
-    { name: "Crm", code: "36" },
-    { name: "WaDefender", code: "37" },
-    { name: "XXX", code: "38" },
-    { name: "Netlix SemiOriginal", code: "43" },
-    { name: "Directv GO", code: "directvgo" },
-  ];
-
   const [loading, setLoading] = useState(false);
   const { success, error } = useSelector((state) => state.error);
+  const { categories } = useSelector((state) => state.categoriesCP);
   const dispatch = useDispatch();
+
+  const optionsCategory = useMemo(() => {
+    if (!categories || categories.length === 0) return [];
+    return categories.map(cat => ({
+      name: cat.displayName || cat.name,
+      code: String(cat.id)
+    }));
+  }, [categories]);
+
+  useEffect(() => {
+    if (show && (!categories || categories.length === 0)) {
+      dispatch(fetchCategories());
+    }
+  }, [show, dispatch, categories?.length]);
   const fileInputRef = useRef(null);
   const [fileName, setFileName] = useState("");
   const [previewImage, setPreviewImage] = useState("");
@@ -282,7 +223,7 @@ const EditCombo = ({ show, onClose, reCharge, combo }) => {
                     trigger: "border-slate-200 group-hover:border-slate-300 focus-within:!border-slate-900 bg-white"
                   }}
                 >
-                  {opcionesPlataformas.map((platform) => (
+                  {optionsCategory.map((platform) => (
                     <SelectItem key={platform.code} value={platform.code}>
                       {platform.name}
                     </SelectItem>
@@ -309,7 +250,7 @@ const EditCombo = ({ show, onClose, reCharge, combo }) => {
                     trigger: "border-slate-200 group-hover:border-slate-300 focus-within:!border-slate-900 bg-white"
                   }}
                 >
-                  {opcionesPlataformasAccount.map((platform) => (
+                  {optionsCategory.map((platform) => (
                     <SelectItem key={platform.code} value={platform.code}>
                       {platform.name}
                     </SelectItem>

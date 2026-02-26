@@ -23,7 +23,7 @@ const ModalProduct = ({ data, onClose, reCharge }) => {
   const [email, setEmail] = useState("");
   const [subject, setSubject] = useState("");
   const [purchase, setPurchase] = useState(false);
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(true);
 
   const dispatch = useDispatch();
   const { error, success } = useSelector((state) => state.error);
