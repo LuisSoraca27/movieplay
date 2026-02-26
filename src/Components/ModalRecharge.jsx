@@ -66,7 +66,7 @@ const ModalRecharge = ({ open, onClose, userData }) => {
                         <Controller
                             name="balance"
                             control={control}
-                            rules={{ required: 'El monto es requerido', min: { value: 1, message: 'El monto debe ser mayor a 0' } }}
+                            rules={{ required: 'El monto es requerido', validate: value => parseFloat(value) !== 0 || 'El monto no puede ser 0' }}
                             render={({ field, fieldState: { error } }) => (
                                 <Input
                                     {...field}

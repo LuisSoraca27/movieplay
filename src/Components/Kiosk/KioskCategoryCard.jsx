@@ -40,14 +40,14 @@ const KioskCategoryCard = ({ item, type, onCardClick, onAddToCart, isAdding }) =
                 <div className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black/80 via-black/50 to-transparent z-10">
                     <div className="flex flex-col items-center gap-1.5">
                         {/* Price tag */}
-                        <div className="bg-white/95 backdrop-blur-md px-4 py-1.5 rounded-full shadow-lg">
-                            <span className="text-lg font-bold text-gray-900">
+                        <div className="bg-white/95 backdrop-blur-md px-3 py-1 md:px-4 md:py-1.5 rounded-full shadow-lg">
+                            <span className="text-sm md:text-lg font-bold text-gray-900">
                                 ${item.finalPrice?.toLocaleString()}
                             </span>
                         </div>
                         {/* Stock info */}
-                        <div className="flex items-center gap-1.5 text-white/90 text-xs font-medium">
-                            <Check size={12} className="text-green-400" />
+                        <div className="flex items-center gap-1 md:gap-1.5 text-white/90 text-[10px] md:text-xs font-medium">
+                            <Check size={10} className="text-green-400 md:w-3 md:h-3" />
                             <span>{item.total} disponibles</span>
                         </div>
                     </div>
